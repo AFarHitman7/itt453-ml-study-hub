@@ -418,7 +418,7 @@ code {
 .pyqbox .pyq-card + .pyq-card { margin-top: 10px; }
 .pyqbox .pyq-card-head { padding-top: 9px; padding-bottom: 8px; }
 #content .pyqbox .pyq-card-theme { font-size: 12.5px; color: var(--pyq-ink); }
-#content .pyqbox .pyq-card .occurrences li { padding-top: 8px; padding-bottom: 9px; }
+#content .pyqbox .pyq-card .occurrences > li { padding-top: 8px; padding-bottom: 9px; }
 #content .pyqbox .occ-q { font-size: 14px; }
 .pyqbox > :last-child { margin-bottom: 0; }
 
@@ -589,12 +589,12 @@ pre.code .num { color: #f0a45f; }
 #content .pyq-card .occurrences {
   max-width: none; margin: 0; padding: 0; list-style: none;
 }
-#content .pyq-card .occurrences li {
+#content .pyq-card .occurrences > li {
   display: grid; grid-template-columns: minmax(96px, auto) minmax(0, 1fr);
   column-gap: 20px; align-items: start;
   margin: 0; padding: 11px 0 12px;
 }
-#content .pyq-card .occurrences li + li { border-top: 1px solid var(--line); }
+#content .pyq-card .occurrences > li + li { border-top: 1px solid var(--line); }
 .occ-rail { min-width: 0; padding-top: 1px; }
 .occ-paper {
   display: block;
@@ -621,6 +621,38 @@ pre.code .num { color: #f0a45f; }
   color: var(--accent-ink); text-decoration: none;
 }
 .pyq-link:hover { text-decoration: underline; text-underline-offset: 2px; }
+
+/* Original paper visuals and separately revealed study answers. */
+.occ-body { min-width: 0; }
+.pyq-asset { margin: 14px 0; }
+.pyq-asset > a {
+  display: block; padding: 8px;
+  background: #fff; border: 1px solid var(--line-strong); border-radius: var(--r-sm);
+}
+.pyq-asset img { display: block; width: auto; max-width: 100%; height: auto; margin: auto; }
+.pyq-asset figcaption { margin-top: 6px; color: var(--muted); font-size: 12px; line-height: 1.5; }
+.pyq-asset figcaption a { color: var(--accent-ink); }
+.pyq-answer {
+  margin: 12px 0 2px; min-width: 0;
+  border: 1px solid var(--line-strong); border-radius: var(--r-sm);
+  background: var(--surface);
+}
+.pyq-answer > summary {
+  padding: 10px 12px; cursor: pointer;
+  color: var(--accent-ink); font-size: 13px; font-weight: 650; line-height: 1.5;
+}
+.pyq-answer > summary:hover { background: var(--accent-wash); }
+.pyq-answer > summary:active { background: var(--surface-3); }
+.pyq-answer[open] > summary { border-bottom: 1px solid var(--line); }
+.pyq-answer > .answer {
+  padding: 12px; background: var(--surface-2);
+  font-size: 14.5px; line-height: 1.7; overflow-wrap: anywhere;
+}
+.pyq-answer > .answer > :first-child { margin-top: 0; }
+.pyq-answer > .answer > :last-child { margin-bottom: 0; }
+.pyq-answer li + li { margin-top: 8px; }
+.pyq-answer .sources { font-size: 11px; }
+.pyq-answer .diagram img { display: block; max-width: 100%; height: auto; margin: auto; }
 
 /* High-yield table, collapsed so Module 1 starts near the top of the page. */
 .hy {
@@ -796,7 +828,7 @@ details.qa summary:focus-visible { outline-offset: -3px; }
 }
 @media (max-width: 640px) {
   /* Stack the rail above the question so the question keeps a readable measure. */
-  #content .pyq-card .occurrences li {
+  #content .pyq-card .occurrences > li {
     grid-template-columns: minmax(0, 1fr); row-gap: 3px;
   }
   .occ-rail { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; }

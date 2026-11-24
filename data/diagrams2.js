@@ -40,6 +40,11 @@ window.ML_DIAGRAMS["confusion-matrix"] = {
   </svg>`
 };
 
+window.ML_DIAGRAMS["version-space"] = {
+  cap: "The version space sits between the most general boundary G and the most specific boundary S (from the course notes).",
+  svg: `<img src="assets/img/version-space.png" alt="Version space diagram: the most general boundary G at the top with the broadest acceptable rules, the version space between the boundaries, and the most specific boundary S at the bottom with the narrowest acceptable rules">`
+};
+
 window.ML_DIAGRAMS["roc-curve"] = {
   cap: "ROC space: the curve plots the true positive rate against the false positive rate as the threshold moves. The dashed diagonal is random guessing, and (0,1) is perfect.",
   svg: `<svg viewBox="0 0 660 430" width="660" height="430" role="img" aria-label="ROC curve with false positive rate on the x axis and true positive rate on the y axis">

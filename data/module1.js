@@ -14,15 +14,14 @@ window.ML_MODULES[1] = {
       blocks: [
         {
           type: "definition",
-          text: "Machine learning builds models that learn patterns from data and improve with experience, instead of following hand-written rules."
+          text: "Machine learning trains a model on examples so it can find patterns and make predictions for new cases."
         },
         {
           type: "text",
-          html: `<p><b>Machine learning</b> is a branch of artificial intelligence. Instead of writing a rule for every case, you give the computer examples, and it builds a model that turns those examples into predictions for new cases. Wikipedia describes the field as statistical algorithms that learn from data and generalise to unseen data. IBM calls it the subset of AI whose algorithms learn the patterns of training data and then infer new data.</p>
-<p>The term is old. Arthur Samuel coined it in 1959 while working on a checkers program at IBM, so the history starts well before the current wave of large models.</p>
-<p><b>Rules versus learning.</b> In ordinary programming a person writes the rules, and data flows through them to produce an answer. In machine learning, data and answers go in together, and training produces the rules as a model. A spam filter shows the difference: nobody can list every spam phrase, but a model can learn word patterns from thousands of emails already marked spam or not spam.</p>
-<p>A working system needs three things: training data, a learning algorithm, and an error measure that says how far each prediction sits from the right answer. Training adjusts the model to reduce that error, then you test it on rows it has never seen. A model that scores well only on its training rows has memorised them, which is <b>overfitting</b>.</p>
-<p><b>Where it is used.</b> The application usually follows the data type.</p>
+          html: `<h4>Core idea</h4><p><b>Machine learning</b> is a branch of artificial intelligence. You provide examples, and an algorithm uses them to build a model. The model then makes predictions for new cases. Generalising means working on examples the model did not train on.</p>
+<h4>Rules and learning</h4><p>In ordinary programming, a person writes rules and the computer applies them to data. In machine learning, the computer uses training examples to find useful patterns and represent them in a model. A spam filter can learn word patterns from emails labelled spam or not spam, rather than relying on a person to list every spam phrase.</p>
+<p>A working system needs training data, a learning algorithm, and an error measure. The error measure compares predictions with correct answers. Training adjusts the model to reduce that error, then testing checks rows the model has not seen. If a model performs well only on training rows because it memorised them, it is <b>overfitting</b>.</p>
+<h4>Applications</h4><p>The data type often points to the task area.</p>
 <table class="tbl">
 <tr><th>Data</th><th>Task area</th><th>Typical use</th></tr>
 <tr><td>Images and video</td><td>Computer vision</td><td>X-ray screening, face recognition, self-driving cars</td></tr>
@@ -33,28 +32,24 @@ window.ML_MODULES[1] = {
         },
         {
           type: "example",
-          html: `<p>A college wants to flag first-year students who may struggle. The old rule is simple: flag anyone with school marks below 50. It misses a student with strong school marks who now commutes four hours a day and works evenings. It also flags a student who scored badly years ago but has since settled.</p>
-<p>A learning version uses attendance, school marks, commute time, hours of part-time work and the results of previous batches as labelled examples. The model learns which combinations came before a poor semester, and it outputs a risk score for each new student. The college still decides what help to offer, because the model ranks risk and does not choose the intervention.</p>`
+          html: `<h4>Illustrative example: student support</h4><p>A college wants to identify first-year students who may struggle. A fixed rule flags anyone whose school marks are below 50. It can miss someone with strong marks who now commutes four hours a day and works evenings. It can also flag someone whose old low marks no longer reflect their situation.</p>
+<p>A model could use attendance, school marks, commute time and part-time work, along with labelled outcomes from previous batches. It learns combinations linked with a poor semester and gives each new student a risk score. Staff decide what support to offer; the model only helps rank cases for review.</p>`
         },
         {
           type: "tip",
-          html: `<p>Open with the definition, then show the programming contrast, because that contrast separates machine learning from a rule engine. For 3 marks, add two applications. For 8 marks, give four applications with the data type and one sentence each. Name Samuel only if the question asks for history, and keep the overfitting line for the end.</p>`
+          html: `<h4>Exam plan</h4><ol><li>Define machine learning.</li><li>Contrast a learned model with hand-written rules.</li><li>Explain training data, the algorithm and the error measure.</li><li>Add applications that match the question's mark value.</li></ol><p>For an application, name its data and task. Mention Arthur Samuel only when asked about history. Explain overfitting if the question asks how a model can fail.</p>`
         }
       ],
       practice: [
         {
-          q: "A vendor advertises a machine learning module that scores loan applications using a fixed points table written by its staff, with no training step. Does this meet the definition of machine learning? Justify your answer with two points.",
-          a: `No. Machine learning is a field of AI whose algorithms learn from data and generalise to unseen data. IBM describes it as learning the patterns of training data instead of following hard-coded instructions. A fixed points table is a hand-written rule: a person chose every weight and threshold, and the system does not adjust them when new data arrives.
-There is no training data, no error measure, and no model that improves with experience. It may still be a useful scoring system, but it is rule-based programming.
-The practical test is where the decision boundary comes from and whether it changes when you show the system more examples. Here it does not.`,
+          q: "A vendor's loan-scoring module uses a fixed points table written by staff and has no training step. Does it meet the definition of machine learning? Give two reasons.",
+          a: `<h4>Exam-ready answer</h4><p>No. The module applies rules written by people; it does not learn those rules from examples.</p><ol><li>It has no training data or learning step.</li><li>Its points and thresholds do not change when it receives new examples, so it does not learn a pattern that can generalise to new cases.</li></ol><p>It may still be useful, but it is a rule-based scoring system rather than a machine-learning model.</p>`,
           marks: 3,
           diff: "easy"
         },
         {
-          q: "Pick two machine learning applications, one where a wrong prediction costs a few rupees and one where it costs a life. For each, name the task and explain how the cost of an error should change the way the system is evaluated.",
-          a: `<p><b>Application 1: product recommendation on a shopping site.</b> The task is ranking or classification of items a user may click. A wrong recommendation costs a lost click, so the team can evaluate with offline click metrics and run many A/B tests. A false positive is cheap and fast to correct.</p>
-<p><b>Application 2: screening a scan for a condition that needs urgent treatment.</b> The task is image classification. A missed case is dangerous, while a false alarm costs a review, so the team must report recall or sensitivity on held-out images and choose a threshold that keeps misses low. A clinician confirms every positive before treatment.</p>
-<p>The general point is that the evaluation metric follows the cost of the two error types, and the decision threshold follows the same cost. Overall accuracy is a poor headline when one error is far more serious than the other.</p>`,
+          q: "Choose two machine-learning applications, one where a wrong prediction costs little and one where it could cost a life. For each, name the task and explain how error costs affect evaluation.",
+          a: `<h4>1. Product recommendations</h4><p>A shopping site ranks products a user may click. A poor suggestion may lose a click, so the team can compare click metrics and run controlled A/B tests.</p><h4>2. Urgent medical screening</h4><p>A model classifies medical scans. Missing a serious case can be dangerous, while a false alarm may lead to an extra review. The team should measure recall, also called sensitivity, on held-out scans and choose a threshold that limits missed cases. A clinician reviews positive results.</p><h4>Evaluation principle</h4><p>Choose metrics and a decision threshold to reflect the relative costs of false positives and false negatives. Accuracy alone can hide a serious error when the two error types have very different consequences.</p>`,
           marks: 5,
           diff: "medium"
         }
@@ -69,23 +64,22 @@ The practical test is where the decision boundary comes from and whether it chan
       blocks: [
         {
           type: "definition",
-          text: "Association learning finds rules that describe which items or events occur together often in a large dataset."
+          text: "Association learning finds patterns showing which items or events often appear together in data."
         },
         {
           type: "text",
-          html: `<p>An association rule has the form <code>X &rarr; Y</code>, where X is the antecedent and Y is the consequent. The rule says the two appear together often enough to be worth noting. It does not say that X causes Y. Wikipedia's supermarket example, <code>{onions, potatoes} &rarr; {burger}</code>, means a shopper who buys onions and potatoes is likely to buy burger meat too, which is useful for placement and promotions.</p>
-<p><b>Three measures</b> decide whether a rule is worth keeping.</p>
+          html: `<h4>Read an association rule</h4><p>A rule has the form <code>X &rarr; Y</code>. X is the <b>antecedent</b>, the item or event on the left. Y is the <b>consequent</b>, the item or event on the right.</p><p>The rule describes items that appear together; it does not show that X causes Y. For example, <code>{onions, potatoes} &rarr; {burger}</code> says shoppers who buy onions and potatoes often also buy burger meat.</p>
+<h4>Measure a rule's strength</h4><p>Use three measures to decide whether the pattern is frequent and informative.</p>
 <ul>
-<li><b>Support</b> is how often the whole itemset appears: <code>supp(X &rarr; Y) = count(X and Y) / N</code>. It tells you whether the rule covers enough business to matter.</li>
-<li><b>Confidence</b> is the share of X baskets that also hold Y: <code>conf(X &rarr; Y) = supp(X &rarr; Y) / supp(X)</code>. It is the conditional probability P(Y | X).</li>
-<li><b>Lift</b> compares confidence with the base rate of Y: <code>lift = supp(X &rarr; Y) / (supp(X) &times; supp(Y))</code>. Lift above 1 means the items pull together, 1 means they are independent, and below 1 means they occur together less often than chance.</li>
+<li><b>Support</b> is the fraction of all transactions containing both X and Y: <code>supp(X &rarr; Y) = count(X and Y) / N</code>. Here, <code>N</code> is the total number of transactions.</li>
+<li><b>Confidence</b> is the fraction of transactions containing X that also contain Y: <code>conf(X &rarr; Y) = supp(X &rarr; Y) / supp(X)</code>. It is the conditional probability <code>P(Y | X)</code>.</li>
+<li><b>Lift</b> compares that confidence with how common Y is overall: <code>lift = supp(X &rarr; Y) / (supp(X) &times; supp(Y))</code>. Lift above 1 means X and Y occur together more often than independence predicts; 1 means independence; below 1 means they co-occur less often.</li>
 </ul>
-<p><b>Mining the rules.</b> Apriori works in two stages. First it finds itemsets whose support clears a minimum, using downward closure: if an itemset is too rare, every larger set containing it is also too rare, so those branches are pruned. Then it turns frequent itemsets into rules that clear a minimum confidence. Eclat and FP-Growth solve the same problem with different data structures.</p>
-<p><b>Where it is used.</b> Market basket analysis, cross-selling, product placement and combo offers are the common retail uses. Wikipedia also lists web usage mining, intrusion detection, continuous production and bioinformatics.</p>`
+<h4>How rule mining works</h4><ol><li>Apriori finds itemsets whose support meets a chosen minimum.</li><li>It uses downward closure: if an itemset is too rare, any larger set containing it must also be too rare. Apriori can skip those larger sets.</li><li>It forms rules from the frequent itemsets and keeps rules that meet a minimum confidence.</li></ol><p>Eclat and FP-Growth solve the same task with different data structures.</p><p>Common uses include market-basket analysis, cross-selling, product placement, combo offers, web-usage mining, intrusion detection, production monitoring and bioinformatics.</p>`
         },
         {
           type: "example",
-          html: `<p>Ten canteen bills are enough to see the arithmetic.</p>
+          html: `<h4>Illustrative example: canteen bills</h4><p>Use these ten transactions to calculate the three measures.</p>
 <table class="tbl">
 <tr><th>Bill</th><th>Items</th></tr>
 <tr><td>1</td><td>milk, bread, butter</td></tr>
@@ -99,31 +93,23 @@ The practical test is where the decision boundary comes from and whether it chan
 <tr><td>9</td><td>rice</td></tr>
 <tr><td>10</td><td>rice</td></tr>
 </table>
-<p>Let X be {milk, bread} and Y be {butter}. Two bills hold all three items, four hold milk and bread, and four hold butter. Support is 2/10 = 0.20. Confidence is 2/4 = 0.50, so half the milk-and-bread baskets also take butter. Lift is 0.20 / (0.40 &times; 0.40) = 1.25, so butter turns up with this basket 25% more often than its own base rate suggests.</p>
-<p>A lift of 1.25 is a weak pull. Before acting, the canteen should check whether breakfast time explains both purchases, because a shared cause can produce a rule with no practical use.</p>`
+<ol><li>Let X = {milk, bread} and Y = {butter}. Two bills contain all three items, four contain X, and four contain butter.</li><li>Support = 2/10 = 0.20. Two of ten bills contain the full rule.</li><li>Confidence = 2/4 = 0.50. Half of the milk-and-bread bills also contain butter.</li><li>Lift = 0.20 / (0.40 &times; 0.40) = 1.25. The items co-occur more often than independence predicts.</li></ol><p>This is an illustrative association, not proof of cause. For example, a shared breakfast-time pattern could explain both purchases.</p>`
         },
         {
           type: "tip",
-          html: `<p>Write the rule with the arrow and label the antecedent and consequent before anything else. For 3 marks, define association and give one rule. For 9 marks, split the answer as concept, three metrics with formulas, and five applications, because that is how the marks are usually grouped. Show one substitution for support, confidence and lift, then interpret lift as above, at, or below 1. Finish by saying the rule describes co-occurrence, so it cannot prove cause.</p>`
+          html: `<h4>Exam plan</h4><ol><li>Define association learning and write a rule using <code>X &rarr; Y</code>.</li><li>Label X as antecedent and Y as consequent.</li><li>Explain support, confidence and lift. Write each formula, define its terms, and interpret the result.</li><li>Give an example and the applications asked for.</li></ol><p>State that a rule shows co-occurrence, not causation. For a calculation, show the counts before substituting them into each formula.</p>`
         }
       ],
       practice: [
         {
-          q: "A canteen finds the rule {coffee} &rarr; {samosa} with high confidence. The manager says coffee sales cause samosa sales, so raising the coffee price will raise samosa sales. Give two reasons the rule cannot support that claim.",
-          a: `First, an association rule describes co-occurrence in past bills, not cause. Coffee and samosas may both be bought at break time, so a third factor such as time of day, hunger or a combo counter drives both.
-Second, confidence does not establish direction. Samosa buyers may also buy coffee, and the data cannot tell which came first. The rule also says nothing about price: it measures how often the items appear together, not how demand responds to a price change.
-To test the manager's claim you need an experiment or a price-change study, not a rule mined from historical baskets.`,
+          q: "A canteen finds a high-confidence rule {coffee} &rarr; {samosa}. Its manager claims coffee sales cause samosa sales and proposes raising coffee prices to increase samosa sales. Give two reasons the rule does not support that claim.",
+          a: `<h4>Exam-ready answer</h4><ol><li><b>Association does not prove cause.</b> Break time or a combo counter could increase sales of both items.</li><li><b>The rule does not measure price effects.</b> Confidence counts co-occurrence in past bills; it does not show how demand changes when a price changes. It also does not establish which item is bought first.</li></ol><p>The manager would need a price-change study or experiment to test the claim.</p>`,
           marks: 3,
           diff: "easy"
         },
         {
-          q: "A supermarket chain has two years of billing data from 40 stores and wants to use association rules for shelf placement and combo offers. Describe the full analysis: how you would prepare the transactions, how you would mine and filter rules, how you would decide which rules to act on, and two ways the result could mislead the buyer.",
-          a: `<p><b>1. Prepare the baskets.</b> Make one basket per bill, normalise item ids so the same product is not split across spellings, remove returns and voided lines, and merge duplicate scans. Add a store id and a timestamp. Flag promotion periods, because a discount can create co-occurrence that disappears at full price.</p>
-<p><b>2. Mine frequent itemsets.</b> Choose a minimum support that leaves enough baskets for a rule to be reliable, then run Apriori or FP-Growth. Apriori prunes with downward closure: if a set is below the support floor, every superset is below it too. Form rules from the frequent sets and keep those above a minimum confidence.</p>
-<p><b>3. Filter and rank.</b> Prefer rules with lift above 1, a support floor that reflects real volume, and stability across months and stores. Drop trivial rules whose consequent is bought by almost every customer, because confidence will look high while the rule adds nothing. Check the reverse rule too, since direction matters for placement.</p>
-<p><b>4. Validate before acting.</b> Hold out the most recent months and re-mine. A rule that exists only in an old promotion is not a plan. Test a small set of placements or combo offers against a control group and measure basket value as well as units of the promoted item.</p>
-<p><b>5. Act on the result.</b> Place related items near each other, design combo offers, and use the rules to choose cross-sell prompts. Keep the support, confidence and lift beside each decision so the buyer can see the evidence.</p>
-<p><b>Where it can mislead.</b> (a) Confounding: coffee and samosas sell together at 4 p.m. because both suit a break, so moving one next to the other may change nothing. (b) Promotion and season effects: a temporary discount, a festival or a supply shortage can create a rule that does not hold in a normal month. (c) Volume: a high-lift rule with three baskets a month is not worth shelf space.</p>`,
+          q: "A supermarket has two years of billing data from 40 stores and wants association rules to guide shelf placement and combo offers. Explain how to prepare transactions, mine and filter rules, choose actions, and identify two ways the results could mislead the buyer.",
+          a: `<h4>Exam-ready answer</h4><p>Association rules identify products that often appear in the same transactions. The supermarket can use them to suggest placements or offers, then test whether those actions help.</p><h4>1. Prepare transactions</h4><ol><li>Make one basket for each bill.</li><li>Standardise product IDs, remove returns and voided lines, and combine duplicate scans.</li><li>Keep store and date information. Mark promotion periods so the team can check whether discounts explain a pattern.</li></ol><h4>2. Mine and filter rules</h4><ol><li>Choose a minimum support to exclude patterns that occur too rarely to be useful.</li><li>Use Apriori or FP-Growth to find frequent itemsets. Apriori uses downward closure: if a set misses the support minimum, its larger supersets will also miss it.</li><li>Form rules from frequent sets and keep those that meet a minimum confidence.</li><li>Review support, confidence and lift together. Prefer rules with lift above 1 that recur across months and stores. A high confidence can add little if the consequent is already bought by almost everyone.</li></ol><h4>3. Validate and act</h4><p>Check the rule on recent months not used to find it. Test a small number of placements or combo offers against a control group. Measure basket value and units sold, then keep only changes that improve the chosen outcome.</p><h4>Ways results can mislead</h4><ol><li><b>Confounding:</b> coffee and samosas may sell together at 4 p.m. because customers take a break. Moving one near the other may not change sales.</li><li><b>Time effects:</b> a discount, festival or shortage may create a pattern that does not hold in an ordinary month.</li><li><b>Low volume:</b> a high-lift rule based on three baskets a month may not justify shelf space.</li></ol>`,
           marks: 14,
           diff: "hard"
         }
@@ -138,44 +124,31 @@ To test the manager's claim you need an experiment or a price-change study, not 
       blocks: [
         {
           type: "definition",
-          text: "Classification assigns an input to one of a fixed set of categories after learning from labelled examples."
+          text: "Classification learns from labelled examples to assign each new input to a known category."
         },
         {
           type: "text",
-          html: `<p>Classification is the supervised task of putting an input into one of a fixed set of classes. The function that does the mapping is a <b>classifier</b>. Training needs examples with their correct labels, because the whole point is to learn the boundary between the known classes.</p>
-<p>An observation becomes a <b>feature vector</b>. Features can be categorical (blood group), ordinal (small, medium, large), integer (word count in an email) or real valued (blood pressure). The choice of features matters a great deal, because a weak representation can hide the pattern whatever the algorithm.</p>
-<p><b>Two shapes.</b> Binary classification has two classes, such as spam and not spam. Multiclass classification has several, such as the genre of a film. Many algorithms are designed for two classes, so a multiclass problem is often built from several binary classifiers.</p>
-<p><b>How a project runs.</b> Collect labelled examples, split them into training and test sets, train the classifier, and score it on rows it has not seen. Then inspect the errors by class, because an average can hide a class that is always wrong. In production, monitor the input distribution, since a model trained on last year's data can quietly stop matching this year's.</p>
-<p>A classifier can only output a class it was trained on. That closed set is a strength when the classes are stable. It becomes a weakness when a new category appears, which is why rejection thresholds and an "other" class are common in practice.</p>`
+          html: `<h4>What classification predicts</h4><p>Classification is supervised learning that assigns an input to one of a set of classes. The trained mapping is a <b>classifier</b>. It learns from examples that already have correct labels.</p><p>Each example is represented by a <b>feature vector</b>, a list of measured properties. Features may be categories such as blood group, ordered values such as small/medium/large, counts such as email word count, or measurements such as blood pressure. Useful features help the model distinguish the classes.</p><h4>Binary and multiclass tasks</h4><p>Binary classification has two possible classes, such as spam and not spam. Multiclass classification has more than two, such as film genres. Some methods handle several classes directly; others combine binary classifiers.</p><h4>Training and checking</h4><ol><li>Collect examples with labels.</li><li>Split examples into training and test sets.</li><li>Train the classifier on the training set.</li><li>Measure performance on the held-out test set, and inspect errors for each class.</li><li>After deployment, monitor the inputs. New machines or changing data can make future cases differ from the training examples.</li></ol><p>A classifier normally predicts only classes in its training labels. This is a <b>closed set</b>. If a new class appears, a rejection threshold can send uncertain cases for review. An "other" class needs representative examples to be useful.</p>`
         },
         {
           type: "example",
-          html: `<p>A streaming catalogue wants to tag each film with a genre from its plot summary. The training rows are plots already labelled by editors, and the features are the words and phrases in those plots. A multiclass classifier learns that "spaceship", "crew" and "orbit" pull toward science fiction, while "wedding", "vows" and "reception" pull toward romance.</p>
-<p>For a new film the model returns one of the known genres with a score. If the plot is a documentary about a wedding on a spaceship, the model still has to choose one label, even when neither genre fits well. That is the closed-set limit, and it is why a confidence threshold or a human review step belongs in the pipeline.</p>`
+          html: `<h4>Illustrative example: film genres</h4><p>A streaming catalogue trains on plot summaries labelled with genres by editors. Words and phrases become features. A multiclass model may learn that "spaceship", "crew" and "orbit" are associated with science fiction, while "wedding", "vows" and "reception" are associated with romance.</p><p>For a new film, it returns one of the known genres and a score. A documentary about a wedding on a spaceship may fit neither class well, but a closed-set model still chooses a known label. A confidence threshold or human review can catch uncertain cases.</p>`
         },
         {
           type: "tip",
-          html: `<p>Name the task and the label set first, because "classification" alone earns little. State whether it is binary or multiclass, then name the features and the source of the labels. For 5 or 7 marks, draw the flow from labelled examples to training to a held-out test to prediction. Use one named example throughout, and mention the closed-set limit when the question asks about a new or unknown category.</p>`
+          html: `<h4>Exam plan</h4><ol><li>Define classification and identify the possible class labels.</li><li>Say whether the task is binary or multiclass.</li><li>Give an example, its features and where its labels come from.</li><li>For a longer answer, show the flow: labelled examples, training, held-out test, prediction.</li></ol><p>If the question concerns an unknown category, explain the closed-set limit and describe rejection or human review.</p>`
         }
       ],
       practice: [
         {
-          q: "A defect classifier scores 97% at the factory where it was trained and 61% at a second factory with newer machines. Name the problem and give one change in data collection that would have exposed it before deployment.",
-          a: `This is distribution shift, also called dataset shift. The second factory's images come from different machines, lighting and defect patterns, so the training sample no longer matches the deployment data. The 97% figure was measured on rows from the same distribution, which is why it looked safe.
-Hold out a sample from every site, or test on the second factory before release, and report the score per site. Stratified sampling with a site column in the test set would have shown the gap.
-The next step is to label images from both factories and retrain, then keep the per-site score in the release check.`,
+          q: "A defect classifier scores 97% at the factory where it was trained but 61% at a second factory with newer machines. Name the problem and give one data-collection change that could have revealed it before deployment.",
+          a: `<h4>Answer</h4><p>This is <b>distribution shift</b>: the second factory's images differ from the training images, perhaps because of different machines, lighting or defect patterns.</p><p>Collect and label images from both factories, then keep a sample from each site in the test set. Report each site's score separately. That test would have shown that the model's strong score did not transfer to the second factory.</p>`,
           marks: 3,
           diff: "easy"
         },
         {
-          q: "A classifier is trained to label machine parts as good, cracked or warped. A new fault type, rusted, appears in production. Explain what the classifier will output and describe two design choices that reduce the damage.",
-          a: `The classifier assigns one of the three known classes, because its output layer and training labels define a closed set. A rusted part will be forced into good, cracked or warped, often with a confident score, so the error is silent.
-Two design choices help.
-<ul>
-<li><b>A rejection option.</b> The model abstains when its confidence is below a threshold and sends the part to a human. This catches inputs that fit none of the classes well.</li>
-<li><b>Collect and label the new fault.</b> Add a fourth class, retrain, and monitor for inputs that differ from the training distribution. An "other" class helps only when it has examples, because an empty class teaches the model nothing.</li>
-</ul>
-Report per-class recall as well, so a new failure shows up instead of being averaged away.`,
+          q: "A classifier labels machine parts as good, cracked or warped. Rusted parts begin to appear. Explain what the classifier will predict and give two design choices that could reduce harm.",
+          a: `<h4>Likely prediction</h4><p>The model was trained on three labels, so it will assign a rusted part to good, cracked or warped. It may do so with high confidence even though none fits.</p><h4>Two safeguards</h4><ol><li><b>Allow rejection.</b> Send low-confidence predictions to a person for inspection.</li><li><b>Add labelled rust examples.</b> Create a rusted class, retrain and monitor performance. An "other" class only helps when it contains examples that represent other faults.</li></ol><p>Track recall for each class so poor detection of a fault is not hidden by an overall average.</p>`,
           marks: 5,
           diff: "medium"
         }
@@ -191,20 +164,17 @@ Report per-class recall as well, so a new failure shows up instead of being aver
       blocks: [
         {
           type: "definition",
-          text: "Regression predicts a numeric output, such as a price or temperature, from one or more input features."
+          text: "Regression uses input features to predict a numeric value, such as a price or temperature."
         },
         {
           type: "text",
-          html: `<p>Regression estimates the relationship between a dependent variable and one or more independent variables. In machine learning terms, it predicts a number: a price, a temperature, a delivery time or a demand count.</p>
-<p>The common form is linear regression, <code>y = a + bx</code>. Ordinary least squares chooses the line that minimises the sum of squared differences between the observed values and the line. With several inputs the line becomes a hyperplane, and each coefficient says how much the prediction moves when that feature rises by one unit while the others stay fixed.</p>
-<p>The coefficients carry the interpretation. Suppose the target is price in thousands, and age has a coefficient of -8.2. One extra year then lowers the predicted price by about 8.2 thousand, holding the other features constant. A model with a good fit on training rows can still fail on new rows, so the error that matters is measured on held-out data.</p>
-<p><b>Regression and classification</b> are both supervised, and the output separates them.</p>
+          html: `<h4>What regression predicts</h4><p>Regression estimates a relationship between input features and a numeric target. The target, also called the dependent variable, might be price, temperature, delivery time or demand. The inputs are the independent variables.</p><h4>Linear regression</h4><p>A simple linear model is <code>y = a + bx</code>. Here, <code>y</code> is the predicted value, <code>x</code> is an input feature, <code>a</code> is the intercept and <code>b</code> is the slope. Ordinary least squares chooses the line that minimises the sum of squared differences between observed values and predictions.</p><p>With several inputs, the model uses one coefficient per input. Each coefficient describes the predicted change when its feature rises by one unit and the other features stay fixed. For example, if price is measured in thousands and age has coefficient -8.2, one extra year predicts a price about 8.2 thousand lower, holding other features fixed.</p><p>Check error on held-out data to see how well the model predicts new cases.</p><h4>Regression and classification</h4><p>Both are supervised learning. Their outputs differ.</p>
 <table class="tbl">
 <tr><th>Task</th><th>Output</th><th>Example</th><th>Usual error measure</th></tr>
 <tr><td>Regression</td><td>A number</td><td>Price of 4,50,000 rupees</td><td>Average error in the target units</td></tr>
 <tr><td>Classification</td><td>A class label</td><td>Spam or not spam</td><td>Accuracy, precision, recall</td></tr>
 </table>
-<p><b>Prediction is not proof of cause.</b> A fitted relationship describes one dataset. Using it for a new period or a new city needs a reason to believe the relationship travels. Using it to claim cause needs more than a regression, because an omitted variable can drive both the input and the output.</p>`
+<h4>Interpret results with care</h4><p>A fitted relationship describes the data used to estimate it. It may not hold in a new period or city. A regression by itself also does not prove cause; an unmeasured factor could affect both an input and the target.</p>`
         },
         {
           type: "code",
@@ -230,29 +200,23 @@ print("average error:", round(mean_absolute_error(y_test, pred), 2))`
         },
         {
           type: "example",
-          html: `<p>Five used laptops of the same model sold at ages 1 to 5 years for 61, 51, 45, 35 and 28 thousand rupees. A least-squares fit gives <code>price = 68.6 - 8.2 &times; age</code>. The fitted values are 60.4, 52.2, 44.0, 35.8 and 27.6, which sit close to the actual prices, and the fit explains about 99.5% of the variation in this small sample.</p>
-<p>Read the slope as well as the fit. Each extra year is associated with about 8.2 thousand rupees less, so the model predicts 19.4 thousand at age 6. That is an extrapolation, because no six-year-old laptop appears in the data, so treat it as an estimate and check it against newer sales.</p>`
+          html: `<h4>Illustrative example: laptop prices</h4><p>Five used laptops of the same model sold at ages 1 to 5 years for 61, 51, 45, 35 and 28 thousand rupees. A least-squares fit gives <code>price = 68.6 - 8.2 &times; age</code>. The fitted values are 60.4, 52.2, 44.0, 35.8 and 27.6.</p><p>The fit explains about 99.5% of variation in this small sample. The slope says each additional year is associated with a predicted decrease of about 8.2 thousand rupees. At age 6, the model predicts 19.4 thousand. This is an illustrative extrapolation beyond the observed ages, so check it against newer sales.</p>`
         },
         {
           type: "tip",
-          html: `<p>Write the equation and define the slope before the example, because the interpretation earns marks that a bare formula does not. For 5 marks, add one application and the supervised justification. For 8 marks comparing regression with classification, use a table with output, example and error measure. End with the caution that a fit on one dataset does not prove cause or guarantee a new context.</p>`
+          html: `<h4>Exam plan</h4><ol><li>Define regression and identify the numeric target.</li><li>State that it is supervised because training examples include target values.</li><li>Write the equation if asked, then define every symbol and interpret the slope.</li><li>For a comparison, contrast the outputs, give examples and name suitable error measures.</li><li>For applications, explain what number the model predicts.</li></ol><p>Conclude that a fitted relationship does not by itself prove cause or guarantee accurate predictions in a new setting.</p>`
         }
       ],
       practice: [
         {
-          q: "A regression model for delivery time uses distance, weather and city. The city column holds text such as Kochi and Kozhikode. Explain why the raw column cannot go into the model and how you would encode it.",
-          a: `Regression computes a weighted sum, so every input must be numeric. A text column has no order or distance, and assigning codes such as 1 and 2 would tell the model that Kozhikode's effect is twice Kochi's, which has no meaning.
-Use one-hot encoding: make one binary column per city, with 1 for the row's city and 0 for the rest. Drop one column to avoid redundant information, since the dropped city is implied when all the others are 0. The model then learns a separate intercept shift for each city.
-If a city has too few rows, group it as "other" so the column stays stable. The target, delivery time, remains numeric, which is what makes this a regression problem.`,
+          q: "A delivery-time regression uses distance, weather and a city column containing names such as Kochi and Kozhikode. Why should the raw text not be used as a numeric input, and how can the city be encoded?",
+          a: `<h4>Answer</h4><p>The model needs numeric features. City names have no natural numerical order, so codes such as 1 and 2 would create a false meaning.</p><p>Use one-hot encoding: create a binary column for each city, with 1 for the matching city and 0 otherwise. One column can be dropped because its city is implied when the remaining columns are all zero. If some cities have very few examples, group them as "other". Delivery time remains a numeric target, so this is regression.</p>`,
           marks: 3,
           diff: "easy"
         },
         {
-          q: "A team reports that its delivery-time regression has a small average error on the training orders but a much larger error on orders placed in the last month. Give three likely causes and one check for each.",
-          a: `<p><b>1. Overfitting.</b> The model has memorised training noise. Check by comparing training and held-out error as model complexity rises, and use cross-validation instead of one split.</p>
-<p><b>2. Distribution shift.</b> Last month's orders differ from the training period, perhaps through new delivery areas, festival demand or longer routes. Check feature distributions month by month and score the model per segment.</p>
-<p><b>3. Leakage.</b> A feature such as delivery completion time or the final route is only known after the delivery. Check the timestamp of every feature and rebuild each row as it looked at order time.</p>
-<p>A seasonal effect that the features do not capture can cause the same gap. The first fix is an honest time-based split: train on older orders and test on the newest, because a random split mixes the future into training and hides the problem.</p>`,
+          q: "A delivery-time regression has low average error on training orders but much higher error on orders from the last month. Give three possible causes and a check for each.",
+          a: `<h4>Possible causes and checks</h4><ol><li><b>Overfitting:</b> the model learned noise in its training examples. Compare training and held-out errors as model complexity changes, and use cross-validation.</li><li><b>Distribution shift:</b> recent orders may involve new areas, festival demand or longer routes. Compare feature distributions by month and score each segment.</li><li><b>Data leakage:</b> a feature such as completion time may only be known after delivery. Check when each feature becomes available and rebuild each training row using only information available when the order was placed.</li></ol><p>Use a time-based test: train on older orders and test on the newest. A random split could mix future patterns into training and hide a seasonal change.</p>`,
           marks: 5,
           diff: "medium"
         }
@@ -270,15 +234,11 @@ If a city has too few rows, group it as "other" so the column stays stable. The 
       blocks: [
         {
           type: "definition",
-          text: "Supervised, unsupervised and reinforcement learning differ in their feedback: labels, no labels, or rewards from actions."
+          text: "These learning types differ by feedback: labelled answers, unlabelled data, or rewards after actions."
         },
         {
           type: "text",
-          html: `<p>The three main paradigms differ in what the learner receives. Supervised learning gets input-output pairs, so it learns a mapping from features to answers. Unsupervised learning gets inputs only, so it looks for structure. Reinforcement learning gets no labelled pairs: an agent acts, the environment changes, and a reward comes back.</p>
-<p><b>Supervised.</b> The labels are the teacher. Classification predicts a class and regression predicts a number. The cost is labelling, because a human has to supply the correct answer for enough examples.</p>
-<p><b>Unsupervised.</b> There is no correct answer to compare against, so the algorithm finds clusters, low-dimensional structure or association rules. Evaluation is harder, because a cluster is useful only if it means something to the person using it.</p>
-<p><b>Reinforcement.</b> The agent observes a state, chooses an action, and receives a reward or penalty. It has to balance exploration, which tries new actions, against exploitation, which uses what it already knows. The correct action is never handed over, and the reward can arrive long after the action that earned it.</p>
-<p><b>Semi-supervised</b> sits between supervised and unsupervised. A small labelled set fixes the meaning of the classes, and a much larger unlabelled set shows the shape of the data. It suits problems where labelling is expensive but raw data is plentiful.</p>
+          html: `<h4>How the feedback differs</h4><p>The learning type depends on what feedback the algorithm receives. Supervised learning uses input-output examples. Unsupervised learning uses inputs without answer labels. Reinforcement learning learns from rewards that follow an agent's actions.</p><h4>Supervised learning</h4><p>Labels provide the correct answers during training. The model learns to predict a class through classification or a number through regression. Preparing enough labelled examples can take time and human effort.</p><h4>Unsupervised learning</h4><p>The examples have no target labels. The algorithm searches for structure, such as clusters, lower-dimensional representations or association rules. A person must judge whether the discovered structure is useful for the task.</p><h4>Reinforcement learning</h4><p>An agent observes a state, chooses an action and receives a reward or penalty from the environment. <b>Exploration</b> means trying actions to learn what happens. <b>Exploitation</b> means choosing actions based on what the agent has learned. Rewards may arrive well after the actions that caused them.</p><h4>Semi-supervised learning</h4><p>This approach combines a small labelled set with a larger unlabelled set. Labels identify the classes; unlabelled examples provide more information about the data. It is useful when raw examples are plentiful but labelling is costly.</p>
 <table class="tbl">
 <tr><th>Basis</th><th>Supervised</th><th>Unsupervised</th><th>Reinforcement</th></tr>
 <tr><td>Training signal</td><td>Labelled input-output pairs</td><td>Unlabelled inputs</td><td>Rewards from actions</td></tr>
@@ -289,42 +249,37 @@ If a city has too few rows, group it as "other" so the column stays stable. The 
         },
         {
           type: "example",
-          html: `<p>Four module scenarios sort cleanly once you ask what feedback is available.</p>
+          html: `<h4>Illustrative examples</h4><p>Identify the feedback first, then choose the learning type.</p>
 <ul>
 <li><b>Estimating the selling price of a used laptop.</b> Past sales carry a known price, and the output is a number, so this is supervised regression.</li>
 <li><b>Grouping customers based on purchase behaviour.</b> There are no group labels to learn from, so this is unsupervised clustering.</li>
 <li><b>Predicting the genre of a movie from its plot.</b> Editors have already labelled plots with genres, and the output is a class, so this is supervised classification.</li>
 <li><b>Grouping people in a social network.</b> Connections and interests exist, but no group is given, so this is unsupervised clustering.</li>
 </ul>
-<p>The question to ask first is simple: does each training row come with the right answer, and is that answer a number or a class? If there is no answer at all, the task is unsupervised. If the feedback arrives as a reward after an action, it is reinforcement learning.</p>`
+<p>For a new problem, check whether each example has a correct answer. If so, ask whether the answer is a number or class. Without answers, look for unsupervised learning. If feedback comes as a reward after an action, use the reinforcement-learning category.</p>`
         },
         {
           type: "tip",
-          html: `<p>Answer with the feedback signal first, because that is the distinction the examiner is testing. Name the paradigm and the task, then justify with the presence of labels, the absence of labels, or a reward. For 7 or 8 marks comparing paradigms, draw the table and add one example per row. Keep semi-supervised as a fourth line, and say plainly that it uses a small labelled set with a large unlabelled set.</p>`
+          html: `<h4>Exam plan</h4><ol><li>State the feedback each method receives.</li><li>Explain what it learns to do.</li><li>Give a matching task and example.</li><li>For a comparison, use a table with feedback, goal, task and example.</li></ol><p>If semi-supervised learning is relevant, explain that it combines a small labelled set with a larger unlabelled set.</p>`
         }
       ],
       practice: [
         {
-          q: "A support team has 400,000 old tickets and can afford to label 3,000 of them by hand. Describe a semi-supervised approach, how you would use the unlabelled tickets, and one risk.",
-          a: `<p>Semi-supervised learning sits between supervised and unsupervised. A small labelled set fixes the meaning of the classes, and a large unlabelled set shows the shape of the data.</p>
-<p><b>Steps.</b></p>
-<ol>
+          q: "A support team has 400,000 old tickets and can label 3,000 by hand. Describe a semi-supervised method, explain how it uses the unlabelled tickets, and give one risk.",
+          a: `<h4>Approach</h4><p>Semi-supervised learning combines a small labelled set with a larger unlabelled set.</p><ol>
 <li>Define a small label set, such as billing, login, refund and other, and label 3,000 tickets with a written guide. Double-check a sample so the labels are consistent.</li>
 <li>Represent each ticket as TF-IDF or an embedding, which turns the text into numeric features.</li>
 <li>Train a classifier on the labelled set, then predict labels for the unlabelled tickets.</li>
 <li>Add the most confident predictions as pseudo-labels and retrain. A method such as self-training repeats this in rounds.</li>
 <li>Keep a held-out labelled set untouched, and check per-class precision and recall after every round.</li>
 </ol>
-<p>The unlabelled tickets help because they show the vocabulary and the clusters that 3,000 labels may miss, so the decision boundary follows the real data instead of the small sample.</p>
-<p><b>Risk: confirmation bias.</b> A wrong pseudo-label can reinforce itself, especially for a rare class. Keep a confidence threshold, cap the pseudo-labelled set, and audit samples by hand. Also watch for drift, since old tickets may describe products that no longer exist.</p>`,
+<p>The unlabelled tickets add examples of vocabulary and data patterns that 3,000 labelled tickets may not cover. This can help the classifier fit the broader set of tickets.</p><h4>Risk: confirmation bias</h4><p>A wrong pseudo-label may be added to training and reinforced in later rounds, especially for a rare class. Use a confidence threshold, limit pseudo-labels and audit samples by hand. Old tickets may also describe products that no longer exist.</p>`,
           marks: 7,
           diff: "medium"
         },
         {
-          q: "A warehouse robot receives a reward only when a full order is packed correctly, several minutes after the actions that mattered. Explain why this delayed reward makes learning harder, and name one way to soften the problem.",
-          a: `In reinforcement learning the agent must work out which earlier actions led to the final reward. With one reward at the end of a long episode, many actions sit between cause and feedback, so the credit is spread over the whole sequence. The agent may repeat a good policy without knowing which step was good, or change a harmless step and see no difference. This is the credit assignment problem.
-The reward is also sparse. Most episodes give little signal, so random exploration rarely reaches a good outcome, and learning takes many attempts.
-One way to soften it is to add intermediate rewards for safe sub-goals such as pick, move, scan and pack, while keeping the final reward as the real objective. Intermediate rewards like this guide exploration, but they have to be designed with care because the agent will optimise whatever you measure. Learning from demonstrations can also start the agent near a workable policy.`,
+          q: "A warehouse robot is rewarded only when it packs a full order correctly, several minutes after the important actions. Explain why this delay makes learning harder and name one way to help.",
+          a: `<h4>Why delay is difficult</h4><p>The agent must connect the final reward to the earlier actions that helped produce it. When many actions occur before feedback, it is hard to assign credit to the useful steps. The reward is also sparse: most attempts provide little feedback, so useful learning may take many trials.</p><h4>One way to help</h4><p>Add intermediate rewards for safe sub-goals such as picking, moving, scanning and packing, while retaining the final reward for completing the order. These rewards can guide exploration, but the team must choose them carefully because the agent learns to maximise the rewards it receives. Demonstrations can also give it examples of workable actions.</p>`,
           marks: 5,
           diff: "medium"
         }
@@ -341,25 +296,21 @@ One way to soften it is to add intermediate rewards for safe sub-goals such as p
       blocks: [
         {
           type: "definition",
-          text: "Principal component analysis replaces many correlated features with a few new axes that keep most of the variation."
+          text: "PCA combines related features into fewer new axes while retaining as much variation as possible."
         },
         {
           type: "text",
-          html: `<p>Dimensionality is the number of features used to describe each row. A patient record with 100 measurements is a 100-dimensional dataset. More features can improve a model, but they also add computation, storage and noise, and some of them repeat information that another column already carries.</p>
-<p><b>Why reduce.</b> Fewer features make a dataset easier to explore and faster to train. Redundant columns can be collapsed, visualisation becomes possible in two or three dimensions, and dropping noisy directions can reduce overfitting. The trade is direct: a reduction that removes signal will hurt accuracy, so the number of components has to be checked against the task.</p>
-<p><b>What PCA does.</b> Principal component analysis is a linear method. It builds new axes as linear combinations of the original features. The first component, PC1, is the direction along which the projected data has the largest variance. PC2 is the direction with the next largest variance that is orthogonal to PC1, and each later component follows the same rule. The components are the eigenvectors of the covariance matrix, and each eigenvalue gives the variance along its eigenvector.</p>
-<p><b>The procedure, in order.</b></p>
-<ol>
-<li>Collect the data and choose the numeric features.</li>
-<li>Standardise each feature to mean 0 and standard deviation 1, so units do not decide the result.</li>
-<li>Compute the covariance matrix, which is p &times; p for p features.</li>
-<li>Find its eigenvalues and eigenvectors.</li>
-<li>Sort the eigenvalues from largest to smallest, keeping each eigenvector with its eigenvalue.</li>
-<li>Keep the top k eigenvectors, where k is the number of components you want.</li>
-<li>Project the standardised data onto those eigenvectors.</li>
+          html: `<h4>Why reduce the number of features?</h4><p><b>Dimensionality</b> is the number of features used to describe each example. A patient record with 100 measurements has 100 dimensions. More features can add computation, storage and noise. Some may repeat information already present in other columns.</p><p>Fewer features can make data easier to explore and models faster to train. A two- or three-dimensional representation is also easier to plot. Removing useful signal can hurt predictions, so check the reduced data against the task.</p><h4>What PCA does</h4><p><b>Principal component analysis (PCA)</b> is a linear method that creates new axes from combinations of the original features. The first principal component, PC1, points in the direction with the largest variance in the projected data. PC2 captures the next largest variance while staying perpendicular to PC1.</p><p>Later components follow the same rule. The component directions are eigenvectors of the covariance matrix; each eigenvalue gives the variance along its matching direction.</p><h4>PCA procedure</h4><ol>
+<li>Choose the numeric features to analyse.</li>
+<li>Standardise each feature to mean 0 and standard deviation 1 when their units or scales differ.</li>
+<li>Compute the covariance matrix. For <code>p</code> features, it has <code>p &times; p</code> entries.</li>
+<li>Find the matrix's eigenvalues and eigenvectors. Each eigenvector is a component direction; its eigenvalue is the variance along that direction.</li>
+<li>Sort eigenvalues from largest to smallest, keeping each eigenvector paired with its value.</li>
+<li>Keep the first <code>k</code> eigenvectors, where <code>k</code> is the chosen number of components.</li>
+<li>Project the standardised data onto the retained directions.</li>
 <li>Use the projected values as the reduced dataset.</li>
 </ol>
-<p>Two practical notes. Scikit-learn's PCA centres the data but does not scale it, so <code>StandardScaler</code> has to run first when the units differ. The choice of k can follow a variance target or a held-out score, because the components with the most variance are not always the ones a classifier needs.</p>`
+<h4>Practical choices</h4><p>Scikit-learn's PCA centres data but does not scale it. If feature units differ, apply <code>StandardScaler</code> first. Choose <code>k</code> using a variance target or a held-out task score. The directions with most variance do not always help a classifier most.</p>`
         },
         {
           type: "diagram",
@@ -367,8 +318,7 @@ One way to soften it is to add intermediate rewards for safe sub-goals such as p
         },
         {
           type: "example",
-          html: `<p>Take six products scored on two features, price and quality: (1,1), (2,2), (3,2), (4,4), (5,5) and (6,5). Standardise both columns, then take the covariance matrix. Its eigenvectors point along the diagonal of the cloud, because the two features rise together.</p>
-<p>The eigenvalues are about 1.96 and 0.04, so PC1 holds about 98% of the total variance. One score per product now carries almost all of the information, and PC2 is mostly the small up-and-down wobble around the diagonal. The dataset has gone from two dimensions to one with little loss.</p>`
+          html: `<h4>Illustrative example: product scores</h4><p>Consider six products with price and quality scores: (1,1), (2,2), (3,2), (4,4), (5,5) and (6,5). Standardise the two columns and calculate their covariance matrix.</p><p>Since the features tend to rise together, the eigenvectors point along and across the diagonal of the data cloud. The eigenvalues are about 1.96 and 0.04. PC1 therefore holds about 98% of the total variance. Keeping one score per product reduces the data from two dimensions to one, with little of the measured variation lost.</p>`
         },
         {
           type: "code",
@@ -388,32 +338,25 @@ print("variance kept:", round(pca.explained_variance_ratio_.sum(), 3))`
         },
         {
           type: "tip",
-          html: `<p>Write the steps in order and number them, because PCA answers are marked on procedure. Put standardisation before the covariance matrix and explain why, then name eigenvectors as directions and eigenvalues as variance. For 8 or 9 marks, add the price-and-quality example and say how many components you keep. If the question asks for significance, list four reasons with one line each, and finish with the loss from dropping components.</p>`
+          html: `<h4>Exam plan</h4><ol><li>Explain why reducing features can help and note the risk of losing useful information.</li><li>Describe PCA as a method that creates new directions from the original features.</li><li>Write the computation steps in order. Explain standardisation when scales differ.</li><li>Define eigenvectors as component directions and eigenvalues as variance along those directions.</li><li>Use an example or explain how the retained components are chosen, if asked.</li></ol>`
         }
       ],
       practice: [
         {
-          q: "PCA is a linear method. Describe one dataset where it would fail to give a useful one-dimensional summary, and explain why.",
-          a: `Take points arranged on a circle in two dimensions. The variance is the same in every direction, so no single line captures more spread than another. PC1 and PC2 each explain about half, and projecting onto PC1 folds opposite sides of the circle together.
-A linear projection cannot unroll the circle, because the useful coordinate is the angle, which is a nonlinear function of x and y. The same happens with a Swiss roll or another curved manifold.
-A nonlinear method such as kernel PCA, t-SNE or an autoencoder is needed when the low-dimensional structure is curved. Plain PCA will still describe the spread, but that summary will not separate the points.`,
+          q: "PCA is linear. Describe a dataset for which PCA would not provide a useful one-dimensional summary, and explain why.",
+          a: `<h4>Illustrative example: points on a circle</h4><p>Imagine points arranged around a circle in two dimensions. Their spread is similar in every direction, so no single line captures the circular pattern. Projecting onto one principal component places points from opposite sides near the same position.</p><p>A linear projection cannot straighten this curved pattern into a useful one-dimensional representation. A nonlinear method may be more suitable when the structure follows a curve.</p>`,
           marks: 3,
           diff: "easy"
         },
         {
-          q: "Explain why PCA usually needs standardised features. What happens if you skip it when one column is annual income in rupees and another is years of education?",
-          a: `PCA picks directions that maximise variance. Variance depends on the units, so a column measured in rupees has a numerical spread in the thousands while years of education spread over a handful of values. Without scaling, the first principal component points almost entirely along income, because that one feature dominates the variance. The analysis then reports what is already obvious, and the education signal is buried.
-Standardisation replaces each value with <code>(x - mean) / standard deviation</code>, so every feature has mean 0 and variance 1 and no column wins on units alone. The covariance matrix then behaves like a correlation matrix.
-In scikit-learn, PCA centres the data but does not scale it, so <code>StandardScaler</code> must run first. Fit the scaler on the training data and apply the same means and standard deviations to the test data, otherwise information leaks across the split.`,
+          q: "Why does PCA often require standardised features? Explain what may happen if you use annual income in rupees and years of education without scaling.",
+          a: `<h4>Why scale?</h4><p>PCA finds directions with the greatest variance, and variance depends on measurement units. Income measured in rupees may have much larger numerical values than years of education.</p><p>Without scaling, income can dominate the first component because of its units. The component may mostly reflect income and give little attention to education.</p><h4>Standardisation</h4><p>For each value, calculate <code>(x - mean) / standard deviation</code>. This gives each feature mean 0 and variance 1. Scikit-learn's PCA centres data but does not scale it, so apply <code>StandardScaler</code> first when scales differ. Fit the scaler on training data, then use those same training means and standard deviations on test data.</p>`,
           marks: 5,
           diff: "medium"
         },
         {
-          q: "A team keeps the first two of twelve principal components, and its classifier's recall falls sharply on the test set. Explain what was lost, and describe two principled ways to choose the number of components instead of picking two.",
-          a: `<p>PCA keeps the directions with the largest variance, and it never looks at the labels. A direction can carry little variance and still separate the classes, so dropping components 3 to 12 can remove exactly the signal the classifier needs. The two retained components summarise the bulk of the spread, which may be driven by a nuisance factor such as overall size or brightness. The class difference can sit in a smaller direction. Variance retained is not the same as information retained for the task.</p>
-<p><b>Way 1: a variance target.</b> Plot the explained variance ratio, keep enough components to reach a target such as 90 or 95 percent, and report how many that takes. In scikit-learn this is <code>PCA(n_components=0.95, svd_solver="full")</code>.</p>
-<p><b>Way 2: task-based validation.</b> Put PCA inside cross-validation, try k = 2, 5, 10 and so on, and choose the k with the best held-out recall or F1. This tests the components that matter to the classifier instead of the components that carry the most variance.</p>
-<p>Report both the variance kept and the downstream score, because either number alone can hide this failure.</p>`,
+          q: "A team keeps two of twelve principal components, and test-set recall drops sharply. Explain what information may have been lost and give two principled ways to choose the number of components.",
+          a: `<h4>What may have been lost?</h4><p>PCA ranks directions by variance without using class labels. A low-variance direction can still distinguish classes. Dropping components 3 to 12 may remove that signal, while the first two capture variation caused by something less useful, such as size or brightness.</p><h4>Choose components using evidence</h4><ol><li><b>Variance target:</b> inspect explained variance and retain enough components to reach a chosen target, such as 90 or 95 percent. The corresponding scikit-learn setting is <code>PCA(n_components=0.95, svd_solver="full")</code>.</li><li><b>Task-based validation:</b> include PCA in cross-validation, test several values of <code>k</code>, and choose the one with the best held-out recall or F1.</li></ol><p>Report both retained variance and the classifier's score. Each describes a different part of the result.</p>`,
           marks: 7,
           diff: "hard"
         }

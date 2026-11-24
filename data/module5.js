@@ -16,12 +16,15 @@ window.ML_MODULES[5] = {
       blocks: [
         {
           type: "definition",
-          text: "Unsupervised learning finds structure in unlabelled data, and k-means splits points into k groups around the nearest mean."
+          text: "Unsupervised learning finds patterns in data with no answer labels, and k-means groups points around the nearest mean, called a centroid."
         },
         {
           type: "text",
-          html: `<p><b>No labels, so the data has to speak for itself.</b> A supervised model learns from a target column. An unsupervised model has no target, so it hunts for structure inside the feature matrix: groups of similar rows, fewer directions that carry the variance, dense regions, and rows that fit no pattern. Clustering is the part this module examines.</p>
-<p><b>What counts as a cluster depends on the method.</b> There is no single definition, which is why the family is large. The split worth remembering:</p>
+          html: `<h4>What unsupervised learning finds</h4>
+<p>A supervised model learns from examples that include a target, or answer, column. An unsupervised model has none, so it looks for patterns in the feature matrix, the table of input values.</p>
+<p>It may find groups, directions that explain variation, dense regions, or unusual rows. This module focuses on clustering.</p>
+<h4>What counts as a cluster</h4>
+<p><b>The method decides.</b> There is no single definition, so the family is large. The table shows the main models and one example of each.</p>
 <table class="tbl">
 <thead><tr><th>Cluster model</th><th>Idea</th><th>Example</th></tr></thead>
 <tbody>
@@ -31,11 +34,21 @@ window.ML_MODULES[5] = {
 <tr><td>Density</td><td>Clusters are connected regions of high point density.</td><td>DBSCAN, OPTICS</td></tr>
 <tr><td>Subspace</td><td>Clusters use only some of the features.</td><td>Biclustering</td></tr>
 </tbody></table>
-<p><b>The k-means loop.</b> Pick k. Place k centroids. Assign every point to the nearest centroid. Move each centroid to the mean of the points that chose it. Repeat until the assignments stop changing. One complete pass is an iteration or epoch.</p>
-<p><b>The objective is squared error.</b> K-means minimises the within-cluster sum of squares, also called inertia. Take every point's squared distance from its own centroid and add the lot: J = Σ ||x - μ||² over all points x assigned to centre μ. The mean is the point that minimises squared distance, which is why squared Euclidean distance sits inside the method.</p>
-<p><b>Why the loop stops.</b> Each pass either keeps the assignments or lowers J, so the sequence is finite and the algorithm ends. The endpoint can be a local minimum, and a different seed can reach a different one. K-means++ spaces the starting centres out to reduce that risk. Cost is O(n k d i) for n points, k clusters, d features and i iterations, which is why the method handles large tables.</p>
-<p><b>Choosing k.</b> The elbow plot puts inertia against k and looks for the bend where extra clusters stop buying much. Silhouette measures how much closer a point sits to its own cluster than to the next one, on a scale near -1 to 1. The gap statistic compares the result with a null reference, and Davies-Bouldin is lower when clusters are tight and well separated. The elbow is a visual judgement, so state a second criterion beside it.</p>
-<p><b>Where it breaks.</b> Inertia assumes convex, roughly equal, isotropic blobs, so two moons or a ring come out cut across the middle. Outliers pull the mean, because a mean has no resistance. Categorical columns have no useful mean. Clusters of very different size get split to equalise the error. Scale the features first, or a column measured in thousands will outvote a column measured in single digits.</p>`
+<h4>K-means, one pass at a time</h4>
+<ol><li>Choose k, the number of groups, and place k starting centroids.</li><li>Assign each point to its nearest centroid.</li><li>Recalculate each centroid as the coordinate-wise mean of its assigned points.</li><li>Repeat assignment and recalculation until assignments stop changing. One full pass is an iteration or epoch.</li></ol>
+<h4>What k-means minimises</h4>
+<p>K-means minimises within-cluster sum of squares, also called inertia. For each point x, subtract its cluster centroid μ and square the distance. Then add across all points: J = Σ ||x - μ||².</p>
+<p>Here x is a data point, μ is its assigned centroid, and J is the total squared error. The mean is the point that minimises squared distance, which is why the method uses squared Euclidean distance.</p>
+<h4>Stopping and starting points</h4>
+<p>Each pass keeps J the same or lowers it. There are only so many ways to assign the points, so the loop must stop. It often stops at a local minimum: a good answer, but not the best possible one.</p>
+<p>A different starting seed can reach a different local minimum. K-means++ spreads the starting centres apart to reduce that risk.</p>
+<p>The usual cost is O(n k d i). Here n is the number of points, k the number of clusters, d the number of features, and i the number of iterations. This cost makes k-means practical for large tables.</p>
+<h4>Choosing k</h4>
+<p>An elbow plot shows inertia for several values of k. Look for the bend where another cluster gives only a small reduction. Silhouette compares how close a point is to its own cluster with how close it is to the next one; scores range roughly from -1 to 1.</p>
+<p>The gap statistic compares the clustering with a random reference dataset. Davies-Bouldin scores are lower when clusters are compact and separated. The elbow needs visual judgement, so support it with another measure.</p>
+<h4>Limits to keep in mind</h4>
+<p>K-means works best for convex groups of roughly equal size and similar spread. It can cut across two moons or a ring, because those shapes do not fit that assumption. Outliers pull the mean, categorical columns have no useful mean, and very different group sizes may be split to reduce error.</p>
+<p>Scale features before clustering. Otherwise a feature measured in thousands can outweigh one measured in single digits, even when both matter.</p>`
         },
         {
           type: "code",
@@ -56,8 +69,8 @@ print(km.labels_)
         { type: "diagram", id: "kmeans-iter" },
         {
           type: "example",
-          html: `<p><b>Nov 2025, Q19(a), 8 marks.</b> Cluster the six points into two groups from C1 = (1,6) and C2 = (6,2), then report the membership and the updated centres after the first iteration. The points are D1(2,6), D2(3,8), D3(1,3), D4(5,4), D5(7,2) and D6(8,4).</p>
-<p><b>Formula.</b> d(P,C) = √[(x<sub>P</sub> - x<sub>C</sub>)² + (y<sub>P</sub> - y<sub>C</sub>)²].</p>
+          html: `<h4>Task from the Nov 2025 paper, Q19(a), 8 marks</h4><p>Cluster six points into two groups. Start with C1 = (1,6) and C2 = (6,2), then report memberships and updated centres after the first iteration. The points are D1(2,6), D2(3,8), D3(1,3), D4(5,4), D5(7,2) and D6(8,4).</p>
+<h4>Distance: meaning, formula, substitution</h4><p>Euclidean distance is the straight-line gap between two points. In d(P,C), P is a data point and C is a centroid; x and y are their two coordinates. Formula: d(P,C) = √[(x<sub>P</sub> - x<sub>C</sub>)² + (y<sub>P</sub> - y<sub>C</sub>)²].</p>
 <table class="tbl">
 <thead><tr><th>Point</th><th>d to C1 (1,6)</th><th>d to C2 (6,2)</th><th>Nearer</th><th>Cluster</th></tr></thead>
 <tbody>
@@ -68,47 +81,47 @@ print(km.labels_)
 <tr><td>D5 (7,2)</td><td>√(36 + 16) = 7.211</td><td>√(1 + 0) = 1.000</td><td>C2</td><td>2</td></tr>
 <tr><td>D6 (8,4)</td><td>√(49 + 4) = 7.280</td><td>√(4 + 4) = 2.828</td><td>C2</td><td>2</td></tr>
 </tbody></table>
-<p><b>Working for one row.</b> Take D2(3,8). To C1: (3-1)² + (8-6)² = 4 + 4 = 8, so d = 2.828. To C2: (3-6)² + (8-2)² = 9 + 36 = 45, so d = 6.708. D2 joins C1.</p>
-<p><b>Updated centres.</b> Cluster 1 holds D1, D2 and D3, so mean x = (2 + 3 + 1)/3 = 2 and mean y = (6 + 8 + 3)/3 = 17/3 = 5.67. Cluster 2 holds D4, D5 and D6, so mean x = (5 + 7 + 8)/3 = 20/3 = 6.67 and mean y = (4 + 2 + 4)/3 = 10/3 = 3.33.</p>
-<p><b>Answer.</b> After iteration 1: cluster 1 = {D1, D2, D3} with centre (2, 5.67), and cluster 2 = {D4, D5, D6} with centre (6.67, 3.33).</p>
-<p><b>Iteration 2 check.</b> The closest call is D4. From the new C1 it sits √(9 + 2.789) = 3.43 away, and from the new C2 it sits 1.79 away, a margin of 1.64. D3 is 2.85 against 5.68, a wider margin of 2.83. Every other point also keeps its cluster, so the memberships from iteration 1 are final.</p>`
+<h4>Substitute one point</h4><p>For D2(3,8), the distance to C1 is √[(3-1)² + (8-6)²] = √8 = 2.828. Its distance to C2 is √[(3-6)² + (8-2)²] = √45 = 6.708. Since 2.828 is smaller, D2 joins C1.</p>
+<h4>Recalculate both centroids</h4><p>Cluster 1 contains D1, D2 and D3. Its mean x is (2 + 3 + 1)/3 = 2, and its mean y is (6 + 8 + 3)/3 = 17/3 = 5.67.</p>
+<p>Cluster 2 contains D4, D5 and D6. Its mean x is (5 + 7 + 8)/3 = 20/3 = 6.67, and its mean y is (4 + 2 + 4)/3 = 10/3 = 3.33.</p>
+<h4>Result after iteration 1</h4><p>Cluster 1 is {D1, D2, D3} with centre (2, 5.67). Cluster 2 is {D4, D5, D6} with centre (6.67, 3.33).</p>
+<h4>Check iteration 2</h4><p>D4 is the closest call in iteration 2. It is √(9 + 2.778) = 3.43 from the new C1 and 1.79 from C2, a margin of 1.64, so it stays with C2.</p><p>D3 is 2.85 from C1 and 5.68 from C2, a margin of 2.83. The other points also keep their groups, so the assignments have settled.</p>`
         },
         {
           type: "tip",
-          html: `<p>Write the distance table before any conclusion, because the credit usually sits with the two distances per point, the assignment and the new centre, not only the final pair. Label "Iteration 1" and "Iteration 2" as separate blocks so the examiner can find each step. Keep centres as fractions while you work, such as 17/3, and give the decimal beside them. Draw the six points and both centroids when the question carries 8 marks; the diagram above is the shape to copy.</p>`
+          html: `<h4>Show the working clearly</h4><p>Start with a distance table. Show both distances for every point, its assignment, and the recalculated centre. A final pair of centres alone does not show how you got there.</p><p>Label each pass as iteration 1 or iteration 2. Keep exact fractions such as 17/3 in the working and add the decimal value. For an 8-mark question, draw the six points and both centroids.</p>`
         }
       ],
       practice: [
         {
-          q: "K-means minimises a sum of squared distances. Explain why feature scaling changes the clusters it finds.",
-          a: `<p>The objective adds squared gaps across all features, so a column with a wide numeric range takes a much larger share of the error. Distance is then dominated by that one column and the others barely affect the assignment.</p>
-<p>Income in rupees ranges over lakhs while age ranges over decades. Two customers who differ by 20,000 in income and 2 years in age look far apart, although the age gap may matter more to the business question. Dividing each column by its standard deviation, or rescaling it to 0 to 1, puts the features on one footing, and the partition can change.</p>
-<p>Scaling is therefore part of the model, not cosmetic pre-processing. Report the scaling used beside the result.</p>`,
+          q: "K-means minimises a sum of squared distances. Explain why putting features on different scales can change the groups it finds.",
+          a: `<h4>Why scale matters</h4><p>The objective adds squared gaps across the features. A column with a wide numeric range can contribute far more error, so distance is dominated by that column and other features have little effect on assignments.</p>
+<p>Income in rupees may range over lakhs, while age varies over decades. A difference of 20,000 in income can outweigh a difference of 2 years in age, regardless of their importance to the question.</p><p>Divide each column by its standard deviation or rescale it to 0 to 1. This makes feature scales more comparable and can change the partition.</p>
+<p>Scaling changes the model's distances, so it can change the final groups. State the scaling method with your result.</p>`,
           marks: 3,
           diff: "medium"
         },
         {
-          q: "You run k-means with k = 6 on data that really contains three groups. Describe the partition you are likely to get, and how you would detect that k is too large.",
-          a: `<p>K-means must place six centroids, so it splits the real groups instead of leaving three centres empty. A large group usually gets cut into two or three slices along a line, and the smaller groups may stay whole or split as well. The six clusters then look like pieces of the three true groups, with several centroids sitting inside the same dense region.</p>
-<p>Signs to check:</p>
+          q: "Suppose the data has three natural groups, but you run k-means with k = 6. What partition might you see, and how could you tell that k is too large?",
+          a: `<h4>What six centres may do</h4><p>With six centres for three natural groups, k-means can divide a group into smaller pieces. Several centroids may end up in the same dense region. A large group may split into two or three slices, while smaller groups may remain whole or split too.</p>
+<h4>Evidence to check</h4>
 <ul>
 <li>Inertia keeps falling as k rises, so a low value proves nothing on its own. The elbow bends where extra clusters stop paying, and a k past the bend adds little.</li>
 <li>Silhouette scores drop when points sit almost as close to a neighbouring cluster as to their own, which is what a forced split produces.</li>
 <li>Two centroids land very close together, and a boundary runs through the middle of one blob.</li>
 <li>Cluster sizes become small and similar while the data holds one large natural group.</li>
 </ul>
-<p>Fix it by rerunning across a range of k, comparing silhouette or the gap statistic, and checking the separation between centroids. Choosing k from domain meaning as well as the metric is normal practice.</p>`,
+<p>Run the model for several values of k. Compare silhouette or the gap statistic, inspect centroid separation, and ask whether the groups make sense for the problem.</p>`,
           marks: 5,
           diff: "medium"
         },
         {
-          q: "A retail chain has 40,000 loyalty customers with annual spend, visits per month, average basket value and months since last purchase. Design a k-means segmentation study end to end, and name the main risk in the result.",
-          a: `<p><b>1. Frame the question.</b> Segmentation should change an action: which offer, which channel, which customer to keep. Decide that before touching the data, because it sets the features that matter and the number of segments the business can serve. Four to six is usually workable.</p>
-<p><b>2. Prepare the features.</b> Spend and basket value are skewed, so use a log or a square root. Put all four features on one scale, for example by standardising to mean 0 and standard deviation 1, or by min-max scaling to 0 to 1. Check missing values and cap extreme spenders, since the mean does not resist them. Recency and visits are already bounded and comparable.</p>
-<p><b>3. Choose k.</b> Run k = 2 to 10, record inertia, and plot the elbow. Cross-check with average silhouette and the gap statistic. A k where two centroids nearly coincide is too high. Keep the smallest k that separates groups the business can name.</p>
-<p><b>4. Fit and validate.</b> Run k-means several times with different seeds and keep the run with the lowest inertia, because the algorithm finds local minima. With 40,000 rows this is cheap. Hold out a sample, assign it to the nearest centroid, and confirm that each cluster profile is stable. Name each segment from its centroid, such as frequent small-basket or lapsed high-spend, and report its size.</p>
-<p><b>5. Report.</b> Give a table of centroid values in original units, the count and revenue share per segment, and one action per segment. Add the diagnostic used to choose k.</p>
-<p><b>Risk.</b> K-means assumes convex groups of similar size and uses squared Euclidean distance, so the segments may slice a continuous spread of customers rather than find real types. The result also reacts to the scaling chosen in step 2, and a different but defensible scaling can move a customer between segments. Check the segments against an outside variable, such as next-quarter spend, before campaigns are built on them.</p>`,
+          q: "A retail chain has 40,000 loyalty customers. For each, it records annual spend, monthly visits, average basket value and months since the last purchase. Design a k-means segmentation study from preparation to reporting, and identify its main risk.",
+          a: `<h4>1. Decide the purpose</h4><p>Choose the action the segments should support, such as selecting an offer or identifying customers to retain. This guides the features and the number of segments the business can use. Four to six segments may be a workable starting point.</p>
+<h4>2. Prepare the features</h4><p>Inspect missing values and extreme spenders, because means are sensitive to outliers. If spend or basket values are skewed, consider a log or square-root transform. Scale all four features, for example with standardisation to mean 0 and standard deviation 1, or min-max scaling to 0 to 1.</p>
+<h4>3. Choose k</h4><p>Fit k = 2 to 10 and plot inertia to look for an elbow. Compare average silhouette and the gap statistic as well. Nearly coincident centres may suggest too many clusters; favour a small k whose groups have useful interpretations.</p>
+<h4>4. Fit and check stability</h4><p>Run several starting seeds and retain the lowest-inertia result to reduce the effect of local minima. Hold out a sample, assign each customer to the nearest centre, and check whether the cluster profiles remain stable. Name groups from their centroids, such as frequent small-basket or lapsed high-spend customers, and report their sizes.</p>
+<h4>5. Report and question the result</h4><p>Report centroid values in original units, customer counts, revenue shares, an action for each group, and the k-selection diagnostic. K-means can divide a continuous spread into artificial groups because it favours convex, similarly sized clusters under squared Euclidean distance.</p><p>Different reasonable scaling choices can move customers between clusters. Check the segments against an outside variable, such as next-quarter spend, before using them in campaigns.</p>`,
           marks: 14,
           diff: "hard"
         }
@@ -126,12 +139,12 @@ print(km.labels_)
       blocks: [
         {
           type: "definition",
-          text: "A distance measure turns two data objects into one number that is small when they are alike, so a clustering algorithm can compare rows."
+          text: "A distance measure turns two data objects into one number, small when they are alike, so clustering can compare rows."
         },
         {
           type: "text",
-          html: `<p><b>The measure decides what similar means.</b> A clustering algorithm never sees a row. It sees the number your measure produces, so two rows can be neighbours under Euclidean distance and strangers under cosine. Choose the measure from the data type first, then the algorithm.</p>
-<p><b>One family covers the numeric metrics.</b> The Minkowski distance of order p is D<sub>p</sub>(x,y) = (Σ |x<sub>i</sub> - y<sub>i</sub>|<sup>p</sup>)<sup>1/p</sup>. Set p = 1 and you have Manhattan distance. Set p = 2 and you have Euclidean. Let p grow without bound and the largest coordinate gap takes over, which is Chebyshev or chessboard distance. So one formula covers all three named measures.</p>
+          html: `<h4>Choose what similarity means</h4><p>A clustering algorithm compares objects through the number produced by a distance or similarity measure. Two rows may be close under Euclidean distance but far apart under cosine similarity. Choose the measure to match the data type before choosing the clustering algorithm.</p>
+<h4>Minkowski distance unifies numeric measures</h4><p>Minkowski distance of order p is D<sub>p</sub>(x,y) = (Σ |x<sub>i</sub> - y<sub>i</sub>|<sup>p</sup>)<sup>1/p</sup>. Here x and y are the objects, x<sub>i</sub> and y<sub>i</sub> are their values on feature i, and p controls how gaps count.</p><p>At p = 1 it is Manhattan distance; at p = 2 it is Euclidean distance. As p grows without bound, the largest coordinate gap dominates, giving Chebyshev or chessboard distance.</p>
 <table class="tbl">
 <thead><tr><th>Measure</th><th>Formula and behaviour</th><th>Reach for it when</th></tr></thead>
 <tbody>
@@ -140,47 +153,44 @@ print(km.labels_)
 <tr><td>Chebyshev (L∞)</td><td>max |x<sub>i</sub> - y<sub>i</sub>|<br>Only the worst single coordinate counts.</td><td>The largest mismatch is what matters, as in a king move or a tolerance check.</td></tr>
 <tr><td>Minkowski, general p</td><td>(Σ|x<sub>i</sub> - y<sub>i</sub>|<sup>p</sup>)<sup>1/p</sup><br>A dial between the three named cases.</td><td>You want to tune how strongly big gaps are penalised.</td></tr>
 </tbody></table>
-<p><b>Manhattan has its own job.</b> It adds absolute gaps instead of squares, so one large gap cannot take over the total. On sparse vectors most coordinates are zero, and the L1 sum stays cheap and stable while L2 squares the few large gaps and lets them dominate.</p>
-<p><b>Jaccard compares sets.</b> J(A,B) = |A ∩ B| / |A ∪ B|, which runs from 0 for disjoint sets to 1 for identical sets. It counts shared presence only, so joint absence is ignored. That suits market baskets, tags and presence data, where sharing "not bought" says nothing. Two 3-item baskets that share 2 items score 2/4 = 0.5. The simple matching coefficient on a 1,000-product store counts the 996 products neither customer bought and reports 0.998. That hides the real difference. Jaccard distance is 1 - J.</p>
-<p><b>Cosine compares direction.</b> cos θ = (A · B) / (||A|| ||B||). It divides out length, so a short note and a long article on the same topic can score 1. For non-negative counts the value runs from 0 to 1. That is why text mining builds a term-frequency or TF-IDF vector per document and clusters on cosine. Cosine distance is 1 - cos θ, and it is not a true metric because it can break the triangle inequality.</p>
-<p><b>Pick by data type.</b> Numeric and dense: Euclidean after scaling. Numeric, sparse or outlier-heavy: Manhattan. Sets or presence/absence: Jaccard. Text counts: cosine. Correlated features in different units: Mahalanobis. Write the formula before substituting, because the formula itself carries marks.</p>`
+<h4>When common measures help</h4><p>Manhattan distance adds absolute gaps rather than squared gaps. A single large difference has less influence than it has under Euclidean distance. This can help with sparse vectors, where most coordinates are zero.</p>
+<h4>Jaccard for sets and presence</h4><p>Jaccard similarity is J(A,B) = |A ∩ B| / |A ∪ B|. The intersection is what both sets contain; the union is everything in either set. J ranges from 0 for disjoint sets to 1 for identical sets, and ignores joint absence.</p><p>It suits baskets, tags, and presence data because two people both not buying an item does not show shared taste.</p><p>Two three-item baskets with two shared items score 2/4 = 0.5. For 1,000 products, the simple matching coefficient counts 996 products neither customer bought and reports 0.998, hiding the difference. Jaccard distance is 1 - J.</p>
+<h4>Cosine for document direction</h4><p>Cosine similarity compares vector direction: cos θ = (A · B) / (||A|| ||B||). A and B are vectors, the dot is their dot product, and each norm || || is vector length.</p><p>Dividing by length lets a short note and a longer article on the same topic score near 1. For non-negative word counts, cosine lies from 0 to 1.</p><p>Text mining represents each document with term-frequency or TF-IDF values and can cluster with cosine. Cosine distance is 1 - cos θ. It is not a true metric because it can violate the triangle inequality.</p>
+<h4>Match the measure to the data</h4><p>Use scaled Euclidean distance for dense numeric features, Manhattan for sparse or outlier-heavy numeric data, Jaccard for sets or presence, and cosine for text counts. Mahalanobis distance can account for correlated features measured in different units. In a calculation, write the formula before substituting values.</p>`
         },
         {
           type: "example",
-          html: `<p><b>Nov 2025, Q10, 3 marks.</b> A(5,8,11) and B(1,2,7). Find the Manhattan and Euclidean distances.</p>
-<p>Coordinate differences, in order: (5-1, 8-2, 11-7) = (4, 6, 4).</p>
-<p>Manhattan: |4| + |6| + |4| = 14.</p>
-<p>Euclidean: √(4² + 6² + 4²) = √(16 + 36 + 16) = √68 = 8.246, about 8.25.</p>
-<p><b>Dec 2023, Q10, 3 marks.</b> A(12,3,9) and B(6,5,15). Find city block, chessboard and Euclidean distance.</p>
-<p>Differences: (12-6, 3-5, 9-15) = (6, -2, -6). Absolute values: 6, 2, 6.</p>
-<p>City block: 6 + 2 + 6 = 14.</p>
-<p>Chessboard: max(6, 2, 6) = 6.</p>
-<p>Euclidean: √(36 + 4 + 36) = √76 = 8.718, about 8.72.</p>
-<p><b>Why the two Euclidean answers differ.</b> Both pairs are 14 apart under L1, but the Nov 2025 gaps (4, 6, 4) are spread more evenly, so their squares add to 68. The Dec 2023 gaps (6, 2, 6) concentrate more in two axes, so their squares add to 76 and the straight line is longer.</p>`
+          html: `<h4>Nov 2025, Q10, 3 marks</h4><p>For A(5,8,11) and B(1,2,7), find Manhattan and Euclidean distance. The coordinate differences are (5-1, 8-2, 11-7) = (4, 6, 4). In each formula, i identifies a coordinate and Σ means add across coordinates.</p>
+<p>Manhattan distance adds the absolute coordinate gaps: Σ|A<sub>i</sub> - B<sub>i</sub>| = |4| + |6| + |4| = 14.</p>
+<p>Euclidean distance is the straight-line gap: √Σ(A<sub>i</sub> - B<sub>i</sub>)² = √(4² + 6² + 4²) = √(16 + 36 + 16) = √68 = 8.246, about 8.25.</p>
+<h4>Dec 2023, Q10, 3 marks</h4><p>For A(12,3,9) and B(6,5,15), find city-block, chessboard and Euclidean distance. The coordinate differences are (12-6, 3-5, 9-15) = (6, -2, -6), with absolute values 6, 2, 6.</p>
+<p>City-block, also called Manhattan, adds absolute gaps: Σ|A<sub>i</sub> - B<sub>i</sub>| = 6 + 2 + 6 = 14. Chessboard, also called Chebyshev, takes the largest gap: max|A<sub>i</sub> - B<sub>i</sub>| = max(6, 2, 6) = 6.</p>
+<p>Euclidean is the straight-line gap: √Σ(A<sub>i</sub> - B<sub>i</sub>)² = √(36 + 4 + 36) = √76 = 8.718, about 8.72.</p>
+<h4>Compare the answers</h4><p>Both pairs have Manhattan distance 14. The Nov 2025 gaps (4, 6, 4) are more evenly spread and their squares sum to 68. The Dec 2023 gaps (6, 2, 6) put more of the difference on two axes, so the squares sum to 76 and the Euclidean distance is greater.</p>`
         },
         {
           type: "tip",
-          html: `<p>Lead with the formula and name it, then list the coordinate differences in a row, then substitute. A 3-mark answer usually needs the formula, the substitution and the value, so a bare number throws away most of the credit. Keep signs inside the bracket and take absolute values only where the formula asks for them. Round to two decimals and keep the exact surd beside the decimal, as in √68 = 8.25.</p>`
+          html: `<h4>Present distance calculations</h4><p>Name the distance and write its formula. List the coordinate differences, substitute them, and then give the answer. Keep negative signs inside brackets and use absolute values where the formula requires them.</p><p>Show the exact square-root form as well as a rounded value, for example √68 = 8.25 to two decimal places. This makes the calculation easier to check than a bare number.</p>`
         }
       ],
       practice: [
         {
-          q: "Two documents are stored as word-count vectors. Explain why cosine similarity suits this representation, and give one case where it misleads.",
-          a: `<p>Cosine compares the angle between the vectors and ignores their lengths. A 200-word note and a 4,000-word report on the same topic point in almost the same direction even though their magnitudes differ by a factor of 20, so cosine scores them near 1. Euclidean distance would call them far apart for the length difference alone.</p>
-<p>Term-frequency vectors are sparse and high-dimensional. Cosine needs only the non-zero coordinates, so it stays cheap, and for non-negative counts its value falls in the range 0 to 1, which is easy to read.</p>
-<p>Where it misleads:</p>
+          q: "Two documents are represented by word-count vectors. Why might cosine similarity be useful, and when could its score be misleading?",
+          a: `<h4>Why compare directions?</h4><p>Cosine compares vector direction rather than length. If a 200-word note and a 4,000-word report use words in similar proportions, their vectors point in similar directions and cosine is near 1. Euclidean distance would also reflect their difference in length.</p>
+<p>Word-count vectors often have many coordinates but few non-zero entries. Sparse calculations can use those entries, and for non-negative counts the cosine score runs from 0 to 1.</p>
+<h4>Where the score can mislead</h4>
 <ul>
 <li><b>Shared function words.</b> Two documents that both repeat "the", "of" and "and" score high on raw counts. Stop-word removal or TF-IDF weighting removes most of that.</li>
 <li><b>Opposite meaning, same words.</b> A review and a reply that quotes it share vocabulary and score high, although the stance is opposite. Cosine sees words, not negation.</li>
-<li><b>Very short texts.</b> A one-word query and a document containing that word once score 1, which overstates the match.</li>
+<li><b>Very short texts.</b> A one-word query and a document containing only that word can score 1 even though they provide little context.</li>
 </ul>
 <p>Use cosine with TF-IDF weighting, and do not read a high score as agreement in a sentiment task.</p>`,
           marks: 5,
           diff: "medium"
         },
         {
-          q: "Customer A bought {bread, milk, eggs} and customer B bought {bread, milk, butter}. The store stocks 1,000 products. Compute the Jaccard similarity and distance, and explain why the simple matching coefficient is a poor choice here.",
-          a: `<p>Intersection A ∩ B = {bread, milk}, size 2. Union A ∪ B = {bread, milk, eggs, butter}, size 4.</p>
+          q: "Customer A buys {bread, milk, eggs}; customer B buys {bread, milk, butter}. Of 1,000 products, calculate their Jaccard similarity and distance. Why is the simple matching coefficient less useful for comparing these baskets?",
+          a: `<h4>Count shared and combined items</h4><p>The intersection A ∩ B contains items in both baskets: {bread, milk}, size 2. The union A ∪ B contains items in either basket: {bread, milk, eggs, butter}, size 4.</p>
 <p>J(A,B) = |A ∩ B| / |A ∪ B| = 2/4 = 0.5, so the Jaccard distance is 1 - 0.5 = 0.5.</p>
 <p>For the simple matching coefficient on 1,000 binary product attributes: M11 = 2, M10 = 1, M01 = 1, and M00 = 1,000 - 4 = 996. SMC = (M11 + M00) / 1,000 = 998/1,000 = 0.998.</p>
 <p>The SMC calls the two customers almost identical because both failed to buy the same 996 products. Absence is not evidence of similar taste in a sparse catalogue, and almost every pair would score above 0.99. Jaccard drops M00 and measures what the baskets share against what either bought, which is the question a recommendation task actually asks.</p>
@@ -189,10 +199,9 @@ print(km.labels_)
           diff: "medium"
         },
         {
-          q: "Write the Minkowski distance formula and use it to relate Manhattan, Euclidean and chessboard distance.",
-          a: `<p>For points x and y in n dimensions, D<sub>p</sub>(x,y) = (Σ |x<sub>i</sub> - y<sub>i</sub>|<sup>p</sup>)<sup>1/p</sup>, with p at least 1.</p>
-<p>p = 1 gives D<sub>1</sub> = Σ |x<sub>i</sub> - y<sub>i</sub>|, the Manhattan or city-block distance, which adds the gap along each axis. p = 2 gives D<sub>2</sub> = √Σ (x<sub>i</sub> - y<sub>i</sub>)², the Euclidean straight line. As p tends to infinity the largest term dominates and D<sub>∞</sub> = max |x<sub>i</sub> - y<sub>i</sub>|, the Chebyshev or chessboard distance.</p>
-<p>So the three named measures are one family read at three settings of p, and p is a dial between "every small gap counts" and "only the worst gap counts".</p>`,
+          q: "How does the Minkowski formula relate Manhattan, Euclidean and chessboard distances? Write the formula and explain each case.",
+          a: `<h4>One family of distances</h4><p>Minkowski combines coordinate gaps into one distance. For points x and y in n dimensions, D<sub>p</sub>(x,y) = (Σ |x<sub>i</sub> - y<sub>i</sub>|<sup>p</sup>)<sup>1/p</sup>. Here i identifies a coordinate, Σ adds across coordinates, and p is at least 1.</p>
+<ul><li>For p = 1, D<sub>1</sub> = Σ |x<sub>i</sub> - y<sub>i</sub>|: Manhattan, or city-block, adds absolute gaps.</li><li>For p = 2, D<sub>2</sub> = √Σ (x<sub>i</sub> - y<sub>i</sub>)²: Euclidean gives straight-line distance.</li><li>As p approaches infinity, D<sub>∞</sub> = max |x<sub>i</sub> - y<sub>i</sub>|: Chebyshev, or chessboard, uses the largest coordinate gap.</li></ul>`,
           marks: 3,
           diff: "easy"
         }
@@ -209,12 +218,12 @@ print(km.labels_)
       blocks: [
         {
           type: "definition",
-          text: "Agglomerative clustering starts with every point alone and repeatedly merges the two closest clusters, recording each merge as a dendrogram."
+          text: "Agglomerative clustering starts with one cluster per point, then repeatedly joins the closest clusters. A dendrogram is a tree that records those joins."
         },
         {
           type: "text",
-          html: `<p><b>Bottom-up, one merge at a time.</b> Hierarchical clustering does not return a single partition. It returns a tree of partitions, so you can choose the cut after seeing the structure. Agglomerative methods build from the leaves upward, while divisive methods start with one cluster and split downward. The exam questions stay on the agglomerative side.</p>
-<p><b>The algorithm.</b></p>
+          html: `<h4>Build a hierarchy</h4><p>Hierarchical clustering produces a tree of nested groupings. You can cut the tree at a chosen height to select a partition. Agglomerative clustering builds upward from individual points; divisive clustering starts with one group and splits it.</p>
+<h4>Agglomerative steps</h4>
 <ol>
 <li>Treat each object as its own cluster and compute the pairwise distance matrix.</li>
 <li>Find the smallest distance between any two clusters.</li>
@@ -222,7 +231,7 @@ print(km.labels_)
 <li>Update the matrix: replace the two rows and columns with one row and column for the new cluster.</li>
 <li>Repeat until one cluster remains, or until the required number of clusters is reached.</li>
 </ol>
-<p>The update step is where linkage enters, because it decides the number you write into the new row.</p>
+<h4>Choose a linkage rule</h4><p>Linkage tells you how to calculate distance between two groups. For single, complete and average linkage, d(a,b) is the distance between point a in one group and point b in the other. The rule determines the updated matrix entries.</p>
 <table class="tbl">
 <thead><tr><th>Linkage</th><th>Distance between clusters</th><th>Shape it finds</th><th>Weakness</th></tr></thead>
 <tbody>
@@ -231,13 +240,13 @@ print(km.labels_)
 <tr><td>Average (UPGMA)</td><td>mean of all cross-cluster pairs</td><td>Compact groups, as a compromise</td><td>Still biased toward globular clusters.</td></tr>
 <tr><td>Ward</td><td>pair that adds the least within-cluster variance</td><td>Even, compact groups</td><td>Needs squared Euclidean distance.</td></tr>
 </tbody></table>
-<p><b>Reading the dendrogram.</b> Leaves sit at height 0. Each bar sits at the distance at which its two groups merged, so a low join means similar groups and a high join means different ones. Cut across the tree at one height and the vertical lines you cross are the clusters. A large empty band between two heights is a natural cut, because the merges below it are tight and the next one is a jump.</p>
-<p><b>Cost and the chaining trap.</b> The textbook algorithm is O(n³) in time and O(n²) in memory, because it searches and rewrites an n by n matrix at every merge. Single linkage can be done in O(n²) time with SLINK, and complete linkage in O(n²) with CLINK, which is why those versions reach larger sets. Single linkage still suffers from chaining: a thin bridge of points pulls two groups into one long cluster. Complete linkage resists the bridge, though one distant point can still inflate its merge height.</p>`
+<h4>Read a dendrogram</h4><p>The leaves at height 0 represent individual objects. Each horizontal bar records the distance at which two groups merge: a low join indicates greater similarity than a high join. Draw a horizontal cut and count the branches it crosses to find the number of clusters.</p><p>A large gap between merge heights can suggest where to cut. The groups below the gap joined at smaller distances than the next merge.</p>
+<h4>Cost and chaining</h4><p>The textbook method takes O(n³) time and O(n²) memory because it repeatedly searches and updates an n by n distance matrix. Here n is the number of objects. SLINK performs single linkage in O(n²) time, while CLINK performs complete linkage in O(n²) time.</p><p>Single linkage can create a long chain when a thin bridge of points connects otherwise separate groups. Complete linkage resists this bridge, but one distant point can increase its merge height.</p>`
         },
         { type: "diagram", id: "dendrogram" },
         {
           type: "example",
-          html: `<p><b>Dec 2023, Q19(a), 8 marks.</b> The paper gives this matrix for six objects and asks for single-linkage clustering with a dendrogram.</p>
+          html: `<h4>Task from the Dec 2023 paper, Q19(a), 8 marks</h4><p>The paper gives this distance matrix for six objects and asks for single-linkage clustering and a dendrogram.</p>
 <table class="tbl">
 <thead><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th></tr></thead>
 <tbody>
@@ -248,11 +257,11 @@ print(km.labels_)
 <tr><td>E</td><td>4.24</td><td>3.54</td><td>1.411</td><td>1.00</td><td>0</td><td></td></tr>
 <tr><td>F</td><td>3.20</td><td>2.50</td><td>2.50</td><td>0.50</td><td>1.12</td><td>0</td></tr>
 </tbody></table>
-<p><b>Step 1.</b> The smallest entry is 0.50, between D and F, so merge {D,F} at height 0.50. Under single linkage the new distances are minima: to A min(3.61, 3.20) = 3.20, to B min(2.92, 2.50) = 2.50, to C min(2.24, 2.50) = 2.24, and to E min(1.00, 1.12) = 1.00.</p>
-<p><b>Step 2.</b> The smallest remaining entry is 0.71, between A and B, so merge {A,B} at 0.71. Distances from {A,B}: to C min(5.66, 4.95) = 4.95, to E min(4.24, 3.54) = 3.54, and to {D,F} min(3.20, 2.50) = 2.50.</p>
-<p><b>Step 3.</b> The smallest entry is now 1.00, between E and {D,F}, so merge {D,E,F} at 1.00. Distances: to C min(2.24, 1.411, 2.50) = 1.411, and to {A,B} min(3.61, 2.92, 4.24, 3.54, 3.20, 2.50) = 2.50.</p>
-<p><b>Step 4.</b> The smallest entry is 1.411, between C and {D,E,F}, so merge {C,D,E,F} at 1.411. The distance to {A,B} is min(4.95, 2.50) = 2.50.</p>
-<p><b>Step 5.</b> One entry remains, 2.50, so join {A,B} with {C,D,E,F} at 2.50 and stop.</p>
+<h4>Merge 1: D and F</h4><p>The smallest entry is 0.50, so join D and F at height 0.50. Single linkage uses the smallest distance from any member of the new cluster to the other group.</p><p>For {D,F}, the updated distances are: to A min(3.61, 3.20) = 3.20; to B min(2.92, 2.50) = 2.50; to C min(2.24, 2.50) = 2.24; and to E min(1.00, 1.12) = 1.00.</p>
+<h4>Merge 2: A and B</h4><p>The next smallest distance is 0.71, so join A and B at height 0.71. From {A,B}, the distances are: to C min(5.66, 4.95) = 4.95; to E min(4.24, 3.54) = 3.54; and to {D,F} min(3.20, 2.50) = 2.50.</p>
+<h4>Merge 3: E and {D,F}</h4><p>The smallest remaining distance is 1.00, so join E to {D,F} at height 1.00. From {D,E,F}, the distance to C is min(2.24, 1.411, 2.50) = 1.411, and to {A,B} it is min(3.61, 2.92, 4.24, 3.54, 3.20, 2.50) = 2.50.</p>
+<h4>Merge 4: C and {D,E,F}</h4><p>Join C to {D,E,F} at the smallest remaining distance, 1.411. The new cluster's distance to {A,B} is min(4.95, 2.50) = 2.50.</p>
+<h4>Merge 5: the final groups</h4><p>Only two groups remain, so join {A,B} with {C,D,E,F} at 2.50. All objects are now in one cluster.</p>
 <table class="tbl">
 <thead><tr><th>Merge</th><th>Pair</th><th>Height</th></tr></thead>
 <tbody>
@@ -262,40 +271,39 @@ print(km.labels_)
 <tr><td>4</td><td>C + {D,E,F}</td><td>1.411</td></tr>
 <tr><td>5</td><td>{A,B} + {C,D,E,F}</td><td>2.50</td></tr>
 </tbody></table>
-<p><b>Dendrogram.</b> Place A, B, C, D, F, E along the base. D and F join at 0.50, E joins them at 1.00, C joins at 1.411, A and B join at 0.71, and the final bar sits at 2.50. The diagram on this page is that tree.</p>`
+<h4>Draw the dendrogram</h4><p>Put A, B, C, D, F, E along the base. Join D and F at 0.50; attach E at 1.00 and C at 1.411. Join A and B at 0.71, then connect the two branches at 2.50. The page diagram shows this tree.</p>`
         },
         {
           type: "tip",
-          html: `<p>Show the matrix after every merge, because the marks sit on the updated numbers, not only on the final tree. State the minimum before you merge, then name the rule in one line, as in "single link takes the smaller of the two old distances". Keep the leaves in an order that lets each cluster appear as a continuous branch. Close with the merge heights in a numbered list, since that list is what the examiner checks first.</p>`
+          html: `<h4>Show each merge</h4><p>State the smallest distance and the linkage rule before each merge. Show the updated matrix so a reader can follow the next choice. For single linkage, take the smallest distance between members of the two groups.</p><p>List the merge heights and arrange leaves so each cluster forms a continuous branch. Label the height axis on the dendrogram.</p>`
         }
       ],
       practice: [
         {
-          q: "Explain what the vertical axis of a dendrogram measures and how the gap between merge heights helps you choose the number of clusters.",
-          a: `<p>The vertical axis is the distance at which two groups were joined. A leaf sits at 0 because it starts alone. A low bar joins groups that were already similar, and a high bar joins groups that were far apart. Heights are monotone as you move up, because each merge is at least as large as the ones below it.</p>
-<p>A large empty band between two heights marks a jump in dissimilarity: everything below the band is tight, and the merge above it mixes groups that do not belong together. Cutting just below that band keeps the tight groups and gives a defensible k. A cut through the middle of a busy band is arbitrary, since the next merge is barely different.</p>
-<p>Example: with merges at 0.50, 0.71, 1.00, 1.411 and 2.50, a cut at 1.2 falls in the gap between 1.00 and 1.411 and gives three groups: {A,B}, {C} and {D,E,F}. The widest band is 1.411 to 2.50, so if two segments are enough, cut there.</p>`,
+          q: "What does a dendrogram's vertical axis show? Explain how gaps between joins can guide your choice of cluster count.",
+          a: `<h4>Read the height</h4><p>The vertical axis gives the distance at which groups merge. Leaves start at 0; low bars join relatively similar groups and high bars join more dissimilar groups. For the linkage methods discussed here, merge heights do not decrease as you move up the tree.</p>
+<h4>Choose a cut</h4><p>A large gap between merge heights suggests a jump in dissimilarity. Cutting within that gap keeps the groups formed below it apart. Count the branches crossed by the cut to obtain k, the number of groups.</p>
+<p>For joins at 0.50, 0.71, 1.00, 1.411 and 2.50, a cut at 1.2 gives {A,B}, {C} and {D,E,F}. The widest gap is 1.411 to 2.50; a cut there gives two groups.</p>`,
           marks: 5,
           diff: "medium"
         },
         {
-          q: "Six points lie in a rough chain, each about 1 unit from the next. A seventh point sits 20 units from the nearest one. Compare what single linkage and average linkage produce, and say which dendrogram you would trust.",
-          a: `<p><b>Single linkage</b> measures a cluster by its closest pair, so the chain is built link by link. Each merge joins the next 1-unit pair and the height stays near 1 until the far point is reached. The chain becomes one long cluster at a low height, and the outlier joins last at about 20. The tree has one tall final join and little structure below it, which is the chaining effect: a bridge of close points is enough to merge groups whose far ends are very different.</p>
-<p><b>Average linkage</b> uses the mean of all cross-cluster distances. As the chain grows, the mean distance between the chain and the next point rises, so later merges sit higher and the tree opens out. A compact group of three still merges early, while a stretched group merges later. The outlier stays separate until the root.</p>
-<p><b>Which to trust.</b> If the chain is a genuine elongated cluster, such as a road or a river, single linkage is right and average linkage may break it into pieces. If the chain is an artefact, such as points along a noisy sensor sweep, average linkage gives the more honest picture and is less driven by one close pair.</p>
-<p>Practical call: plot both, and check whether the single-link joins match real adjacency in the data. With an outlier 20 units away, neither method hides it; it joins at the top, which is the signal that it may be noise rather than a cluster member.</p>`,
+          q: "Six points form a rough chain, about 1 unit between neighbours; a seventh is 20 units from its nearest point. Compare single and average linkage and explain which tree you would trust.",
+          a: `<h4>Single linkage</h4><p>Single linkage uses the closest cross-cluster pair. It joins the chain through neighbouring points at heights near 1, then attaches the distant point at about 20. This is chaining: short links can join endpoints that are far apart.</p>
+<h4>Average linkage</h4><p>Average linkage uses the mean of all distances between the two groups. Distances across a stretched chain can raise later merge heights, while a compact group tends to join earlier. The distant point remains separate until a high merge.</p>
+<h4>Which tree helps?</h4><p>If the chain represents a real elongated feature such as a road or river, single linkage can preserve it. If it is a noisy bridge between groups, average linkage may better reflect the separation. Plot both trees and check whether the links match real adjacency.</p><p>The point 20 units away joins high in either tree. Investigate it as a possible outlier rather than assuming it is an error.</p>`,
           marks: 7,
           diff: "hard"
         },
         {
-          q: "You must cluster 500,000 records. Explain why the textbook agglomerative algorithm is a poor fit, and name two ways to make a hierarchy practical.",
-          a: `<p>The naive algorithm keeps an n by n distance matrix and searches it at each of the n - 1 merges, which costs O(n³) time and O(n²) memory. At n = 500,000 the matrix alone holds 2.5 x 10<sup>11</sup> entries, far beyond memory, and the merge loop is worse. The method is built for hundreds or a few thousand objects, where the tree can be read by eye.</p>
-<p>Two practical routes:</p>
+          q: "You need to group 500,000 records. Why is textbook agglomerative clustering difficult at this size? Give two ways to make a hierarchy more practical.",
+          a: `<h4>Why the textbook method is costly</h4><p>For n records, the naive method keeps an n by n distance matrix and searches it through n - 1 merges. That costs O(n³) time and O(n²) memory. At n = 500,000, the matrix contains 2.5 x 10<sup>11</sup> entries, and the tree itself is hard to inspect.</p>
+<h4>Ways to reduce the work</h4>
 <ul>
 <li><b>Use an O(n²) algorithm for the linkage you need.</b> SLINK does single linkage in O(n²) time and O(n) space, and CLINK gives O(n²) time for complete linkage. That removes the cubic search but still needs a pass over pairs.</li>
 <li><b>Reduce before you merge.</b> Cluster a sample, or pre-aggregate with a method such as BIRCH, then run the hierarchy on the summaries. Alternatively restrict merges with a connectivity graph built from k nearest neighbours, so only nearby groups are considered.</li>
 </ul>
-<p>If a flat partition is all the business needs, run k-means or DBSCAN on the full table and keep the hierarchy for a sample. The dendrogram is a presentation and exploration tool, not usually a serving model.</p>`,
+<p>If the goal is only a flat grouping, consider k-means or DBSCAN for the full dataset and use a hierarchy to explore a sample. The dendrogram helps presentation and exploration.</p>`,
           marks: 5,
           diff: "medium"
         }
@@ -311,24 +319,24 @@ print(km.labels_)
       blocks: [
         {
           type: "definition",
-          text: "DBSCAN groups points in dense neighbourhoods and marks points in sparse regions as noise, without being told the number of clusters."
+          text: "DBSCAN joins points in dense neighbourhoods and labels unsupported points as noise. You do not need to specify the number of clusters."
         },
         {
           type: "text",
-          html: `<p><b>Density instead of distance to a centre.</b> A density-based method asks how many points sit close together. A cluster is a connected region where points are packed, and a sparse gap ends it. Nothing assumes a round shape, so a crescent, a ring or two interleaved spirals can be recovered. Points in the gaps belong to no cluster, and the method says so instead of forcing them somewhere.</p>
+          html: `<h4>DBSCAN groups nearby points by density</h4><p>Imagine drawing a small circle around each point and counting the points inside. A dense patch has many nearby points, while a sparse gap separates patches. DBSCAN grows clusters through connected dense regions, so it can find crescents, rings, or interleaved spirals. Points without dense support receive a noise label.</p>
 <p><b>Two parameters set the meaning of dense.</b></p>
 <ul>
 <li><b>eps (ε)</b> is the radius of the neighbourhood around a point.</li>
 <li><b>MinPts</b> is the minimum number of points that neighbourhood must hold, counting the point itself.</li>
 </ul>
-<p><b>Three kinds of point follow from those two numbers.</b></p>
+<h4>Core, border, and noise points</h4><p>The two settings classify each point into one of three types:</p>
 <ul>
 <li><b>Core point:</b> at least MinPts points lie within eps of it, itself included. It can grow a cluster.</li>
 <li><b>Border point:</b> fewer than MinPts in its own neighbourhood, but it lies inside the eps neighbourhood of a core point. It joins that cluster and cannot extend it.</li>
 <li><b>Noise point:</b> neither core nor within reach of a core point. It stays outside every cluster.</li>
 </ul>
-<p>A point q is <b>directly density reachable</b> from p when q is within eps of p and p is a core point. Chain that relation through core points and q becomes density reachable. Two points are density connected when both are reachable from one core point, and that symmetric relation is what makes a cluster well defined.</p>
-<p><b>Algorithm.</b></p>
+<p>Point q is <b>directly density reachable</b> from p if q is within eps of p and p is a core point. Repeating this link through core points makes q density reachable. Two points are density connected if both are reachable from a shared core point; this relation defines cluster membership.</p>
+<h4>DBSCAN growth procedure</h4>
 <ol>
 <li>Choose eps and MinPts.</li>
 <li>Take an unvisited point and fetch its eps neighbourhood.</li>
@@ -338,8 +346,8 @@ print(km.labels_)
 <li>A point marked noise earlier becomes a border point if a core neighbourhood reaches it.</li>
 <li>When the seed list empties, start again from an unvisited point until none are left.</li>
 </ol>
-<p><b>Choosing the numbers.</b> MinPts = 1 makes every point core, and MinPts of 2 collapses the method toward single-link clustering, so use at least 3. A common starting rule is MinPts at least D + 1 for D dimensions, with 2D used in practice. For eps, plot each point's distance to its k-th nearest neighbour, sort the values, and look for the knee; that distance is a reasonable eps. Too small an eps labels most points as noise, while too large an eps merges everything into one cluster.</p>
-<p><b>What it is good at, and where it hurts.</b> It needs no k, finds arbitrary shapes, tolerates outliers because it has a noise label, and takes only two parameters. It struggles when densities differ across the data, because one eps and MinPts pair cannot be right for a tight cluster and a loose one. Border points can switch cluster if the input order changes. In high dimensions distance flattens until eps loses meaning. With a spatial index the average cost is about O(n log n), and without one it is O(n²).</p>`
+<h4>Choose eps and MinPts</h4><p>MinPts = 1 makes every point core. MinPts = 2 makes DBSCAN behave much like single-link clustering, so a common minimum is 3. For D features, a starting rule is MinPts at least D + 1; in practice, 2D is also used.</p><p>To choose eps, find each point's distance to its k-th nearest neighbour, sort those distances, and look for a bend, or knee. That value is a useful radius to test. Too small an eps marks many points as noise; too large an eps can merge clusters.</p>
+<h4>Strengths and limits</h4><p>DBSCAN needs no cluster count, can find irregular shapes, and can leave outliers as noise. It struggles when clusters have different densities, because one eps and MinPts pair must serve all of them. Border assignments can also depend on input order.</p><p>In high dimensions, distances become less distinct and eps loses meaning. With a spatial index, average cost is about O(n log n); without one, it is O(n²).</p>`
         },
         {
           type: "code",
@@ -359,7 +367,7 @@ print(labels)
         { type: "diagram", id: "dbscan-points" },
         {
           type: "example",
-          html: `<p><b>A small run you can check by hand.</b> Seven points: P1(1,1), P2(1.5,1), P3(1,1.5), P4(1.5,1.5), P5(3,3), P6(5,5) and P7(1.6,2.2). Take eps = 0.8 and MinPts = 3.</p>
+          html: `<h4>Worked example with seven points</h4><p>Consider P1(1,1), P2(1.5,1), P3(1,1.5), P4(1.5,1.5), P5(3,3), P6(5,5) and P7(1.6,2.2). Use eps = 0.8 and MinPts = 3.</p>
 <table class="tbl">
 <thead><tr><th>Point</th><th>Neighbours within 0.8, itself included</th><th>Count</th><th>Type</th></tr></thead>
 <tbody>
@@ -371,37 +379,36 @@ print(labels)
 <tr><td>P6 (5,5)</td><td>P6</td><td>1</td><td>noise</td></tr>
 <tr><td>P7 (1.6,2.2)</td><td>P4, P7</td><td>2</td><td>border</td></tr>
 </tbody></table>
-<p><b>How to read it.</b> P1 to P4 each have at least three points inside 0.8, so they are core and one cluster grows from them. P7 has only two points in its own neighbourhood, so it cannot start a cluster, but it sits 0.707 from core point P4 and joins as a border point. P5 and P6 have no neighbour inside 0.8 and no core point reaches them, so both stay noise.</p>
-<p><b>Result.</b> One cluster, {P1, P2, P3, P4, P7}, with P7 as border. P5 and P6 are noise. If eps rose to 2.2, P5 would fall inside reach of P4 and join the cluster, which shows how much the radius decides.</p>`
+<h4>Count first, then classify</h4><p>P1 to P4 each have at least three points within 0.8, including themselves, so each is core. These core points connect into one cluster. P7 counts only itself and P4, but it is 0.707 from core point P4, so it joins as a border point.</p><p>P5 and P6 have no other point within 0.8 and no core point reaches them. Both are noise.</p>
+<h4>Final result</h4><p>The cluster is {P1, P2, P3, P4, P7}, with P7 on the border; P5 and P6 are noise. If eps increases to 2.2, P5 falls within reach of P4 and joins the cluster. This illustrates the effect of the radius.</p>`
         },
         {
           type: "tip",
-          html: `<p>Draw eps as a circle around one core point and put the neighbour count inside it, because a labelled sketch earns more than a paragraph. Define core, border and noise in that order, then state both parameters before the algorithm steps. In a comparison question, give the no-k, arbitrary-shape and noise-label strengths, then one limitation, since a one-sided answer caps the marks. Keep "directly density reachable" separate from plain "density reachable" in the definition.</p>`
+          html: `<h4>Explain with a sketch</h4><p>Draw an eps circle around a core point and label its neighbour count. State eps and MinPts, then define core, border and noise points before listing the algorithm. Distinguish directly density reachable from density reachable through a chain.</p><p>When comparing methods, mention DBSCAN's ability to find irregular shapes and label noise without setting k. Include a limitation, such as sensitivity to varying densities.</p>`
         }
       ],
       practice: [
         {
-          q: "With eps fixed, what happens to the noise count as MinPts rises? With MinPts fixed, what happens as eps falls? Explain both directions.",
-          a: `<p><b>MinPts rises, eps fixed.</b> Each neighbourhood must hold more points to count as dense, so fewer points qualify as core. Some former core points become border or noise, clusters shrink, and the noise count rises. At a high enough MinPts almost every point fails the test and the whole set becomes noise.</p>
-<p><b>eps falls, MinPts fixed.</b> Each neighbourhood covers less space, so it collects fewer points. Again fewer cores survive, clusters fragment, and noise rises. With a tiny eps every point is its own island and all are noise.</p>
-<p>Both changes therefore push the same way, which is why the two parameters are tuned together. Raising MinPts while also raising eps can keep the cluster count steady, because the larger radius compensates for the stricter count. The k-distance plot is the useful diagnostic: the knee sets eps for a chosen MinPts, so the pair is read together.</p>`,
+          q: "If eps stays fixed, how does increasing MinPts affect noise? If MinPts stays fixed, what happens when eps decreases? Explain why.",
+          a: `<h4>Increase MinPts</h4><p>With eps fixed, each neighbourhood must contain more points for its centre to qualify as core. Some former core points become border or noise, so the noise count can rise or stay the same. If MinPts exceeds all neighbourhood counts, every point is noise.</p>
+<h4>Decrease eps</h4><p>With MinPts fixed, a smaller radius contains no more points than the old radius. Fewer points may qualify as core, clusters can split, and the noise count can rise or remain unchanged. If MinPts is greater than 1 and each point is isolated, all points are noise.</p>
+<h4>Tune the pair together</h4><p>A larger radius can offset a higher neighbour threshold, although it does not guarantee the same clusters. Use a k-distance plot for a chosen MinPts and test an eps near the knee.</p>`,
           marks: 5,
           diff: "medium"
         },
         {
-          q: "A dataset holds a tight cluster of 100 points and a loose cluster of 100 points spread over ten times the area. Explain why one eps and MinPts pair cannot serve both, and give one remedy.",
-          a: `<p>Density is points per area, so the loose cluster needs a larger eps to reach the same neighbour count. Set eps for the tight cluster and the loose one produces too few neighbours, so it becomes noise or breaks into fragments. Set eps for the loose cluster and the tight one becomes one dense blob, and any nearby group inside that radius is swallowed too. MinPts creates the same tension: a value that suits 100 tight points rejects the loose ones.</p>
-<p>This is a global-threshold problem. DBSCAN assumes one density level across the data, so clusters at very different densities cannot both be described well.</p>
-<p>Remedy: use a method that works across density scales, such as OPTICS or HDBSCAN, which build a hierarchy over eps instead of fixing one value. A cheaper fix is to run DBSCAN separately on subsets after a density estimate, or to transform the features so the densities become comparable. Report the route you took, because changing the method changes the cluster count.</p>`,
+          q: "One cluster contains 100 tightly packed points; another has 100 points spread over ten times the area. Why can a single eps and MinPts pair be troublesome, and what could you do?",
+          a: `<h4>The density mismatch</h4><p>The loose group has fewer points per unit area, so it may need a larger eps to collect the same number of neighbours. An eps suited to the tight group can split the loose group or label its points noise. A larger eps may instead connect the tight group to nearby groups.</p>
+<p>MinPts creates a similar trade-off. DBSCAN uses one global density threshold, which can make very different densities hard to recover together.</p>
+<h4>Possible remedies</h4><p>Try OPTICS or HDBSCAN, which examine structure across density scales rather than using one fixed eps in the same way. Alternatively estimate density and run DBSCAN on subsets, or consider a feature transformation. Report the approach because it can change the groups found.</p>`,
           marks: 5,
           diff: "hard"
         },
         {
-          q: "A city collects 20,000 GPS reports of potholes. Most form clusters along roads, and some are one-off errors. Explain how you would set eps and MinPts, and how you would use the noise label.",
-          a: `<p><b>Set MinPts first.</b> The data is two-dimensional, so a starting rule is MinPts at least D + 1 = 3, with 2D = 4 to 8 common in practice. A pothole cluster should need four or five separate reports before the city sends a repair crew, so MinPts = 5 is defensible on operational grounds rather than geometry alone.</p>
-<p><b>Set eps from the data, not by guesswork.</b> Compute each report's distance to its 5th nearest neighbour, sort those distances, and plot them. The knee of that curve is a natural eps: below it, reports are close enough to count as neighbours, and above it the curve flattens into isolated points. In metres, this is the radius within which two reports describe the same stretch of road, so check the value against road width and GPS error.</p>
-<p><b>Read the output.</b> Core points are reports with at least five neighbours inside eps, border points are fringe reports attached to a core, and noise points have no dense support. Clusters give candidate repair sites, and the core count gives an evidence weight.</p>
-<p><b>Use the noise label carefully.</b> Do not delete noise rows. Route them to a review queue, because a real pothole on an empty road may have only one report. A report that stays noise across two eps settings is stronger evidence of an error than one that flips to border when eps grows by 10 percent. Keep the raw coordinates so a human can inspect the map before closing the report.</p>`,
+          q: "A city has 20,000 GPS pothole reports. Many lie along roads and some are isolated errors. Describe how to choose eps and MinPts and how to handle the noise label.",
+          a: `<h4>Start with MinPts</h4><p>There are D = 2 geographic dimensions. The starting rule D + 1 gives 3 and 2D gives 4; values from 4 to 8 can also be tested. The city might choose MinPts = 5 if it wants several reports to support a potential repair site; the point itself counts toward five.</p>
+<h4>Estimate eps</h4><p>Plot sorted distances to the 5th nearest neighbour and inspect the knee for a candidate radius. Check the neighbour convention: if MinPts includes the point itself but the plot counts only other points, the fourth other neighbour corresponds to a count of five. Check the radius in metres against road width and GPS error.</p>
+<h4>Interpret and review</h4><p>A core report has at least five reports in its eps neighbourhood, including itself. Border reports attach to a core; noise reports lack dense support. Clusters suggest candidate repair sites, and the number of core reports can help summarise support.</p><p>Keep noise reports for review: a genuine pothole on a quiet road may have only one report. Compare labels across two eps settings, including an increase of 10 percent, and retain the raw coordinates for a person to inspect. A stable noise label alone does not prove an error.</p>`,
           marks: 7,
           diff: "medium"
         }

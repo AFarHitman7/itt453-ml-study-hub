@@ -17,6 +17,8 @@ const PAPERS = (window.ML_EXAM && ML_EXAM.papers) || [];
 const paperById = {}; PAPERS.forEach(p => paperById[p.id] = p);
 const REPEATS = window.ML_REPEATS || {};
 const DIAGRAMS = window.ML_DIAGRAMS || {};
+const PYQ_ASSETS = window.ML_PYQ_ASSETS || {};
+const PYQ_ANSWERS = window.ML_PYQ_ANSWERS || {};
 
 const state = {
   view: "notes",
@@ -86,12 +88,47 @@ function blockHTML(b) {
 
 /* One past-paper occurrence: a fixed paper rail on the left, the question on
    the right. Used by the PYQ page and the Notes spotlight so both rhyme. */
+function pyqAssetsHTML(items) {
+  return items.map(a => '<figure class="pyq-asset"><a href="' + esc(a.src) +
+    '" target="_blank" rel="noopener" aria-label="Open full-size: ' + esc(a.alt) + '">' +
+    '<img src="' + esc(a.src) + '" alt="' + esc(a.alt) + '" loading="lazy"></a>' +
+    '<figcaption>' + esc(a.caption) + ' <a href="' + esc(a.src) +
+    '" target="_blank" rel="noopener">Open full-size original</a></figcaption></figure>').join("");
+}
+
+/* A reused SVG needs its own IDs when the same figure appears in several answers. */
+function answerDiagramHTML(id, key, index) {
+  const d = DIAGRAMS[id];
+  if (!d) return "";
+  const suffix = "-answer-" + key.replace(/[^a-zA-Z0-9-]/g, "-") + "-" + index;
+  const svg = d.svg.replace(/\bid="([^"]+)"/g, (_, value) => 'id="' + value + suffix + '"')
+    .replace(/url\(#([^)]+)\)/g, (_, value) => "url(#" + value + suffix + ")")
+    .replace(/\b(aria-labelledby|aria-describedby)="([^"]+)"/g, (_, attr, value) =>
+      attr + '="' + value.split(/\s+/).map(v => v + suffix).join(" ") + '"')
+    .replace(/\b(href|xlink:href)="#([^"]+)"/g, (_, attr, value) => attr + '="#' + value + suffix + '"');
+  return '<div class="diagram">' + svg + '<div class="dcap">' + esc(d.cap) + '</div></div>';
+}
+
+function pyqAnswerHTML(answer, key) {
+  if (!answer) return "";
+  const label = answer.kind === "worked" ? "Show worked answer" : "Show answer";
+  const diagrams = (answer.diagrams || []).map((id, i) => answerDiagramHTML(id, key, i)).join("");
+  return '<details class="pyq-answer"><summary>' + label + '</summary><div class="answer">' +
+    answer.html + diagrams + sourcesLine(answer) + '</div></details>';
+}
+
 function occHTML(e) {
   const label = paperById[e.p] ? paperById[e.p].label : e.p;
-  return '<li><div class="occ-rail">' +
+  const key = e.p + ":" + e.no;
+  const items = PYQ_ASSETS[key] || [];
+  /* Old editorial placeholders are not paper wording. Hide only the terminal
+     table/matrix annotation, and only when its source visual is now present. */
+  const question = items.length ? e.q.replace(/\s*\[[^\]]*(?:table|matrix)[^\]]*\]\s*$/i, "") : e.q;
+  return '<li data-pyq-key="' + esc(key) + '"><div class="occ-rail">' +
     '<span class="occ-paper" title="' + esc(label) + '">' + esc(label) + "</span>" +
     '<span class="occ-no">Q' + esc(e.no) + " · " + e.marks + "m</span></div>" +
-    '<p class="occ-q">' + e.q + "</p></li>";
+    '<div class="occ-body"><p class="occ-q">' + question + '</p>' + pyqAssetsHTML(items) +
+    pyqAnswerHTML(PYQ_ANSWERS[key], key) + '</div></li>';
 }
 
 /* A repeat-group card: theme label + ×N badge, then its occurrences, then an

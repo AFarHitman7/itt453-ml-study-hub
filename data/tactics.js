@@ -10,55 +10,55 @@ window.ML_TACTICS = [
   id: "paper-shape",
   title: "How the paper is built",
   html: `
-  <p>Three hours, 100 marks, and a shape you can plan around. Part A is ten short questions of three marks each, all compulsory, and the pattern gives two per module, though one boundary question can straddle two modules. Part B is five questions of fourteen marks, one from each module, and each module gives you two to choose between. That makes fifteen questions in all: ten short ones and five long ones.</p>
-  <p>The marks add up in a way worth remembering. By the pattern, every module carries 6 marks in Part A and 14 in Part B, so a module is worth about 20 marks on the day. The Part A share is 6 by design, with one paper drifting where a boundary question straddles two modules. That is a fifth of the paper in every module, with no way to opt out. The choice in Part B sits inside the module, so it cannot cover for a module you skipped.</p>
+   <p>You have three hours and 100 marks. Part A has ten compulsory questions worth three marks each, usually two per module. A boundary question may cover two modules. Part B has five questions worth 14 marks each, one per module, with two options within each module.</p>
+   <p>Each module is worth about 20 marks: 6 in Part A and 14 in Part B. Part A is compulsory, and Part B choices stay within their module. Skipping a module leaves no substitute choice.</p>
   <h4>What Part A actually asks</h4>
-  <p>Read a set of Part A questions and four shapes appear. Define a term, as in entropy or a confusion matrix. Differentiate two ideas, as in classification and clustering. List examples or components, as in activation functions or HMM elements. Work one small calculation, as in a distance between two points or a neuron output. Three marks is worth about four lines, so keep the answer tight.</p>
-  <p>The numbering usually runs two questions per module in order, module 1 first. It drifts in places, so read the topic instead of trusting the position.</p>
+   <p>Part A questions usually ask you to define, compare, list, or calculate. Examples include entropy, classification versus clustering, HMM components, distances, and neuron outputs. Aim for about four clear lines per three-mark answer.</p>
+   <p>Questions usually follow module order, but the numbering can shift. Read each topic instead of relying on its position.</p>
   <h4>What Part B actually asks</h4>
-  <p>Every Part B question totals 14, and the two options in a module are different routes to the same 14. The split is where the decision lives. One question may be 8 + 6, another 9 + 5, another 10 + 4, another 7 + 7. A few arrive as a single 14-mark block rather than an a/b split, with smaller numbered parts inside.</p>
-  <p>Read both options to the end and look at the marks printed beside (a) and (b). If (a) carries 10, then (a) is the question. A perfect four-mark (b) will not save a half-finished (a), and choosing by the friendlier first line turns a good paper into a rushed one.</p>
+   <p>Each Part B option totals 14 marks. Parts may be split 8 + 6, 9 + 5, 10 + 4, or 7 + 7; some questions use one block with smaller parts.</p>
+   <p>Read both options through, including the marks for each part. Choose the option whose larger part you can finish, not the one with the friendlier opening line.</p>
   <h4>Use the shape tonight</h4>
-  <p>Two consequences follow. First, the last module is as valuable as the first, so give every module at least its definitions and one usable Part B answer. Second, the Part B choice rewards preparation of the big a-parts: backpropagation, SVM classification, the HMM problems, methods for combining learners, and the numeric routines. Those are the parts that decide which option you can finish.</p>`
+   <p>Prepare every module: learn its key definitions and one Part B answer. Practise longer topics such as backpropagation, SVM classification, HMM problems, ensemble methods, and numeric procedures so you can choose an option you can complete.</p>`
 },
 {
   id: "night-before",
   title: "The night before",
   html: `
-  <p>Study by payoff tonight. The highest-paying work goes first, while you still have attention, and the definitions come last because they refresh quickly in the morning. Four blocks, with a short break between them.</p>
+   <p>Use four focused blocks with short breaks. Start with calculations and longer answers, then review definitions and diagrams.</p>
   <div class="tl">
     <div class="ts">Block 1 · 50 min · the numeric templates</div>
-    <p>Across the papers the same five numeric questions return with new numbers: naive Bayes on a small training table, a confusion matrix built from a story about dogs or patients or balls, the first split of an ID3 tree, two rounds of k-means, and a dendrogram from a distance matrix. Only the numbers change, so practise the fixed steps. Do one of each with the page closed, and write the setup table before you calculate. If the arithmetic wobbles, the setup still shows the method.</p>
+     <p>Practise five recurring calculation types: naive Bayes, confusion matrices, the first ID3 split, two k-means rounds, and a dendrogram from a distance matrix. Attempt one of each with notes closed. Set up the table before calculating so your method stays clear if arithmetic slips.</p>
   </div>
   <div class="tl">
     <div class="ts">Block 2 · 45 min · the explain answers</div>
-    <p>Four topics carry most of the big Part B parts: backpropagation, SVM for linearly separable data, the three HMM problems, and methods for combining learners. They share one skeleton, so learn the skeleton once and pour each topic into it: definition, labelled diagram, ordered steps, one concrete example, one limitation or comparison. Say the skeleton out loud for each topic, then close the page and write the steps in order. Name the forward pass and the backward pass explicitly in backpropagation; a paragraph without them loses the marks the steps would have earned.</p>
+     <p>Review backpropagation, SVM for linearly separable data, the three HMM problems, and ensemble methods. For each, practise a definition, labelled diagram, ordered steps, example, and one limitation or comparison. For backpropagation, name both the forward and backward passes.</p>
   </div>
   <div class="tl">
     <div class="ts">Block 3 · 25 min · the short-answer definitions</div>
-    <p>Part A is thirty marks of small answers, and each one is quick to prepare. Run the list: entropy and information gain, precision, recall and accuracy, activation function, support vector and margin, the components of an HMM, similarity measures, linear separability. Say each one in a single sentence, then add one example. If a definition will not come out in one sentence, you do not have it yet.</p>
+     <p>Review entropy, information gain, precision, recall, accuracy, activation functions, support vectors, margins, HMM components, similarity measures, and linear separability. Define each in one sentence, then add an example.</p>
   </div>
   <div class="tl">
     <div class="ts">Block 4 · 20 min · the six diagrams</div>
-    <p>Draw from memory: the perceptron, the backpropagation network with its layers and arrows, the SVM margin with support vectors, ROC space with its axes, the DBSCAN point diagram, and a small dendrogram. Label every part. A diagram you can produce in two minutes is worth more than a paragraph you have to invent in the hall.</p>
+     <p>Draw six diagrams from memory: perceptron, backpropagation network, SVM margin, ROC axes, DBSCAN point types, and a small dendrogram. Label every part.</p>
   </div>
   <div class="tl">
     <div class="ts">Before sleep, and in the morning</div>
-    <p>Skim only the definitions, then sleep. In the morning, redo one numeric setup and one diagram, read the definition list once, and add nothing new. New material on exam morning mostly produces panic. A clean run through old material settles you before you walk in.</p>
+     <p>Skim definitions, then sleep. In the morning, redo one numeric setup and one diagram, then review the definitions once. Leave new material aside.</p>
   </div>`
 },
 {
   id: "templates",
   title: "Answer templates",
   html: `
-  <p>Four formats cover almost every question on this paper. Learn the shape of each one, and you stop inventing structure under time pressure.</p>
+   <p>Use these four formats to organise answers under time pressure.</p>
   <h4>3-mark short answer</h4>
   <ul>
     <li><b>Define</b> the term in one sentence, using the standard word. "Entropy is the average uncertainty in a dataset."</li>
     <li><b>Give the one-line formula or the list</b>: H(S) = -Σ p log2 p, or the three components, or the two examples the question asked for.</li>
     <li><b>Add a tiny example</b>: a fair coin has entropy 1 bit, and a biased coin has less.</li>
   </ul>
-  <p>Three or four lines is enough. Underline the term and move on, because Part A rewards coverage more than depth.</p>
+   <p>Three or four lines is enough. Underline the key term and move on.</p>
   <h4>Numeric Part B answer</h4>
   <ol>
     <li><b>Name the method and the formula.</b> "Using k-means with Euclidean distance, assign each point to the nearest centroid."</li>
@@ -66,7 +66,7 @@ window.ML_TACTICS = [
     <li><b>Compute in steps.</b> One line per point per round, with the subtraction and the square visible. For ID3, show the target entropy first, then the gain for each attribute. For naive Bayes, show the class priors, then the conditional product for each class.</li>
     <li><b>Box the answer and write it as a sentence.</b> "The three clusters after two rounds are ... with centroids ...". A bare number at the bottom is easy to miss.</li>
   </ol>
-  <p>If time runs short, the setup and two steps earn more than a guessed final answer.</p>
+   <p>If time runs short, show the setup and working rather than guessing.</p>
   <h4>Explain-this-algorithm answer</h4>
   <ol>
     <li><b>Definition</b> in one sentence, then the purpose.</li>
@@ -75,71 +75,71 @@ window.ML_TACTICS = [
     <li><b>One concrete example</b>: two points for a perceptron, a short sequence for an HMM, three classifiers for an ensemble.</li>
     <li><b>One comparison or limitation</b> to close, such as k-means needing k in advance or backpropagation being slow to converge.</li>
   </ol>
-  <p>This skeleton fits backpropagation, SVM, the HMM problems, DBSCAN and the ensemble methods, which is most of Part B.</p>
+   <p>Use this structure for backpropagation, SVM, HMM problems, DBSCAN, and ensemble methods.</p>
   <h4>Define-the-terms answer</h4>
-  <p>Give each term its own line and keep the sentence shape identical, so the answer reads as a set. Add a single diagram if the terms are geometric.</p>
+   <p>Give each term its own line using a consistent sentence pattern. Add a diagram for geometric terms.</p>
   <ul>
     <li><b>Support vector:</b> a training point that lies closest to the separating hyperplane and therefore fixes the margin.</li>
     <li><b>Hyperplane:</b> the decision boundary that separates the classes, written as w·x + b = 0.</li>
     <li><b>Margin:</b> the distance between the hyperplane and the nearest support vectors, which SVM tries to maximise.</li>
   </ul>
-  <p>Then draw one picture with all three labelled. Three separate paragraphs without the picture make the examiner assemble the geometry alone.</p>
+   <p>Draw one picture with all three terms labelled.</p>
   <h4>Match the verb</h4>
-  <p>Define gets a sentence. List gets items. Differentiate gets a two-column table. Compute gets steps. Illustrate gets an example. Justify gets a reason plus a consequence. Then check the verb the paper used, because a table where a definition was asked reads as an answer to a different question.</p>`
+   <p>Define: one sentence. List: items. Differentiate: a two-column table. Compute: numbered steps. Illustrate: an example. Justify: a reason and consequence. Match the format to the question's verb.</p>`
 },
 {
   id: "memory",
   title: "Memory hooks",
   html: `
-  <p>These are hooks, not explanations. Say each one once, then test it with the page closed.</p>
+   <p>Use each hook to recall the steps, then test yourself with the page closed.</p>
   <ul>
-    <li><b>Three HMM problems:</b> "Likely, path, tune." Evaluation asks how likely the observation sequence is, decoding asks which hidden path produced it, learning asks how to tune the parameters. Attach the algorithm to each: Forward, Viterbi, Baum-Welch.</li>
-    <li><b>Three ensemble schemes:</b> "Two Bs and a V." Bagging trains learners in parallel on resamples, boosting trains them in sequence so each fixes the last one's errors, and voting counts their answers. The sequence question is what separates boosting from the other two.</li>
-    <li><b>DBSCAN point types:</b> "Crowd, edge, alone." A core point has the crowd inside its radius, a border point stands at the edge of the crowd, and noise stands alone. Tie the picture to minPts and epsilon.</li>
-    <li><b>Activation families:</b> "Step, S, straight, bent." Step is the threshold, S is the sigmoid family (binary sigmoid, bipolar sigmoid, tanh), straight is linear, and bent is ReLU. Binary outputs run 0 to 1 and bipolar outputs run -1 to +1.</li>
-    <li><b>ID3 procedure:</b> "Whole, column, winner, branch." Entropy of the whole set, information gain for each column, split on the winner, repeat on every branch. Stop when a branch is pure or the attributes run out.</li>
-    <li><b>PCA steps:</b> "Centre, covariance, pairs, projection." Centre the data, build the covariance matrix, take the eigenvalue and eigenvector pairs, keep the largest, and project the data onto them.</li>
-    <li><b>Confusion matrix:</b> "First letter truth, second letter verdict." TP is actually positive and predicted positive. FP is actually negative and predicted positive. Label the rows and columns too, since layouts differ between textbooks.</li>
-    <li><b>ROC corners:</b> "Perfect top left, random on the diagonal." The point (0,1) is a perfect classifier, the diagonal is a coin toss, (0,0) never predicts positive, and (1,1) always does. Axes: false positive rate across, true positive rate up.</li>
+     <li><b>Three HMM problems:</b> "Likely, path, tune." Evaluation finds the observation sequence likelihood; decoding finds the hidden path; learning tunes the parameters. Match them to Forward, Viterbi, and Baum-Welch.</li>
+     <li><b>Three ensemble schemes:</b> "Two Bs and a V." Bagging trains in parallel on resamples. Boosting trains in sequence, focusing on earlier errors. Voting combines predictions.</li>
+     <li><b>DBSCAN point types:</b> "Crowd, edge, alone." A core point has enough neighbours within its radius; a border point sits at a cluster edge; noise sits outside. Recall minPts and epsilon.</li>
+     <li><b>Activation families:</b> "Step, S, straight, bent." These mean threshold, sigmoid family (binary sigmoid, bipolar sigmoid, tanh), linear, and ReLU. Binary sigmoid ranges from 0 to 1; bipolar sigmoid ranges from -1 to +1.</li>
+     <li><b>ID3 procedure:</b> "Whole, column, winner, branch." Find whole-set entropy, compute each column's information gain, split on the best, then repeat. Stop at a pure branch or when attributes run out.</li>
+     <li><b>PCA steps:</b> "Centre, covariance, pairs, projection." Centre the data, compute covariance and eigenvalue-eigenvector pairs, keep the largest eigenvalues, and project onto their eigenvectors.</li>
+     <li><b>Confusion matrix:</b> "First letter truth, second letter verdict." TP is positive in truth and prediction; FP is negative in truth but positive in prediction. Label rows and columns because layouts vary.</li>
+     <li><b>ROC corners:</b> "Perfect top left, random on the diagonal." (0,1) is perfect; the diagonal is random. (0,0) never predicts positive; (1,1) always does. Put false-positive rate on x and true-positive rate on y.</li>
   </ul>`
 },
 {
   id: "hall",
   title: "Exam hall tactics",
   html: `
-  <p>Three hours is enough if you spend it in the right order. Here is a budget that leaves room for the mistakes everyone makes.</p>
+   <p>Use this three-hour schedule and protect the final ten minutes for a check.</p>
   <div class="tl">
     <div class="ts">0:00 to 0:40 · Part A</div>
-    <p>Take the ten short questions first. Four minutes each is the pace, and most will take less. Answer every one, even with a bare definition, because a blank is the only answer that cannot score. If a calculation stalls, write the formula and the setup, mark the question, and move on.</p>
+     <p>Answer all ten short questions, at about four minutes each. If a calculation stalls, write the formula and setup, mark it, and continue.</p>
   </div>
   <div class="tl">
     <div class="ts">0:40 to 2:50 · Part B, about 26 minutes a module</div>
-    <p>For each module, read both questions to the end, including the marks on each part, then choose. Pick by your strongest a-part, since the a-part carries the bigger share and both options total the same 14. A familiar topic with an a-part you cannot finish is a trap.</p>
-    <p>Spend the first two minutes on the diagram or the setup table, then write. Keep 26 minutes as the ceiling for a module. If one runs long, take the time back from the next module, not from the final ten minutes.</p>
+     <p>Read both options and their part marks before choosing. Pick the one whose larger part you can answer well. Both options total 14 marks.</p>
+     <p>Spend the first two minutes on a diagram or setup table. Keep each module to 26 minutes; recover lost time from the next module, not the final check.</p>
   </div>
   <div class="tl">
     <div class="ts">2:50 to 3:00 · the sweep</div>
-    <p>Fill any parked Part A answers. Check that all five Part B questions are present, one per module, with both (a) and (b) answered. Add missing axis labels, units and diagram labels, and underline each final answer. Do not begin a new derivation in this window.</p>
+     <p>Finish parked Part A answers. Check for five Part B answers, one per module, and complete (a) and (b) parts. Add missing labels, units, and axes; underline final answers. Do not start a new derivation.</p>
   </div>
   <h4>How much working to show</h4>
-  <p>Enough that a reader can follow without guessing. For k-means, one distance table per round and the updated centroids. For ID3, the target entropy and one gain line per attribute. For naive Bayes, the priors and the product for each class. For a confusion matrix, the four cells with labels before any ratio. The arithmetic can slip and the method still reads.</p>
+   <p>Show enough working to follow your method. For k-means, include each round's distance table and updated centroids. For ID3, show target entropy and each attribute's gain. For naive Bayes, show priors and each class product. Label all four confusion-matrix cells before calculating ratios.</p>
   <h4>When to draw</h4>
-  <p>Draw first whenever the question asks for a diagram, and draw anyway for the perceptron, backpropagation, SVM, ROC, DBSCAN and any dendrogram. Give the drawing a third of the answer space, label every box and arrow, and then let the prose walk the same order. A labelled diagram also gives you something to refer back to when the wording dries up.</p>`
+   <p>Draw when asked, and practise diagrams for the perceptron, backpropagation, SVM, ROC, DBSCAN, and dendrograms. Leave room to label every box, arrow, and axis. Explain the steps in the same order as the drawing.</p>`
 },
 {
   id: "graders",
   title: "What the graders look for",
   html: `
-  <p>Some habits show up again and again in answers that score well on this paper. They come from experience with questions of this shape.</p>
+   <p>Make your method easy to follow: show the steps, label diagrams, and answer every part.</p>
   <h4>Show the method as well as the answer</h4>
-  <p>A strong numeric answer reads like a recipe: the method named, the table set up, the steps in order, the final answer marked. When the arithmetic slips, the setup and the steps still carry most of the credit, because the examiner can see that you knew the procedure. A bare final number gives the examiner nothing to award if it is wrong.</p>
+   <p>Name the method, set up the table, show ordered steps, and mark the final answer. Clear working lets the grader follow your procedure even if arithmetic slips.</p>
   <h4>Draw the diagram even when the question forgets to ask</h4>
-  <p>Where a question says "with a neat diagram", the diagram is part of the marks. The safest shape is to draw one anyway for the perceptron, backpropagation, SVM and its margin, ROC space, DBSCAN point types and any dendrogram. Label the axes, the layers, the support vectors, the core and border points. An unlabelled sketch earns little, while a labelled one frames everything you write after it.</p>
+   <p>A requested diagram is part of your answer. Practise the perceptron, backpropagation, SVM margin, ROC space, DBSCAN points, and dendrograms. Label axes, layers, support vectors, core points, and border points.</p>
   <h4>Name the algorithm beside the problem</h4>
-  <p>For the HMM question, put Forward beside evaluation, Viterbi beside decoding, and Baum-Welch beside learning. A list of three problem names answers only half the question, while the algorithm names show how each one is solved. The same habit helps elsewhere: name k-means, DBSCAN, ID3, naive Bayes and backpropagation explicitly at the start of the answer.</p>
+   <p>For HMMs, pair Forward with evaluation, Viterbi with decoding, and Baum-Welch with learning. Name the relevant method at the start of other answers too: k-means, DBSCAN, ID3, naive Bayes, or backpropagation.</p>
   <h4>Answer the verb, and finish every part</h4>
-  <p>Define gets one sentence. Differentiate gets a table with two columns. Compute gets numbered steps. Illustrate gets an example with real values. Justify gets a reason and a consequence. Then check that both (a) and (b) are answered, because a missing short part costs several marks for a few lines of work.</p>
+   <p>Define in one sentence; differentiate with a two-column table; compute with numbered steps; illustrate with values; justify with a reason and consequence. Check that you answered both (a) and (b).</p>
   <h4>Keep the answer readable</h4>
-  <p>Use short paragraphs, numbered steps, a boxed or underlined final answer, and labels on every drawing. A complete short answer scores better than a long unfinished one, so make the script easy to follow.</p>`
+   <p>Use short paragraphs and numbered steps. Box or underline the final answer and label every drawing. Finish a clear answer before adding extra detail.</p>`
 }
 ];

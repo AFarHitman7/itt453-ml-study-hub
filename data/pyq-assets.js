@@ -1,0 +1,21 @@
+window.ML_PYQ_ASSETS = {
+  'm23:13a': [{src:'assets/pyq/m23-13a.png',alt:'Training table of family structure, age group, income status and car purchase.',caption:'Training data from the question paper.',paper:'m23',page:2}],
+  'm23:15a': [{src:'assets/pyq/m23-15a.png',alt:'Training table of age, income, student status, credit rating and computer purchase.',caption:'Training data from the question paper.',paper:'m23',page:3}],
+  'm23:20a': [{src:'assets/pyq/m23-20a.png',alt:'Distance matrix for items A through F.',caption:'Distance matrix from the question paper.',paper:'m23',page:4}],
+  'd23:15a': [{src:'assets/pyq/d23-15a.png',alt:'Training table of major, experience, tie and hiring outcome.',caption:'Training data from the question paper.',paper:'d23',page:2}],
+  'd23:19a': [{src:'assets/pyq/d23-19a.png',alt:'Lower triangular distance matrix for items A through F.',caption:'Distance matrix from the question paper.',paper:'d23',page:3}],
+  'm24:13a': [{src:'assets/pyq/m24-13a.png',alt:'Training table of weather, road, traffic, engine problems and accidents.',caption:'Training data from the question paper.',paper:'m24',page:2}],
+  'm24:15a': [{src:'assets/pyq/m24-15a.png',alt:'Training table of gender, car ownership, travel cost, income and transportation mode.',caption:'Training data from the question paper.',paper:'m24',page:2}],
+  'm24:20': [{src:'assets/pyq/m24-20.png',alt:'Lower triangular distance matrix for points P1 through P6.',caption:'Distance matrix from the question paper.',paper:'m24',page:3}],
+  'n24:4': [{src:'assets/pyq/n24-4.png',alt:'Actual and predicted binary classification values.',caption:'Classification data from the question paper.',paper:'n24',page:1}],
+  'n24:13a': [{src:'assets/pyq/n24-13a.png',alt:'Employee table of department, status, age, salary and count.',caption:'Training data from the question paper.',paper:'n24',page:2}],
+  'n24:15a': [{src:'assets/pyq/n24-15a.png',alt:'Mobile store training table of memory, battery life, price and customer satisfaction.',caption:'Training data from the question paper.',paper:'n24',page:3}],
+  'n24:16b': [{src:'assets/pyq/n24-16b.png',alt:'Trip table of bus type, distance and trip class.',caption:'Dataset from the question paper.',paper:'n24',page:3}],
+  'n24:20': [{src:'assets/pyq/n24-20.png',alt:'Distance matrix for items A through E.',caption:'Distance matrix from the question paper.',paper:'n24',page:4}],
+  'n25:13a': [{src:'assets/pyq/n25-13a.png',alt:'Training table of income, age, credit rating, previous car ownership and purchase.',caption:'Training data from the question paper.',paper:'n25',page:2}],
+  'n25:15a': [{src:'assets/pyq/n25-15a.png',alt:'Training table of education, employment, marital status and loan approval.',caption:'Training data from the question paper.',paper:'n25',page:3}],
+  'n25:20a': [{src:'assets/pyq/n25-20a.png',alt:'Distance matrix for points A through F.',caption:'Distance matrix from the question paper.',paper:'n25',page:4}],
+  'm26:13a': [{src:'assets/pyq/m26-13a.png',alt:'Employee table of department, status, age, salary and count.',caption:'Training data from the question paper.',paper:'m26',page:2}],
+  'm26:15a': [{src:'assets/pyq/m26-15a.png',alt:'Training table of gender, car ownership, travel cost, income and transport mode.',caption:'Training data from the question paper.',paper:'m26',page:3}],
+  'm26:20': [{src:'assets/pyq/m26-20.png',alt:'Lower triangular distance matrix for points A through F.',caption:'Distance matrix from the question paper.',paper:'m26',page:4}]
+};

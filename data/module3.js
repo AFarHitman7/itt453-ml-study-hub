@@ -14,13 +14,16 @@ window.ML_MODULES[3] = {
       blocks: [
         {
           type: "definition",
-          text: "A decision tree is a supervised model that splits data through a chain of feature tests and predicts a class or number at a leaf."
+          text: "A decision tree learns from labelled examples, then follows feature tests to a leaf that predicts a class or a number."
         },
         {
           type: "text",
-          html: `<p><b>The four parts.</b> A decision tree is a flowchart you read from the top down. The <b>root node</b> holds the whole training set and the first test. An <b>internal node</b> tests one attribute, a <b>branch</b> is one answer to that test, and a <b>leaf</b> gives the prediction. Every path from root to leaf is a rule of the form "if attendance is good and hours are high, then pass".</p>
-<p><b>How it grows.</b> The tree is built by recursive partitioning, also called top-down induction. At each node the learner scores every unused attribute, picks the one that separates the classes best, and divides the rows by its values. The same step repeats on each child with the attributes that are left. Growth stops when a node is pure, when no attributes remain (the node becomes a leaf with the majority class), or when the subset is empty (the leaf takes the parent's majority class). The search is greedy, because each split is chosen for its local score without looking at the tree it will produce later.</p>
-<p><b>Two types, one difference.</b> The type follows the target column, not the algorithm.</p>
+          html: `<h4>The four parts</h4><p>Read a decision tree from the top down, like a flowchart. The <b>root node</b> holds all training rows and asks the first question. An <b>internal node</b> tests one attribute, and a <b>branch</b> is one answer to that test.</p>
+<p>A <b>leaf</b> gives the prediction. A full path becomes a rule: if attendance is good and study hours are high, predict pass.</p>
+<h4>How the tree grows</h4><p>The learner uses <b>recursive partitioning</b>, also called top-down induction. At each node it scores the unused attributes, picks the best split, and divides the rows by that attribute's values. It then repeats the step on each child.</p>
+<p>Growth stops when all rows in a node share a class, no attributes remain, or a subset is empty. A mixed node with no attributes left predicts its majority class. An empty child uses its parent's majority class.</p>
+<p>The search is <b>greedy</b>: each split is chosen for its score now, without checking the whole future tree.</p>
+<h4>Classification and regression trees</h4><p>The target column decides which kind you have. The algorithm does not.</p>
 <table class="tbl">
 <tr><th></th><th>Classification tree</th><th>Regression tree</th></tr>
 <tr><td>Target</td><td>a class or label</td><td>a continuous number</td></tr>
@@ -28,38 +31,40 @@ window.ML_MODULES[3] = {
 <tr><td>Split score</td><td>entropy, Gini, gain ratio</td><td>reduction in squared error (variance)</td></tr>
 <tr><td>Example</td><td>spam or not spam</td><td>house price, delivery minutes</td></tr>
 </table>
-<p><b>One caution about names.</b> Classification and regression tree (CART) is the umbrella term for both kinds, and ID3, C4.5 and CART are algorithms that build trees, not separate types. Ensembles such as a random forest or a boosted tree build many trees and vote, so they sit outside this two-way split.</p>
-<p>A leaf can also store the class distribution instead of a single label. A leaf reading "3 Yes, 1 No" is more honest than a bare "Yes", because it shows how much evidence sits behind the answer.</p>`
+<h4>Names and leaf evidence</h4><p><b>Classification and regression tree (CART)</b> is an umbrella term for both kinds. ID3, C4.5 and CART are tree-building algorithms, not separate tree types. A random forest or boosted tree combines many trees, so it is an ensemble.</p><p>A leaf may show class counts instead of only a label. For example, “3 Yes, 1 No” shows how many training rows support the prediction.</p>`
         },
         {
           type: "example",
-          html: `<p>A courier wants to flag late deliveries. The training table has distance, weather, time of day and a late flag, and a tree of depth three is grown on last year's trips. At prediction time a new order with a 32 km distance and heavy rain follows two branches and lands in a leaf that says "late, 11 of 14 rows". The dispatcher sees both the warning and the strength of the evidence. Because the target is a yes/no flag, this is a classification tree, and the leaf label carries the counts that support it.</p>`
+          html: `<h4>Follow one delivery</h4><p>A courier company wants to flag late deliveries. Its training table holds distance, weather, time of day and a late flag. The company grows a depth-three tree from last year's trips.</p>
+<p>A new order is 32 km away and the rain is heavy. It follows two branches to a leaf marked “late, 11 of 14 rows.” The dispatcher sees the prediction and the count behind it.</p>
+<p>The target is yes or no, so this is a classification tree.</p>`
         },
         {
           type: "tip",
-          html: `<p>Sketch the tree with the root at the top, then label root, internal node, branch and leaf before you write a sentence, since those four labels are quick marks. For a 3-mark question, put classification and regression in a two-row table and name what sits in the leaf. Add one line on how the tree is grown, because a definition alone rarely fills 5 marks. If the question says types and nothing else, do not spend half the answer on ID3.</p>`
+          html: `<h4>Build an exam answer</h4><p>Sketch the root at the top. Label the root, internal node, branch and leaf, then explain each in a sentence. For a 3-mark question, compare classification and regression in a two-row table and state what each leaf stores.</p><p>For a longer answer, add how recursive partitioning grows the tree. If asked only for tree types, keep the focus there rather than spending most of the answer on ID3.</p>`
         }
       ],
       practice: [
         {
-          q: "A courier company trains a tree to predict delivery time in minutes from distance, weather and time of day. Is this a classification tree or a regression tree? State what sits in each leaf and which split criterion you would use.",
-          a: `<p>It is a regression tree, because the target is a continuous number rather than a class. Each leaf holds the mean delivery time of the training rows that reach it, so a leaf might read "38 minutes, 12 rows".</p>
-<p>The split criterion is the reduction in squared error. For a node, take the sum of squared differences between each row's time and the node mean, then compare it with the weighted sum of the two or more child errors after a candidate split. The attribute that removes the most squared error wins. Entropy and Gini need class labels, so they do not apply until you bin the minutes into ranges, and binning throws away the ordering that a regression tree uses.</p>
-<p>If the company later asks "late or not late", the same data becomes a classification tree, the leaves hold labels, and entropy is the natural score.</p>`,
+          q: "A courier company predicts delivery time in minutes from distance, weather and time of day. Is its tree a classification or regression tree? Explain what each leaf stores and which split criterion to use.",
+          a: `<h4>Identify the tree</h4><p>This is a regression tree because its target, delivery time, is a continuous number. Each leaf stores the mean time for the training rows that reach it. A leaf could read “38 minutes, 12 rows.”</p>
+<h4>Choose a split</h4><p>Use reduction in squared error. First, find each row's difference from the node's mean time, square it, and add the squares.</p>
+<p>After a candidate split, calculate the same error in each child and take their weighted average. The split that removes the most squared error wins.</p>
+<p>Entropy and Gini score class labels, so they do not fit a numeric target unless you first turn minutes into ranges. Binning loses the order and detail in the original times.</p>
+<h4>If the target changes</h4><p>If the company instead predicts “late” or “not late,” the target is a class. The leaves then hold labels, and entropy is a suitable split score.</p>`,
           marks: 3,
           diff: "easy"
         },
         {
-          q: "A loan officer uses this tree. Root: amount above 5000? If yes, go to existing customer? If yes, approve, if no, reject. If the amount is 5000 or less, go to repayment on time last year? If yes, approve, if no, reject. Write the four decision rules, predict for an applicant who asks for 8000 and is an existing customer with an on-time record, and say what the leaf does not tell you.",
-          a: `<p>The four rules, one per leaf:</p>
-<ol>
+          q: "A loan officer's tree first asks whether the amount exceeds 5000. If yes, it approves existing customers and rejects others. If no, it approves applicants who repaid on time last year and rejects others. Write all four rules. Predict for an existing customer requesting 8000 with an on-time record, and explain what the leaf does not reveal.",
+          a: `<h4>Write one rule per leaf</h4><ol>
 <li>Amount above 5000 and existing customer: approve.</li>
 <li>Amount above 5000 and not an existing customer: reject.</li>
 <li>Amount 5000 or less and repaid on time last year: approve.</li>
 <li>Amount 5000 or less and did not repay on time last year: reject.</li>
 </ol>
-<p>The new applicant takes the left branch at the root, then the left branch at the second test, and lands on rule 1: approve.</p>
-<p>The leaf gives a decision, not a confidence. A bare label says nothing about how many past applicants followed that path or how mixed they were, so a leaf built from two rows looks as certain as a leaf built from two thousand. Store the class counts or a probability at each leaf if the officer needs that. An applicant whose combination never appeared in training can only be answered by the majority class of the nearest node the tree can reach.</p>`,
+<h4>Classify the applicant</h4><p>The applicant asks for 8000 and is an existing customer. They follow “yes” at the amount test and “yes” at the customer test, reaching rule 1: approve. The on-time record does not affect this path.</p>
+<h4>What the leaf leaves out</h4><p>A leaf gives a decision, not its confidence. A bare label does not show how many applicants followed the path or whether their labels were mixed.</p><p>Two rows and two thousand rows could both appear as “approve.” Store class counts or probabilities when the officer needs that evidence.</p><p>For a combination absent from training, the tree still follows its tests. At a missing child, it uses the majority class of the parent.</p>`,
           marks: 5,
           diff: "medium"
         }
@@ -75,21 +80,28 @@ window.ML_MODULES[3] = {
       blocks: [
         {
           type: "definition",
-          text: "Entropy measures a node's impurity, information gain measures the impurity a split removes, and gain ratio divides gain by split information."
+          text: "Entropy measures how mixed a node's classes are, information gain measures the mix a split removes, and gain ratio divides gain by split information."
         },
         {
           type: "text",
-          html: `<p><b>Entropy.</b> Entropy scores how mixed the class labels are at a node.</p>
+          html: `<h4>Entropy: how mixed is this node?</h4><p>Picture a node as a bag of labelled rows. If every row has the same label, you can guess the label with no uncertainty. If the labels are evenly mixed, a guess is a coin toss.</p>
+<p>Entropy turns that feeling into a number. It is a measure of impurity. A pure bag scores 0, and a bag with two equal classes scores 1, the most mixed case for two classes. Entropy falls as the labels become more one-sided.</p>
 <p>H(S) = &minus;&Sigma; p<sub>i</sub> log<sub>2</sub>(p<sub>i</sub>)</p>
-<p>Here p<sub>i</sub> is the fraction of rows in class i. A pure node has H = 0, because the only term is &minus;1 log<sub>2</sub>1 = 0. A node split evenly between two classes has H = 1. With c classes the maximum is log<sub>2</sub>c, so a four-class node tops out at 2 bits. Entropy falls as the node becomes more one-sided, which is why it is called a measure of impurity rather than of information.</p>
-<p><b>Information gain.</b> Gain compares the parent with its children.</p>
+<p>Here <b>S</b> is the set of rows, <b>i</b> names a class, and <b>p<sub>i</sub></b> is that class's fraction of the rows. A pure node has H = 0 because its only term is &minus;1 log<sub>2</sub>1 = 0.</p>
+<p>With c classes the maximum is log<sub>2</sub>c, so four equally sized classes give 2 bits.</p>
+<h4>Information gain: how much did a split help?</h4><p>A split turns the parent into children, and each child has its own entropy. A big child should count for more than a small one.</p>
+<p>So multiply each child's entropy by its share of the rows, then add these figures. That sum is a weighted average of the child entropies.</p>
 <p>IG(S, A) = H(S) &minus; &Sigma;<sub>v</sub> (|S<sub>v</sub>| / |S|) H(S<sub>v</sub>)</p>
-<p>The second term is the weighted average entropy of the subsets created by attribute A. It is never larger than H(S), so gain is never negative. ID3 chooses the attribute with the largest gain. Write the fractions out in the exam, as 0.4 &times; 0.811, because that line is where most arithmetic marks sit.</p>
-<p><b>Why plain gain misleads.</b> Give an attribute one distinct value per row, such as a customer number or a transaction ID. Every subset is a single row, so every child has entropy 0, the weighted term vanishes, and the gain equals the whole parent entropy. The attribute wins the comparison and teaches the tree nothing that generalises, since a new customer brings a number the tree has never seen.</p>
-<p><b>Gain ratio.</b> Split information measures how widely an attribute divides the data.</p>
+<p>In the formula, <b>A</b> is the attribute, <b>v</b> is one of its values, and <b>S<sub>v</sub></b> is the child holding the rows with that value. The fraction |S<sub>v</sub>| / |S| is the child's share.</p>
+<p>Subtract the weighted average from the parent's entropy. The answer is the gain, and it is never negative because the children cannot be more mixed than the parent. ID3 picks the attribute with the largest gain.</p>
+<h4>Why plain gain can mislead</h4><p>Suppose each row has its own customer number. The split makes one child per row, and every child is pure with entropy 0. The weighted average is 0, so the gain equals all of the parent's entropy.</p>
+<p>The number looks perfect, but a new customer brings a number the tree has never seen.</p>
+<h4>Gain ratio: account for the split size</h4><p>Split information measures how widely an attribute divides the rows. An attribute that shaves the data into many tiny pieces gets a large value.</p>
 <p>SI(A) = &minus;&Sigma;<sub>v</sub> (|S<sub>v</sub>| / |S|) log<sub>2</sub>(|S<sub>v</sub>| / |S|)</p>
-<p>Gain ratio = IG(A) / SI(A). The customer-number attribute has SI = log<sub>2</sub>10 = 3.32 on ten rows, so its ratio drops below a modest but honest attribute. C4.5 uses gain ratio, with one guard: it first discards attributes whose gain is below the average gain, because the ratio can reward an attribute that hardly splits at all (a small denominator). When an attribute has a single value, SI = 0, so the ratio is undefined and the gain, which is also 0 here, has to decide.</p>
-<p><b>Gini, for contrast.</b> Gini(S) = 1 &minus; &Sigma; p<sub>i</sub><sup>2</sup> is zero for a pure node and 0.5 for an even two-class node. CART uses it because it needs no logarithm, and it usually ranks attributes close to the way entropy does.</p>
+<p>Gain ratio = IG(A) / SI(A). For ten unique customer numbers, SI = log<sub>2</sub>10 = 3.32, which pulls the ratio down.</p>
+<p>C4.5 first drops attributes with below-average gain, then compares ratios. This guard matters because a tiny denominator can make a weak split look good.</p>
+<p>If an attribute has one value, SI = 0 and the ratio is undefined. Its gain is also 0, so use gain or skip the attribute.</p>
+<h4>Gini as another impurity score</h4><p>Gini(S) = 1 &minus; &Sigma; p<sub>i</sub><sup>2</sup>. It is 0 for a pure node and 0.5 for two equally sized classes. CART uses it because it needs no logarithm, and it usually ranks attributes much like entropy does.</p>
 <table class="tbl">
 <tr><th>log<sub>2</sub></th><th>value</th><th>log<sub>2</sub></th><th>value</th><th>log<sub>2</sub></th><th>value</th></tr>
 <tr><td>0.2</td><td>&minus;2.322</td><td>0.4</td><td>&minus;1.322</td><td>0.6</td><td>&minus;0.737</td></tr>
@@ -99,30 +111,32 @@ window.ML_MODULES[3] = {
         },
         {
           type: "example",
-          html: `<p>Eight emails are labelled, four spam and four normal, so H(S) = 1 bit. The attribute "contains a link" splits them into five with a link (four spam, one normal) and three without (no spam, three normal).</p>
-<p>H(link) = &minus;(0.8 log<sub>2</sub>0.8 + 0.2 log<sub>2</sub>0.2) = 0.722 and H(no link) = 0. The weighted term is (5/8)(0.722) = 0.451, so the gain is 1 &minus; 0.451 = 0.549.</p>
-<p>The attribute "known sender" splits six rows (two spam, four normal) from two rows (both spam). Its weighted entropy is (6/8)(0.918) = 0.689 and its gain is 0.311. The link wins. Run the ratio as a check: the link has SI = 0.954 and ratio 0.575, the sender has SI = 0.811 and ratio 0.384, so the order does not change on this table.</p>`
+          html: `<h4>Start with the parent</h4><p>There are eight emails: four spam and four normal. The classes are even, so the parent entropy is H(S) = 1 bit.</p>
+<p>“Contains a link” makes one child of five emails (four spam, one normal) and another of three (all normal).</p>
+<h4>Calculate the link split</h4><p>H(link) = &minus;(0.8 log<sub>2</sub>0.8 + 0.2 log<sub>2</sub>0.2) = 0.722. H(no link) = 0 because that child is pure.</p>
+<p>Weight each child by its share: (5/8)(0.722) + (3/8)(0) = 0.451. Gain = 1 &minus; 0.451 = 0.549.</p>
+<h4>Compare with known sender</h4><p>“Known sender” creates six rows (two spam, four normal) and two spam rows. Its weighted entropy is (6/8)(0.918) = 0.689, so its gain is 0.311. The link split wins.</p>
+<p>The ratio check agrees: link SI = 0.954 and ratio 0.575; sender SI = 0.811 and ratio 0.384.</p>`
         },
         {
           type: "tip",
-          html: `<p>Open every numeric answer with H(S), even when the question only asks for a gain, because the marker checks that number first. Write the weighted sum with fractions visible instead of jumping to the total. Put the candidate gains in one small table and name the winner in a full sentence. Quote logs to three decimals and state the unit as bits once.</p>`
+          html: `<h4>Show the arithmetic clearly</h4><p>Start a numeric answer with H(S), even when asked only for gain. Write the child fractions in the weighted sum so the reader can see each child's contribution. Put candidate gains in a small table and state the winner in a sentence.</p><p>Round logarithms to three decimals and state “bits” once. A written calculation is easier to check than a jump straight to the final total.</p>`
         }
       ],
       practice: [
         {
-          q: "Information gain is biased toward attributes with many distinct values. Explain the bias using an added customer-number column on the ten-row loan table, and show how the split information term changes the ranking.",
-          a: `<p>Add a column that gives each of the ten applicants a different customer number. Splitting on it produces ten subsets of one row each. Every subset is pure, so every H(S<sub>v</sub>) is 0, the weighted term is 0, and the gain is the full parent entropy, 0.971. That beats Education Level at 0.646, even though the column carries no usable pattern for a new applicant.</p>
-<p>The split information exposes the problem. Ten equal subsets give SI = &minus;10 &times; 0.1 log<sub>2</sub>0.1 = log<sub>2</sub>10 = 3.322. The ratio becomes 0.971 / 3.322 = 0.292, which falls below Education Level at 0.646 / 1.571 = 0.411. The ranking is repaired.</p>
-<p>The denominator is large exactly when an attribute cuts the data into many small pieces, and small when an attribute has few values. That is why C4.5 applies a filter first, keeping only attributes whose gain is at least the average, and then picks the best ratio among those. Without the filter, a rare attribute with two very uneven branches could win on a tiny denominator while explaining almost nothing.</p>`,
+          q: "Add a unique customer number to each row of the ten-row loan table. Explain why information gain favours this column and show how split information changes its ranking against Education Level.",
+          a: `<h4>Why the customer number wins on gain</h4><p>Give each of the ten applicants a different number. The split creates ten one-row subsets. Each subset is pure, so every H(S<sub>v</sub>) is 0 and the weighted child entropy is 0. Gain is the full parent entropy, 0.971, higher than Education Level's 0.646. Yet the number says nothing useful about a new applicant.</p>
+<h4>Use split information to compare fairly</h4><p>Ten equal subsets give SI = &minus;10 &times; 0.1 log<sub>2</sub>0.1 = log<sub>2</sub>10 = 3.322. The customer-number ratio is 0.971 / 3.322 = 0.292. Education Level's ratio is 0.646 / 1.571 = 0.411, so it ranks higher.</p>
+<h4>Why C4.5 adds a guard</h4><p>Many small branches make the denominator large, which lowers the ratio. C4.5 first keeps attributes with at least average gain, then chooses the best ratio among them. Without that filter, a split with very uneven branches can have a small denominator and an inflated ratio despite explaining little.</p>`,
           marks: 5,
           diff: "medium"
         },
         {
-          q: "Five deliveries are recorded with a late flag: four on time, one late. The weather attribute splits them into three clear days (all on time) and two rainy days (one on time, one late). Compute the entropy of the full set, of each subset, and the information gain of the split.",
-          a: `<p>H(S) = &minus;(0.8 log<sub>2</sub>0.8 + 0.2 log<sub>2</sub>0.2) = &minus;(0.8 &times; &minus;0.322 + 0.2 &times; &minus;2.322) = 0.258 + 0.464 = 0.722 bits.</p>
-<p>For clear days, all three rows are on time, so H(clear) = 0. For rainy days, one row of each class gives H(rain) = 1.</p>
-<p>The weighted entropy is (3/5)(0) + (2/5)(1) = 0.4. The gain is 0.722 &minus; 0.4 = 0.322 bits.</p>
-<p>The gain is positive but small, and it comes from a split that puts only two rows on one side. On a table this size, treat the number as a hint rather than proof, and check the same attribute on more rows before you trust the branch.</p>`,
+          q: "Five deliveries have late flags: four are on time and one is late. Weather splits them into three clear days, all on time, and two rainy days, one on time and one late. Calculate the parent entropy, each child entropy and the split's information gain.",
+          a: `<h4>1. Entropy before the split</h4><p>Four of five deliveries are on time and one is late, so the class fractions are 0.8 and 0.2.</p><p>H(S) = &minus;(0.8 log<sub>2</sub>0.8 + 0.2 log<sub>2</sub>0.2) = &minus;(0.8 &times; &minus;0.322 + 0.2 &times; &minus;2.322) = 0.258 + 0.464 = 0.722 bits.</p>
+<h4>2. Entropy in each child</h4><p>All three clear-day deliveries are on time, so H(clear) = 0. The rainy child has one row from each class, so H(rain) = 1.</p>
+<h4>3. Weighted entropy and gain</h4><p>The clear child has 3/5 of the rows and the rainy child has 2/5. Weighted entropy = (3/5)(0) + (2/5)(1) = 0.4. Gain = 0.722 &minus; 0.4 = 0.322 bits.</p><p>The gain is positive but based on only five deliveries. Check more rows before treating this small-table result as reliable evidence.</p>`,
           marks: 3,
           diff: "easy"
         }
@@ -137,12 +151,12 @@ window.ML_MODULES[3] = {
       blocks: [
         {
           type: "definition",
-          text: "ID3 is a greedy tree learner that splits on the attribute with the highest information gain, then recurses on every subset it creates."
+          text: "ID3 builds a decision tree by choosing the highest-gain attribute at each node and repeating the process on its child subsets."
         },
         {
           type: "text",
-          html: `<p><b>The name and the idea.</b> ID3 stands for Iterative Dichotomiser 3, published by Ross Quinlan in 1986 and the direct ancestor of C4.5. The 3 stands for his third attempt at an entropy-based learner, and "dichotomiser" is a misnomer, because ID3 happily splits a multi-valued attribute into three or more branches. The idea is one sentence long: at each node, take the attribute that removes the most uncertainty, divide the rows by its values, and repeat on each child.</p>
-<p><b>The algorithm in order.</b></p>
+          html: `<h4>Name and core idea</h4><p>ID3 means Iterative Dichotomiser 3. Ross Quinlan published it in 1986; it is the direct ancestor of C4.5. The “3” marks his third attempt at an entropy-based learner. Despite its name, ID3 can split a multi-valued attribute into three or more branches.</p><p>At each node, ID3 chooses the attribute that removes the most uncertainty, splits rows by its values, then repeats on each child.</p>
+<h4>ID3, step by step</h4>
 <ol>
 <li>Place the full training set at the root.</li>
 <li>Compute H(S) for the current set.</li>
@@ -152,12 +166,12 @@ window.ML_MODULES[3] = {
 <li>Recurse on each non-empty subset with the attribute removed.</li>
 <li>Stop when a subset is pure, when no attributes remain, or when the subset is empty.</li>
 </ol>
-<p><b>The three stop rules, and what each produces.</b> A pure subset becomes a leaf with its class. A subset with rows but no remaining attributes becomes a leaf with the majority class, which is the best guess left. An empty subset becomes a leaf with the majority class of the parent, because there is no evidence of its own to use.</p>
-<p><b>What to say about its limits.</b> ID3 is greedy, so it returns a locally good tree and offers no guarantee of the smallest one; the global problem is NP-complete. It overfits when the table is small or noisy, it needs categorical values, and it has no built-in answer for a blank cell. C4.5 adds gain ratio, continuous splits, missing-value handling and pruning, which is why examiners like the comparison.</p>`
+<h4>What each stopping rule means</h4><p>A pure subset becomes a leaf with its class. If rows remain but no attributes do, use the majority class. If a subset is empty, use the parent's majority class because the empty child has no evidence of its own.</p>
+<h4>Limits and comparison</h4><p>ID3 is greedy: each step can be locally good without producing the smallest whole tree. Finding the globally optimal tree is NP-complete. ID3 can overfit small or noisy tables, needs categorical values, and has no built-in missing-value method.</p><p>C4.5 adds gain ratio, continuous splits, missing-value handling and pruning. These are useful points to contrast in an exam answer.</p>`
         },
         {
           type: "example",
-          html: `<p><b>Worked ID3 question, the ten-row loan table.</b> The predictors are Education Level, Employment Type and Marital Status; the target is Loan Approval.</p>
+          html: `<h4>Worked ID3 example: loan approval</h4><p>The predictors are Education Level, Employment Type and Marital Status. Loan Approval is the target.</p>
 <table class="tbl">
 <tr><th>Sl.</th><th>Education Level</th><th>Employment Type</th><th>Marital Status</th><th>Loan Approval</th></tr>
 <tr><td>1</td><td>Graduate</td><td>Salaried</td><td>Married</td><td>Yes</td></tr>
@@ -171,24 +185,24 @@ window.ML_MODULES[3] = {
 <tr><td>9</td><td>High School</td><td>Salaried</td><td>Married</td><td>No</td></tr>
 <tr><td>10</td><td>Postgraduate</td><td>Salaried</td><td>Single</td><td>Yes</td></tr>
 </table>
-<p><b>Step 1, the parent entropy.</b> Six Yes and four No, so H(S) = &minus;(0.6 log<sub>2</sub>0.6 + 0.4 log<sub>2</sub>0.4) = 0.442 + 0.529 = 0.971 bits.</p>
-<p><b>Step 2, Education Level.</b> Graduate holds 3 Yes and 1 No, so H = 0.811. High School holds 0 Yes and 3 No, and Postgraduate holds 3 Yes and 0 No, so both are pure with H = 0.</p>
+<h4>Step 1: parent entropy</h4><p>There are six Yes and four No rows. H(S) = &minus;(0.6 log<sub>2</sub>0.6 + 0.4 log<sub>2</sub>0.4) = 0.442 + 0.529 = 0.971 bits.</p>
+<h4>Step 2: Education Level</h4><p>Graduate has 3 Yes and 1 No, so H = 0.811. High School has 0 Yes and 3 No; Postgraduate has 3 Yes and 0 No. Both are pure, with H = 0.</p>
 <table class="tbl">
 <tr><th>Value</th><th>Rows</th><th>Yes</th><th>No</th><th>H</th><th>Weight</th><th>Weight &times; H</th></tr>
 <tr><td>Graduate</td><td>4</td><td>3</td><td>1</td><td>0.811</td><td>0.4</td><td>0.324</td></tr>
 <tr><td>High School</td><td>3</td><td>0</td><td>3</td><td>0</td><td>0.3</td><td>0</td></tr>
 <tr><td>Postgraduate</td><td>3</td><td>3</td><td>0</td><td>0</td><td>0.3</td><td>0</td></tr>
 </table>
-<p>Weighted entropy = 0.324, so gain = 0.971 &minus; 0.324 = <b>0.646</b>.</p>
-<p><b>Step 3, Employment Type.</b> Salaried holds 4 Yes and 2 No, so H = 0.918 at weight 0.6. Self-employed holds 2 Yes and 2 No, so H = 1 at weight 0.4. Weighted entropy = 0.551 + 0.400 = 0.951, so gain = <b>0.020</b>.</p>
-<p><b>Step 4, Marital Status.</b> Married holds 4 Yes and 1 No, so H = 0.722 at weight 0.5. Single holds 2 Yes and 3 No, so H = 0.971 at weight 0.5. Weighted entropy = 0.361 + 0.485 = 0.846, so gain = <b>0.124</b>.</p>
+<h4>Step 3: Education gain</h4><p>Weighted entropy = 0.324, so gain = 0.971 &minus; 0.324 = <b>0.646</b> using unrounded values. Subtracting the displayed rounded values gives 0.647; keep extra digits during the calculation to avoid this rounding difference.</p>
+<h4>Step 4: Employment Type</h4><p>Salaried has 4 Yes and 2 No, giving H = 0.918 at weight 0.6. Self-employed has 2 Yes and 2 No, giving H = 1 at weight 0.4. Weighted entropy = 0.551 + 0.400 = 0.951; gain = <b>0.020</b>.</p>
+<h4>Step 5: Marital Status</h4><p>Married has 4 Yes and 1 No, giving H = 0.722 at weight 0.5. Single has 2 Yes and 3 No, giving H = 0.971 at weight 0.5. Weighted entropy = 0.361 + 0.485 = 0.846; gain = <b>0.124</b>.</p>
 <table class="tbl">
 <tr><th>Attribute</th><th>Weighted entropy</th><th>Information gain</th><th>Split information</th><th>Gain ratio</th></tr>
 <tr><td>Education Level</td><td>0.324</td><td>0.646</td><td>1.571</td><td>0.411</td></tr>
 <tr><td>Employment Type</td><td>0.951</td><td>0.020</td><td>0.971</td><td>0.021</td></tr>
 <tr><td>Marital Status</td><td>0.846</td><td>0.124</td><td>1.000</td><td>0.124</td></tr>
 </table>
-<p><b>Step 5, the verdict.</b> Education Level has the highest gain at 0.646, and it also has the highest gain ratio, so it becomes the root. Two of its three branches are already pure, so only the four Graduate rows need another test.</p>`
+<h4>Step 6: choose the root</h4><p>Education Level has the highest gain, 0.646, and the highest gain ratio. It becomes the root. Two of its three branches are pure, so only the four Graduate rows need another test.</p>`
         },
         {
           type: "diagram",
@@ -228,21 +242,19 @@ print(export_text(clf, feature_names=names, decimals=3))`
         },
         {
           type: "tip",
-          html: `<p>Number the steps from 1 to 7 and keep the split, the recursion and the stop rule in separate steps. In the numeric part, write the class counts above each entropy so the marker can follow the arithmetic. Finish with a verdict sentence that names the winner and its gain. Draw the partial tree even when the question does not ask, because a labelled root and two leaves take a minute and carry shape marks.</p>`
+          html: `<h4>Present the algorithm and calculation</h4><p>Number the ID3 steps. Keep choosing a split, recursing on children and stopping as separate actions. For calculations, write class counts before each entropy so the arithmetic is easy to follow.</p><p>End by naming the winning attribute and its gain. A small labelled tree can make the result clearer, even when the question does not require a drawing.</p>`
         }
       ],
       practice: [
         {
-          q: "Every row in a training table has the same value for Employment Type. Explain what ID3 does with that attribute, what its information gain is, and why an implementation must guard the gain ratio here.",
-          a: `<p>The attribute has one value, so the split creates a single child that contains every row of the parent. Nothing is partitioned, and the child's entropy equals the parent's entropy.</p>
-<p>The weighted term is 1 &times; H(S), which cancels H(S), so the gain is exactly 0. ID3 compares gains, sees zero, and never chooses the attribute. In a recursive call the attribute is effectively dead weight, and if every remaining predictor behaves this way, the recursion stops with a majority-class leaf.</p>
-<p>The split information is also zero, because &minus;1 log<sub>2</sub>1 = 0. Gain ratio then asks for 0 divided by 0, which is undefined. A sound implementation checks for SI = 0 and falls back to the gain, or skips the attribute before the division. Writing the ratio as a formula without that guard is a common way to lose a mark.</p>`,
+          q: "Every training row has the same Employment Type. Explain how this affects an ID3 split and its information gain. Why must an implementation check the gain ratio before dividing?",
+          a: `<h4>What the split does</h4><p>One attribute value creates one child containing every parent row. No partition occurs, so the child's entropy equals the parent's.</p><h4>Information gain</h4><p>The weighted child entropy is 1 &times; H(S). It cancels the parent entropy, leaving gain = 0. ID3 will not select this attribute over one with positive gain. If all remaining attributes have this form, ID3 makes a majority-class leaf.</p><h4>Why the ratio needs a guard</h4><p>Split information is zero because &minus;1 log<sub>2</sub>1 = 0. The gain ratio would be 0/0, which is undefined. An implementation must check SI = 0 and skip the ratio or fall back to gain.</p>`,
           marks: 3,
           diff: "medium"
         },
         {
-          q: "Education Level is the root of the loan tree. Take the four Graduate rows and find the next attribute with ID3. Both remaining attributes give the same gain, which is unusual, so explain the tie, choose one, and complete the tree. Then say what the finished tree tells you about the data.",
-          a: `<p>The Graduate branch holds rows 1, 3, 6 and 8: (Salaried, Married, Yes), (Self-employed, Married, Yes), (Salaried, Single, Yes) and (Self-employed, Single, No). Three Yes and one No, so H = &minus;(0.75 log<sub>2</sub>0.75 + 0.25 log<sub>2</sub>0.25) = 0.811.</p>
+          q: "Education Level is the loan tree's root. For its four Graduate rows, calculate ID3 gains for the remaining attributes. Explain their tie, choose an attribute and complete the tree. What does the finished tree tell you about the data?",
+          a: `<h4>1. Set up the Graduate subset</h4><p>The Graduate branch holds rows 1, 3, 6 and 8: (Salaried, Married, Yes), (Self-employed, Married, Yes), (Salaried, Single, Yes) and (Self-employed, Single, No). There are three Yes and one No, so H = &minus;(0.75 log<sub>2</sub>0.75 + 0.25 log<sub>2</sub>0.25) = 0.811.</p>
 <table class="tbl">
 <tr><th>Sl.</th><th>Employment</th><th>Marital</th><th>Approval</th></tr>
 <tr><td>1</td><td>Salaried</td><td>Married</td><td>Yes</td></tr>
@@ -250,11 +262,10 @@ print(export_text(clf, feature_names=names, decimals=3))`
 <tr><td>6</td><td>Salaried</td><td>Single</td><td>Yes</td></tr>
 <tr><td>8</td><td>Self-employed</td><td>Single</td><td>No</td></tr>
 </table>
-<p><b>Employment Type.</b> Salaried holds two rows, both Yes, so H = 0 at weight 0.5. Self-employed holds one Yes and one No, so H = 1 at weight 0.5. Weighted entropy = 0.5, gain = 0.811 &minus; 0.500 = 0.311.</p>
-<p><b>Marital Status.</b> Married holds two rows, both Yes, so H = 0 at weight 0.5. Single holds one Yes and one No, so H = 1 at weight 0.5. Weighted entropy = 0.5 again, gain = 0.311.</p>
-<p>The tie comes from the shape of these four rows. Each attribute happens to put the two Married Yes rows together and mix the other two, so both produce the same one-pure, one-mixed partition. Their split information is also equal at 1.0, so gain ratio cannot break the tie either. ID3 must fall back on a rule: keep the attribute order given in the table, or pick either one and say so. Take Employment Type.</p>
-<p><b>The rest of the tree.</b> Salaried becomes a leaf labelled Yes. Self-employed still holds row 3 (Married, Yes) and row 8 (Single, No), so Marital Status splits it into Married, a Yes leaf, and Single, a No leaf. The full tree reads: Education Level at the root, High School gives No, Postgraduate gives Yes, and Graduate asks about Employment Type, with Salaried giving Yes and Self-employed asking about Marital Status.</p>
-<p><b>What it tells you.</b> The tree now classifies all ten training rows correctly, which sounds perfect and is the warning. Three attributes were enough to separate ten rows, so some leaves rest on a single example. The perfect training score is a sign of an overfitted tree on a small table, not proof that it will work on new applicants. State that limitation after the drawing, because it shows you know what a tree score means.</p>`,
+<h4>2. Calculate both candidate gains</h4><p><b>Employment Type:</b> Salaried has two Yes rows, so H = 0 at weight 0.5. Self-employed has one Yes and one No, so H = 1 at weight 0.5. Weighted entropy = 0.5; gain = 0.811 &minus; 0.500 = 0.311.</p><p><b>Marital Status:</b> Married has two Yes rows, so H = 0 at weight 0.5. Single has one Yes and one No, so H = 1 at weight 0.5. Weighted entropy = 0.5; gain = 0.311.</p>
+<h4>3. Explain and resolve the tie</h4><p>Both attributes create one pure child and one mixed child of the same size, so their gains match. They group different rows together: Salaried contains rows 1 and 6, while Married contains rows 1 and 3. Split information is 1.0 for both, so gain ratio cannot break the tie.</p><p>ID3 needs a tie rule: follow the table's attribute order or choose either attribute and say which. We choose Employment Type.</p>
+<h4>4. Complete the tree</h4><p>Salaried becomes a Yes leaf. Self-employed contains row 3 (Married, Yes) and row 8 (Single, No), so split it on Marital Status. Married gives Yes and Single gives No. The full tree starts with Education Level: High School gives No, Postgraduate gives Yes, and Graduate tests Employment Type. Salaried gives Yes; Self-employed tests Marital Status.</p>
+<h4>5. Interpret the result</h4><p>The tree classifies all ten training rows correctly, but some leaves rely on one example. A perfect training score on this small table can indicate overfitting. It does not prove the tree will work on new applicants.</p>`,
           marks: 14,
           diff: "hard"
         }
@@ -272,39 +283,38 @@ print(export_text(clf, feature_names=names, decimals=3))`
       blocks: [
         {
           type: "definition",
-          text: "Decision tree learning runs into overfitting, biased gains, continuous attributes, missing cells, greedy splits, and branches that hold only a handful of rows."
+          text: "Decision trees can overfit, favour many-valued attributes, and struggle with continuous or missing values and branches with few rows."
         },
         {
           type: "text",
-          html: `<p><b>1. Overfitting.</b> A tree grown to purity memorises noise as well as pattern. Training accuracy reaches 1.0 while a new sample does worse. Two fixes exist. Pre-pruning stops growth early with a depth limit, a minimum number of rows per leaf, or a minimum gain for a split. Post-pruning grows the full tree and then replaces weak subtrees with leaves, keeping the replacement only if accuracy on a separate validation set does not fall. Reduced-error pruning is the version to name.</p>
-<p><b>2. Bias toward many-valued attributes.</b> Information gain rewards an attribute that cuts the data into many small pieces, because small pieces tend to look pure. A customer ID wins the comparison and predicts nothing. Gain ratio divides by split information to correct this, and C4.5 also ignores attributes whose gain is below average.</p>
-<p><b>3. Continuous attributes.</b> ID3 works on discrete values, so a column such as age or salary has no natural branches. The standard treatment sorts the values, tries a threshold at the midpoint between each pair of neighbours, and keeps the threshold with the best gain. The test becomes "age &le; 34" against "age &gt; 34", a binary split. C4.5 does this automatically, and it costs one sort per attribute per node.</p>
-<p><b>4. Missing values.</b> A blank cell can be handled three ways. Drop the row, which is simple and wasteful when blanks are common. Fill the blank with the column's mode or mean, which keeps the row but invents evidence. Or send the row down every branch with a weight equal to that branch's share of the training rows, which is what C4.5 does and what keeps the counts honest. Say which one you mean, because "handle the missing values" on its own earns nothing.</p>
-<p><b>5. Greedy search.</b> Each split is chosen for its local gain, so the learner can miss a pair of splits that would have produced a smaller, better tree. Finding the optimal tree is NP-complete, so practical algorithms stay greedy and accept the loss. Pruning and ensembles are the usual compensation.</p>
-<p><b>6. Data fragmentation.</b> Every split divides the rows again. After four or five levels a branch may hold three rows, and an entropy computed on three rows is mostly noise. Wide multi-way splits make this worse, because they create many thin branches at once. Set a minimum rows per leaf and prefer gain ratio, which penalises a split that shatters the table.</p>
-<p><b>7. Attribute interaction.</b> A tree tests one attribute at a time. When the answer depends on two attributes together, as in XOR, the tree has to repeat the same subtree on both sides of a test, so the pattern costs depth and rows. Combining the two columns into one feature, or using a model that mixes features inside a single unit, avoids the duplication.</p>
-<p><b>8. Instability.</b> A small change in the training rows can change the root and therefore the whole tree, which makes the model hard to explain to a committee. Bagging many trees is the standard answer.</p>`
+          html: `<h4>1. Overfitting</h4><p>A tree grown until every leaf is pure can memorise noise as well as useful patterns. It may score 1.0 on training data but do worse on new rows.</p><p><b>Pre-pruning</b> stops growth early, for example with a depth limit, minimum leaf size or minimum gain. <b>Post-pruning</b> first grows the tree, then replaces weak subtrees with leaves if validation accuracy does not fall. Reduced-error pruning is one post-pruning method.</p>
+<h4>2. Bias toward many-valued attributes</h4><p>Information gain can favour an attribute that creates many small groups, since small groups often look pure. A customer ID can win despite predicting nothing useful. Gain ratio divides gain by split information; C4.5 also filters out attributes with below-average gain.</p>
+<h4>3. Continuous attributes</h4><p>ID3 expects discrete values, so age or salary needs a threshold. Sort the values, test midpoints between neighbours, then keep the threshold with the best gain. For example, “age &le; 34” versus “age &gt; 34” makes a binary split. C4.5 does this automatically and sorts each attribute at each node.</p>
+<h4>4. Missing values</h4><p>One option is to drop rows with blanks, which wastes data when blanks are common. Another is to fill a blank with the column's mode or mean, though this invents a value. C4.5 can instead send a row down each branch with a weight based on that branch's share of training rows. State which method you mean.</p>
+<h4>5. Greedy search</h4><p>A split with the best local gain can block a better whole-tree arrangement. Finding the globally optimal tree is NP-complete, so practical learners use greedy search. Pruning and ensembles can reduce the cost of that choice.</p>
+<h4>6. Data fragmentation</h4><p>Each split leaves fewer rows in each branch. After several levels, a branch may contain only three rows, so its entropy estimate is noisy. Multi-way splits can create many thin branches at once. Set a minimum leaf size and consider gain ratio to avoid shattering the table.</p>
+<h4>7. Attribute interaction</h4><p>A tree tests one attribute at a time. For an XOR pattern, the useful answer depends on two attributes together, so the tree repeats a subtree on both sides of a test. That costs depth and rows. A combined feature or a model that mixes features inside a unit can avoid the repetition.</p>
+<h4>8. Instability</h4><p>A few changed training rows can change the root and much of the rest of the tree. This makes explanations less stable. Bagging many trees is a standard response.</p>`
         },
         {
           type: "example",
-          html: `<p>An HR team builds a tree to predict attrition from 200 rows and includes the employee number. That column gives one row per branch, so its gain is the full parent entropy and it becomes the root. The tree then scores 100 percent on the training file and fails on every new employee, since the numbers are new. Swap in gain ratio and the column drops out, then add a minimum of ten rows per leaf so the remaining branches are not built from two or three people.</p>`
+          html: `<h4>Employee numbers create a misleading split</h4><p>An HR team predicts attrition from 200 rows and includes employee number. Each number identifies one row, so its split has the full parent entropy as gain and becomes the root.</p><p>The tree scores 100 percent on the training file but cannot use new employee numbers. Gain ratio reduces the appeal of that column. A minimum of ten rows per leaf also prevents branches from relying on only two or three people.</p>`
         },
         {
           type: "tip",
-          html: `<p>Give each issue a name, a one-line mechanism and one fix, in that order. Never stop at six names, because a 6-mark question wants the sentence after each name. Use the phrases "memorises the training rows" for overfitting and "many-valued attribute" for the gain bias. Close with one line on pruning, since it answers the follow-up question.</p>`
+          html: `<h4>Structure an answer about tree limits</h4><p>For each issue, name it, explain how it happens, then give a fix. A list of names alone does not explain the problem. Use “memorises the training rows” for overfitting and “many-valued attribute” for gain bias.</p><p>For a longer response, include pruning and explain how it controls tree growth.</p>`
         }
       ],
       practice: [
         {
-          q: "A subtree of a grown tree covers 10 training rows and classifies 9 of them correctly. On a separate validation set of 4 rows it classifies 2 correctly. The majority class of the 10 rows is Yes, and 3 of the 4 validation rows are Yes. Should you replace the subtree with a Yes leaf? Show the comparison and state the rule you are applying.",
-          a: `<p>Replace it. The replacement leaf predicts Yes for everything that reaches that point. On the validation rows it would be right on 3 of 4, which is 75 percent, against 50 percent for the subtree. On the training rows it would fall from 9 of 10 to the count of Yes rows, so training accuracy drops while validation accuracy rises.</p>
+          q: "A subtree correctly classifies 9 of 10 training rows and 2 of 4 separate validation rows. Its training majority class is Yes; 3 of the 4 validation rows are Yes. Should a Yes leaf replace the subtree? Compare the results and name the pruning rule.",
+          a: `<h4>Compare validation performance</h4><p>Replace the subtree with a Yes leaf. The leaf gets 3 of 4 validation rows right, or 75 percent. The subtree gets 2 of 4 right, or 50 percent. On training data, the leaf may score below the subtree's 9 of 10 because it predicts Yes for every row.</p>
 <table class="tbl">
 <tr><th></th><th>Validation correct</th><th>Validation accuracy</th><th>Tree size</th></tr>
 <tr><td>Keep subtree</td><td>2 of 4</td><td>0.50</td><td>larger</td></tr>
 <tr><td>Replace with leaf</td><td>3 of 4</td><td>0.75</td><td>one node</td></tr>
 </table>
-<p>The rule is reduced-error pruning: replace a subtree with a leaf when the replacement does not lower accuracy on data the tree was not grown on, and prefer the smaller tree when the two are equal. The training count is not the criterion, which is the whole point of holding validation rows back.</p>
-<p>Four validation rows are a thin basis for a decision, so repeat the check over several folds or a larger pruning set before trusting it. Prune bottom-up, because a parent can only be judged after its children have been settled.</p>`,
+<h4>Apply reduced-error pruning</h4><p>Replace a subtree when the leaf does not lower accuracy on held-out validation data. If both versions tie, prefer the smaller tree. Training accuracy is not the pruning criterion; validation rows were held back to test generalisation.</p><p>Four validation examples are few, so repeat the check across folds or use a larger pruning set. Prune from the bottom up so each parent is judged after its children.</p>`,
           marks: 5,
           diff: "medium"
         }
@@ -319,18 +329,18 @@ print(export_text(clf, feature_names=names, decimals=3))`
       blocks: [
         {
           type: "definition",
-          text: "A perceptron is one artificial neuron that weights its inputs, adds a bias, and sends the total through a threshold to pick a class."
+          text: "A perceptron is a single artificial neuron that combines weighted inputs and a bias, then uses a threshold to choose a class."
         },
         {
           type: "text",
-          html: `<p><b>The unit.</b> Frank Rosenblatt built the perceptron as a hardware classifier in the late 1950s, and the modern version is a single neuron with a step function. It takes inputs x<sub>1</sub> to x<sub>n</sub>, multiplies each by its own weight w<sub>i</sub>, adds a bias b, and passes the total through a threshold.</p>
+          html: `<h4>One neuron makes a decision</h4><p>Frank Rosenblatt built the perceptron as a hardware classifier in the late 1950s. Imagine a neuron that combines evidence from several inputs, then chooses a class. Each input has a weight that controls its contribution, and a bias shifts the total before the threshold test.</p><h4>Calculate the output</h4><p>For inputs x<sub>1</sub> to x<sub>n</sub>, the neuron multiplies each x<sub>i</sub> by its weight w<sub>i</sub> and adds bias b. The total is the net input z:</p>
 <p>z = b + &Sigma; w<sub>i</sub>x<sub>i</sub></p>
 <p>y = 1 if z &gt; 0, and y = &minus;1 otherwise.</p>
-<p>The bias is a weight on a constant input of 1, so it shifts the decision boundary away from the origin without tilting it. That shift matters: without a bias, a boundary must pass through zero, and some simple patterns become impossible. Some texts use 1 and 0 with the Heaviside step instead of 1 and &minus;1; the arithmetic is the same, but check which convention the question uses before you write an update.</p>
-<p><b>Training.</b> Start the weights at zero or small random values. For each training row, compute y and compare it with the target t. If they match, change nothing. If they differ, move every weight toward the correct side:</p>
+<p>The output y is 1 when the total is positive and &minus;1 otherwise. The bias acts as a weight on a constant input of 1. It shifts the decision boundary away from the origin without tilting it; without a bias, the boundary must pass through zero.</p><p>Some texts use a Heaviside step with outputs 1 and 0 instead of 1 and &minus;1. Check the question's convention before calculating an update.</p>
+<h4>Learn from a mistake</h4><p>Start weights at zero or small random values. For each row, calculate the prediction y and compare it with the correct target t. If they match, leave the weights alone; if they differ, adjust each weight and the bias:</p>
 <p>w<sub>i</sub> &larr; w<sub>i</sub> + &eta;(t &minus; y)x<sub>i</sub>, and b &larr; b + &eta;(t &minus; y)</p>
-<p>Here &eta; is the learning rate, a small positive number. With targets of 1 and &minus;1, the factor (t &minus; y) is 2 when the unit is wrong, so each mistake produces a step of size 2&eta; in the input's direction. Repeat over the rows until a full pass makes no mistakes, or until a pass limit is reached.</p>
-<p><b>The ceiling.</b> The perceptron convergence theorem says a single unit will find a separating line in a finite number of mistakes if one exists. When the classes overlap or form XOR, no such line exists, and training never settles. That limit is why a hidden layer is needed for non-linear problems. It is also why practical code carries a learning rate and a pass cap.</p>`
+<p>Here &eta; is a small positive learning rate, and x<sub>i</sub> is the corresponding input. With targets 1 and &minus;1, a mistake makes t &minus; y either 2 or &minus;2. Repeat until a full pass makes no mistakes or a pass limit is reached.</p>
+<h4>What one perceptron cannot do</h4><p>The perceptron convergence theorem promises a separating boundary after finitely many mistakes when the data is linearly separable. Overlapping classes and XOR have no such boundary, so the mistake-driven loop cannot reach zero errors. A hidden layer can represent nonlinear patterns such as XOR; a pass limit also prevents an endless run.</p>`
         },
         {
           type: "diagram",
@@ -338,37 +348,34 @@ print(export_text(clf, feature_names=names, decimals=3))`
         },
         {
           type: "example",
-          html: `<p>A tutor builds a pass predictor with two inputs: attendance as a fraction (x<sub>1</sub>) and study hours per week (x<sub>2</sub>), with weights 0.5 and 0.2 and bias &minus;1.</p>
+          html: `<h4>1. Set up the predictor</h4><p>A tutor predicts pass using attendance as a fraction (x<sub>1</sub>) and weekly study hours (x<sub>2</sub>). The weights are 0.5 and 0.2, and the bias is &minus;1.</p>
 <p>A student at 0.8 attendance and 6 hours gives z = 0.5(0.8) + 0.2(6) &minus; 1 = 0.4 + 1.2 &minus; 1 = 0.6. Since z &gt; 0, the output is 1, so the unit predicts pass.</p>
-<p>A second student at 0.4 attendance and 1 hour should pass, but the unit gives z = 0.2 + 0.2 &minus; 1 = &minus;0.6, so y = &minus;1 and it is wrong. With &eta; = 0.5, the factor t &minus; y is 2, and the update is:</p>
+<h4>2. Correct a wrong prediction</h4><p>A second student has 0.4 attendance and 1 hour. The correct target is pass, but z = 0.2 + 0.2 &minus; 1 = &minus;0.6, so y = &minus;1. With &eta; = 0.5, t &minus; y = 2:</p>
 <p>w<sub>1</sub> = 0.5 + 0.5(2)(0.4) = 0.9, w<sub>2</sub> = 0.2 + 0.5(2)(1) = 1.2, b = &minus;1 + 0.5(2)(1) = 0.</p>
-<p>The new total for that student is 0.9(0.4) + 1.2(1) + 0 = 1.56, which is positive, so the same row is now classified correctly. One correction fixed one row; the rest of the table still has to be checked, because a change that helps one row can break another.</p>`
+<h4>3. Check the correction</h4><p>The new total is 0.9(0.4) + 1.2(1) + 0 = 1.56. It is positive, so the unit now classifies this row correctly. Check the other rows too: an update that helps one row can hurt another.</p>`
         },
         {
           type: "tip",
-          html: `<p>Draw inputs, weights on the arrows, a summation circle, the bias entering the circle and a threshold box, then label the output. Write the net input and the output rule under the drawing, followed by the learning rule. Substitute one wrong row into the update so the marker sees that t &minus; y equals 2 for plus and minus one targets. Mention the linearly separable condition, because it explains the ceiling of a single unit.</p>`
+          html: `<h4>Explain a perceptron in an exam</h4><p>Draw the inputs, weighted arrows, summation, bias, threshold and output. Under the drawing, give the net input, output rule and learning rule. Work through a mistaken row with target 1 and prediction &minus;1, so t &minus; y = 2.</p><p>Explain that the convergence guarantee needs linearly separable classes. This condition shows the limit of one unit.</p>`
         }
       ],
       practice: [
         {
-          q: "A perceptron is trained on two classes that overlap, so no straight line separates them. Describe what the weights do during training, why the loop never settles, and two ways to stop or fix it.",
-          a: `<p>Every misclassified row pushes the weight vector by &eta;(t &minus; y)x, so the boundary swings toward that row. The next row can pull it back. With no separating line, at least one row is always on the wrong side of whatever boundary the unit currently holds, so the mistakes never stop and the weights keep moving.</p>
-<p>The perceptron convergence theorem only promises a finite number of mistakes when the data is linearly separable. With overlap, the cycling theorem says the weights stay bounded but do not settle, so the training error oscillates instead of falling to zero. Watching for "no mistakes in a full pass" as the stop rule means the loop runs forever.</p>
-<p>Two practical fixes. Cap the number of passes and keep the weight vector with the lowest training error, which is the pocket algorithm. Or accept the limit and change the model: add a feature that separates the classes, add a hidden layer, or use logistic regression, which returns a probability and trains smoothly on overlapping data. Report the error rate rather than claiming convergence.</p>`,
+          q: "A perceptron learns from two overlapping classes that no straight line separates. What happens to its weights, why can a mistake-free training loop continue indefinitely, and what two responses could you use?",
+          a: `<h4>Why updates continue</h4><p>Each mistake changes the weight vector by &eta;(t &minus; y)x, moving the decision boundary. Another row can move it back. Since no line separates the classes, every boundary misclassifies at least one row, so a stop rule requiring a mistake-free pass will never trigger.</p><p>The perceptron convergence theorem guarantees finitely many mistakes only for linearly separable data. For overlapping data, updates can cycle rather than settling at zero training error.</p><h4>Two practical responses</h4><p>First, limit the number of passes and keep the best training-error weights: this is the pocket algorithm. Second, change the representation or model: try a separating feature, a hidden layer, or logistic regression, which trains on overlapping data and outputs a probability. Report the error rate rather than claiming perfect separation.</p>`,
           marks: 5,
           diff: "medium"
         },
         {
-          q: "A perceptron has weights 0.2 and &minus;0.4, bias 0.1 and learning rate 0.3. It receives x = [1, 1] with target 1 and currently predicts &minus;1. Apply one update, state each new value, and explain what a very large learning rate would do.",
-          a: `<p>First the net input: z = 0.2(1) + (&minus;0.4)(1) + 0.1 = &minus;0.1. Since z is not greater than zero, y = &minus;1, which differs from t = 1.</p>
-<p>The factor is t &minus; y = 1 &minus; (&minus;1) = 2, and &eta; = 0.3, so the step multiplier is 0.6.</p>
+          q: "A perceptron has weights 0.2 and &minus;0.4, bias 0.1 and learning rate 0.3. For x = [1, 1], its target is 1 and its prediction is &minus;1. Calculate one update for both weights and the bias. What effect can a very large learning rate have?",
+          a: `<h4>1. Calculate the prediction</h4><p>The net input is z = 0.2(1) + (&minus;0.4)(1) + 0.1 = &minus;0.1. It is not positive, so y = &minus;1. The target t is 1, making this a mistake.</p>
+<h4>2. Update weights and bias</h4><p>The error factor is t &minus; y = 1 &minus; (&minus;1) = 2. With learning rate &eta; = 0.3, the step multiplier is 0.6:</p>
 <ul>
 <li>w<sub>1</sub> = 0.2 + 0.3(2)(1) = 0.8</li>
 <li>w<sub>2</sub> = &minus;0.4 + 0.3(2)(1) = 0.2</li>
 <li>b = 0.1 + 0.3(2)(1) = 0.7</li>
 </ul>
-<p>The new net input is 0.8 + 0.2 + 0.7 = 1.7, which is positive, so the row is now classified correctly.</p>
-<p>A large &eta; makes each correction a big jump. The boundary can overshoot, a row that was right becomes wrong, and the weights oscillate instead of settling. A tiny &eta; has the opposite fault: training crawls and may need many passes. Start small, watch the error per pass, and lower &eta; if the error bounces.</p>`,
+<h4>3. Check and interpret</h4><p>The new net input is 0.8 + 0.2 + 0.7 = 1.7, so this row is now correct. A large &eta; makes a larger jump and may make previously correct rows wrong, especially when data is not separable. A tiny &eta; makes smaller updates. Monitor errors per pass and use a pass limit.</p>`,
           marks: 5,
           diff: "medium"
         }
@@ -383,13 +390,13 @@ print(export_text(clf, feature_names=names, decimals=3))`
       blocks: [
         {
           type: "definition",
-          text: "An activation function turns a neuron's net input into its output and supplies the non-linearity a network needs to learn curved boundaries."
+          text: "An activation function converts a neuron's net input to an output. Nonlinear activations help networks learn curved decision boundaries."
         },
         {
           type: "text",
-          html: `<p><b>Where it sits.</b> A neuron first builds its net input, then applies the function.</p>
+          html: `<h4>What an activation does</h4><p>A neuron combines its inputs into a total, then an activation function turns that total into its output. A nonlinear activation lets a network learn patterns that a straight boundary cannot separate.</p>
 <p>z = &Sigma; w<sub>i</sub>x<sub>i</sub> + b, and y = f(z).</p>
-<p>Without a non-linear f, depth buys nothing. Two linear layers collapse into one, because W<sub>2</sub>(W<sub>1</sub>x) = (W<sub>2</sub>W<sub>1</sub>)x, and the product of two matrices is another matrix. The network then draws a straight boundary no matter how many layers you stack. One non-linear layer is enough to approximate a wide class of continuous functions, which is the universal approximation idea.</p>
+<p>Here x<sub>i</sub> is an input, w<sub>i</sub> its weight, b the bias, z the net input, f the activation and y the output.</p><h4>Why nonlinearity matters</h4><p>Two linear layers collapse into one: W<sub>2</sub>(W<sub>1</sub>x) = (W<sub>2</sub>W<sub>1</sub>)x. The matrices W<sub>1</sub> and W<sub>2</sub> combine into one matrix, so stacking linear layers still gives a straight decision boundary.</p><p>With enough units and a suitable nonlinear activation, one hidden layer can approximate a wide class of continuous functions. This is the universal approximation idea.</p><h4>Compare common functions</h4>
 <table class="tbl">
 <tr><th>Function</th><th>Equation</th><th>Range</th><th>Note</th></tr>
 <tr><td>Linear</td><td>f(z) = z</td><td>all real numbers</td><td>no non-linearity, used in some output layers</td></tr>
@@ -400,36 +407,32 @@ print(export_text(clf, feature_names=names, decimals=3))`
 <tr><td>ReLU</td><td>f(z) = max(0, z)</td><td>[0, &infin;)</td><td>cheap, no saturation for positive z</td></tr>
 <tr><td>Gaussian</td><td>f(z) = e<sup>&minus;z<sup>2</sup></sup></td><td>(0, 1]</td><td>peaks at z = 0, used in radial basis networks</td></tr>
 </table>
-<p><b>Reading the table.</b> The two sigmoids are the same S curve on different scales. The binary version squashes everything into 0 to 1, which suits a probability. The bipolar version and tanh run from &minus;1 to 1, which keeps the output centred and is why hidden layers often prefer them. The step function decides, but it cannot teach, because its derivative is zero on both sides and undefined at the jump. A gradient method multiplies by that derivative, so a step unit passes no learning signal back.</p>
-<p><b>The cost of smoothness.</b> The sigmoid derivative peaks at 0.25 and shrinks toward zero for large positive or negative z. Stack several layers and the product of those small numbers fades, which is the vanishing gradient. ReLU avoids the fade on the positive side and became the default for deep networks, at the price of a kink at zero.</p>`
+<h4>Read the ranges and derivatives</h4><p>Binary sigmoid maps its input between 0 and 1, which suits a probability output. Bipolar sigmoid and tanh range from &minus;1 to 1 and are centred at zero. Bipolar sigmoid equals tanh(z/2), not tanh(z).</p><p>The step function has derivative zero on either side and is undefined at the jump. Gradient training multiplies by derivatives, so this step provides no useful learning signal through the hidden unit.</p>
+<h4>Vanishing gradients</h4><p>The sigmoid derivative is at most 0.25 and approaches zero for large positive or negative z. Multiplying small derivatives through many layers can shrink the learning signal: this is the vanishing gradient. ReLU avoids saturation for positive inputs, although it has a kink at zero.</p>`
         },
         {
           type: "example",
-          html: `<p>A neuron receives inputs [0.5, 0.7, 0.1] with weights [0.4, 0.6, 0.3] and bias 0.5.</p>
+          html: `<h4>1. Calculate the net input</h4><p>A neuron receives inputs [0.5, 0.7, 0.1], weights [0.4, 0.6, 0.3] and bias 0.5. Multiply each input by its weight and add the bias:</p>
 <p>z = 0.4(0.5) + 0.6(0.7) + 0.3(0.1) + 0.5 = 0.20 + 0.42 + 0.03 + 0.50 = 1.15.</p>
-<p><b>Binary sigmoid.</b> e<sup>&minus;1.15</sup> = 0.3166, so f = 1 / (1 + 0.3166) = <b>0.7595</b>. The value sits between 0 and 1, as it must.</p>
-<p><b>tanh.</b> e<sup>1.15</sup> = 3.1582, so f = (3.1582 &minus; 0.3166) / (3.1582 + 0.3166) = 2.8416 / 3.4748 = <b>0.8178</b>.</p>
-<p>If the question also asks for the bipolar sigmoid, use 2(0.7595) &minus; 1 = 0.5190, which is the same as tanh(1.15 / 2) = tanh(0.575). Both answers are positive, but they are not the same number, so label them clearly and keep four decimals.</p>`
+<h4>2. Apply binary sigmoid</h4><p>e<sup>&minus;1.15</sup> = 0.3166, so f = 1 / (1 + 0.3166) = <b>0.7595</b>. This lies between 0 and 1.</p>
+<h4>3. Compare tanh and bipolar sigmoid</h4><p>For tanh, e<sup>1.15</sup> = 3.1582, so f = (3.1582 &minus; 0.3166) / (3.1582 + 0.3166) = 2.8416 / 3.4748 = <b>0.8178</b>.</p><p>For bipolar sigmoid, use 2(0.7595) &minus; 1 = 0.5190. This equals tanh(1.15 / 2) = tanh(0.575), not tanh(1.15). Label each result and keep four decimals.</p>`
         },
         {
           type: "tip",
-          html: `<p>Answer in triples: name, equation, range. That shape fits 3 marks and repeats cleanly for as many functions as the question lists. When a numeric output is asked, show z before substituting it into the function. Keep the two sigmoids apart, because the binary one stops at 1 while the bipolar one runs from minus one to plus one. Round to four decimals and attach each result to its function name.</p>`
+          html: `<h4>Present each activation</h4><p>Give its name, equation and range. For a numerical question, show z before substituting it into the activation. Label binary sigmoid, bipolar sigmoid and tanh separately, and round outputs to four decimals.</p><p>Remember that binary sigmoid ranges from 0 to 1, while bipolar sigmoid ranges from &minus;1 to 1.</p>`
         }
       ],
       practice: [
         {
-          q: "A network uses f(z) = z in every layer, including the output. Show why three such layers behave like one, name the property that is lost, and give one pattern the network can no longer learn.",
-          a: `<p>Write the three layers as y = W<sub>3</sub>(W<sub>2</sub>(W<sub>1</sub>x)). Matrix multiplication is associative, so this equals (W<sub>3</sub>W<sub>2</sub>W<sub>1</sub>)x, and the product is a single matrix W. The whole network is y = Wx, which is one linear layer with a different set of weights.</p>
-<p>The lost property is non-linearity. Every decision boundary stays a straight line or plane in the input space, so the extra layers cannot bend it, and depth adds parameters without adding expressive power.</p>
-<p>XOR is the standard example. No single straight line separates (0,1) and (1,0) from (0,0) and (1,1), so the collapsed network cannot learn it. A non-linear hidden activation, followed by a linear output, can.</p>`,
+          q: "Every layer of a network, including its output, uses f(z) = z. Show why three layers reduce to one, identify the missing property, and give a pattern the network cannot learn.",
+          a: `<h4>Combine the layers</h4><p>Write the three layers as y = W<sub>3</sub>(W<sub>2</sub>(W<sub>1</sub>x)), where x is the input and each W is a layer's weight matrix. Matrix multiplication is associative, so this equals (W<sub>3</sub>W<sub>2</sub>W<sub>1</sub>)x. Their product is one matrix W, giving y = Wx.</p><h4>What the network loses</h4><p>Without nonlinearity, the decision boundary remains a line or plane. Extra linear layers cannot bend it. In XOR, no single line separates (0,1) and (1,0) from (0,0) and (1,1). A nonlinear hidden activation followed by a linear output can learn the pattern.</p>`,
           marks: 3,
           diff: "easy"
         },
         {
-          q: "The step function worked for the perceptron. Explain why training a hidden layer needs a smooth activation instead, using the derivative, and state the cost that the sigmoid brings in a deep stack.",
-          a: `<p>Gradient training asks how the error changes when a weight moves a little, so it needs the derivative of the activation. The step function is flat on both sides, with derivative 0, and undefined at the jump. A hidden unit using it therefore passes back zero, the weight receives no direction, and no amount of data fixes the layer. The perceptron rule escapes this only because it learns from the label on a mistake and never differentiates anything.</p>
-<p>The sigmoid is smooth everywhere. Its derivative is f(z)(1 &minus; f(z)), which peaks at 0.25 when z = 0 and approaches 0 as z grows large in either direction. The backward pass multiplies these derivatives layer by layer, so a deep stack of sigmoids multiplies several numbers below 0.25 and the gradient shrinks toward zero. Early layers then learn far more slowly than late ones, which is the vanishing gradient.</p>
-<p>ReLU keeps a derivative of 1 for positive z, so the signal survives the trip back. The price is a kink at zero and dead units for negative z, which is why leaky variants exist.</p>`,
+          q: "A perceptron uses a step function. Use its derivative to explain why it is unsuitable for gradient training in a hidden layer. What problem can sigmoid activations cause in a deep network?",
+          a: `<h4>Why the step is difficult to train</h4><p>Gradient training asks how error changes when a weight changes, so it uses the activation's derivative. The step derivative is 0 away from the jump and undefined at the jump. It therefore passes no useful gradient through a hidden unit. The perceptron rule instead learns directly from a mistaken label without differentiating the step.</p>
+<h4>Sigmoid and vanishing gradients</h4><p>Sigmoid is smooth. Its derivative f(z)(1 &minus; f(z)) reaches 0.25 at z = 0 and approaches 0 for large positive or negative z. Backpropagation multiplies derivatives across layers; repeated small factors can make the gradient almost zero. Early layers then learn slowly: this is the vanishing gradient.</p><h4>A common alternative</h4><p>ReLU has derivative 1 for positive z, so it avoids that particular shrinkage there. It has a kink at zero, and units can become inactive for negative inputs. Leaky variants address the latter issue.</p>`,
           marks: 5,
           diff: "medium"
         }
@@ -445,21 +448,16 @@ print(export_text(clf, feature_names=names, decimals=3))`
       blocks: [
         {
           type: "definition",
-          text: "Backpropagation trains a multilayer feed-forward network by sending the output error backwards and using each weight's share of it to update the weight."
+          text: "Backpropagation sends a loss signal backward through a network to calculate weight gradients. An optimiser then uses those gradients to update the weights."
         },
         {
           type: "text",
-          html: `<p><b>Forward, then backward.</b> Backpropagation is the gradient method for a multilayer feed-forward network. The forward pass computes a prediction. The backward pass computes how much each weight contributed to the error, then gradient descent moves each weight a small step against that contribution. Strictly, backpropagation computes the gradient and the optimiser applies it; exams use the word for the whole loop, which is fine as long as the two halves are named.</p>
-<p><b>Forward.</b> For each layer, z = W a + b and a = f(z), starting from the input row and ending at the output. Keep every z and every a, because the backward pass needs them.</p>
-<p><b>Error.</b> With one output and a squared-error loss, E = &frac12;(t &minus; y)<sup>2</sup>. For a sigmoid output, the output delta folds the loss and the derivative into one term:</p>
-<p>&delta;<sub>o</sub> = (y &minus; t) y (1 &minus; y)</p>
-<p><b>Backward.</b> A hidden unit has no target of its own, so it collects the deltas of the units it feeds, weighted by the connections:</p>
-<p>&delta;<sub>h</sub> = f&prime;(z<sub>h</sub>) &Sigma; w<sub>ho</sub> &delta;<sub>o</sub></p>
-<p><b>Update.</b> Every weight then moves against its gradient:</p>
-<p>w &larr; w &minus; &eta; &delta;<sub>j</sub> a<sub>i</sub>, where a<sub>i</sub> is the input the weight multiplied.</p>
-<p>The order matters. The output deltas must exist before a hidden delta can be formed, so the pass runs from the output layer back to the input layer. Update after the deltas for that layer are known, and use the same weights for the whole backward pass, or the arithmetic mixes two different networks.</p>
-<p><b>Training settings.</b> The learning rate &eta; sets the step size: too large and the error bounces or diverges, too small and training crawls. One epoch is one full pass over the training set. Online training updates after each row, batch training sums the gradients over all rows and updates once, and mini-batches sit in between. Training stops when the validation error stops improving, not when the training error reaches zero.</p>
-<p><b>Limits.</b> The error surface is not convex, so gradient descent can stop in a local minimum or on a flat plateau. Saturating activations shrink the gradient in deep stacks. Normalising the inputs and choosing ReLU for hidden layers are the usual remedies.</p>`
+          html: `<h4>The whole training loop first</h4><p>A multilayer feed-forward network makes a prediction, checks how wrong it is, and uses that error to improve. Think of one training round in four stages:</p><ol><li><b>Forward prediction:</b> pass the input through the layers to get an output.</li><li><b>Error:</b> compare the output with the target using a loss function.</li><li><b>Backward pass:</b> send the error signal backwards to calculate each weight's gradient, or effect on the loss.</li><li><b>Update:</b> move each weight in the direction that reduces the loss.</li></ol><p>Strictly, backpropagation calculates gradients; an optimiser such as gradient descent applies the updates. Repeat these stages across training rows.</p>
+<h4>1. Forward prediction</h4><p>At each layer, calculate z = W a + b, then a = f(z). Here W is the weight matrix, a on the right is the previous layer's output, b is the bias, z is the net input, and f is the activation. Save each z and output a for the backward pass.</p>
+<h4>2. Measure the error</h4><p>For one output, squared-error loss is E = &frac12;(t &minus; y)<sup>2</sup>. E is the loss, t the target and y the prediction. For a sigmoid output, combine the loss and activation derivatives into the output delta:</p><p>&delta;<sub>o</sub> = (y &minus; t) y (1 &minus; y)</p><p>The delta &delta;<sub>o</sub> measures how the loss changes with the output neuron's net input.</p>
+<h4>3. Send the signal backwards</h4><p>A hidden unit has no target of its own. Collect the output deltas from the units it feeds, weighting each by its connection, then multiply by the hidden activation's derivative:</p><p>&delta;<sub>h</sub> = f&prime;(z<sub>h</sub>) &Sigma; w<sub>ho</sub> &delta;<sub>o</sub></p><p>Here &delta;<sub>h</sub> is the hidden delta, f&prime;(z<sub>h</sub>) is the derivative at that unit's net input, and w<sub>ho</sub> connects hidden unit h to output unit o. The sum covers the output units fed by h.</p>
+<h4>4. Update the weights</h4><p>Move each weight against its gradient: w &larr; w &minus; &eta; &delta;<sub>j</sub> a<sub>i</sub>. Here w connects unit i to unit j, a<sub>i</sub> is the input to that weight, &delta;<sub>j</sub> is the receiving unit's delta, and &eta; is the learning rate.</p><p>Calculate output deltas before hidden deltas. Use the original forward-pass weights for the entire backward calculation, then update; otherwise the calculation mixes two networks.</p>
+<h4>Training settings and limits</h4><p>The learning rate sets the step size. Too large can make error bounce or diverge; too small can slow training. One epoch is a full pass over the training set. Online training updates after each row, batch training sums gradients over all rows before updating, and mini-batches fall between these.</p><p>Early stopping uses validation error to decide when to stop instead of waiting for zero training error. The loss surface can contain local minima or flat plateaus, and saturating activations can shrink gradients in deep networks. Input normalisation and ReLU hidden units are common remedies.</p>`
         },
         {
           type: "diagram",
@@ -467,31 +465,30 @@ print(export_text(clf, feature_names=names, decimals=3))`
         },
         {
           type: "example",
-          html: `<p>An output neuron has just produced y = 0.7595 for a row whose target is 1. The weight from the last hidden unit into this neuron is 0.4, that hidden unit's output is 0.6, and the learning rate is 0.5.</p>
-<p>Output delta: &delta;<sub>o</sub> = (0.7595 &minus; 1)(0.7595)(1 &minus; 0.7595) = (&minus;0.2405)(0.1827) = &minus;0.0439.</p>
-<p>Gradient for the weight: &delta;<sub>o</sub> &times; a<sub>hidden</sub> = &minus;0.0439 &times; 0.6 = &minus;0.0264.</p>
-<p>Update: w = 0.4 &minus; 0.5(&minus;0.0264) = 0.4 + 0.0132 = 0.4132.</p>
-<p>The weight rises because the output was below the target and a larger weight on a positive input pushes it up. The change is small on purpose. One update is a single step, not a trained network, and the next row may pull the same weight the other way.</p>`
+          html: `<h4>1. Prediction and target</h4><p>A sigmoid output neuron predicts y = 0.7595, while the target is 1. Its incoming weight is 0.4, the hidden unit's output is 0.6, and the learning rate is 0.5.</p>
+<h4>2. Calculate the output delta</h4><p>&delta;<sub>o</sub> = (0.7595 &minus; 1)(0.7595)(1 &minus; 0.7595) = (&minus;0.2405)(0.1827) = &minus;0.0439.</p>
+<h4>3. Calculate the weight gradient</h4><p>Multiply the output delta by the hidden output: &delta;<sub>o</sub> &times; a<sub>hidden</sub> = &minus;0.0439 &times; 0.6 = &minus;0.0264.</p>
+<h4>4. Update the weight</h4><p>w = 0.4 &minus; 0.5(&minus;0.0264) = 0.4 + 0.0132 = 0.4132. The weight rises because the output was below target and the hidden output is positive. This is one step; a later row may move the weight in the other direction.</p>`
         },
         {
           type: "tip",
-          html: `<p>Split the page into Forward and Backward before writing anything. Number the order as forward pass, output error, output delta, hidden delta, weight update, and never update a weight before its delta exists. Draw the network with the layers labelled and put the error arrow pointing backwards. Name the learning rate in the update line, because the marker looks for it.</p>`
+          html: `<h4>Show the order in your answer</h4><p>Number the forward pass, output error, output delta, hidden delta and weight update. Draw the labelled network and an error arrow pointing backwards. Define the learning rate in the update and calculate deltas using the original weights before updating them.</p>`
         }
       ],
       practice: [
         {
-          q: "In a two-layer network, explain why the hidden layer's delta cannot be computed until the output layer's delta is known, what the forward pass must keep for the backward pass, and what goes wrong if you update the output weights first.",
-          a: `<p>A hidden weight has no direct line to the error. It matters only through the units it feeds, so its gradient is the sum of the downstream deltas, each weighted by its connection, multiplied by the derivative of its own activation. Write it as &delta;<sub>h</sub> = f&prime;(z<sub>h</sub>) &Sigma; w<sub>ho</sub>&delta;<sub>o</sub>. The sum cannot be evaluated until every &delta;<sub>o</sub> exists, which is why the computation starts at the output and moves left.</p>
-<p>The forward pass must cache, for every unit, either its net input z or its output a, because f&prime; is evaluated at that value. It must also keep the weights used, because the hidden sum multiplies them. Recomputing them or reading updated values would mix two different networks in one gradient.</p>
-<p>If you update the output weights before forming the hidden delta, the backward sum uses weights that no longer produced the output you measured. The gradient then belongs to neither the old nor the new network, and the step can point the wrong way. Form all deltas first, then apply all updates, or apply them per layer from the output backwards while keeping the old weights for the remaining sums. In batch training, accumulate the gradients over the rows and update once at the end.</p>`,
+          q: "For a two-layer network, explain why the output delta must be known before the hidden delta. What must the forward pass save, and what goes wrong if output weights are updated before the hidden delta is calculated?",
+          a: `<h4>Why output deltas come first</h4><p>A hidden unit affects the loss through the units it feeds. Its delta combines those downstream signals, multiplied by the corresponding connection weights and its own activation derivative:</p><p>&delta;<sub>h</sub> = f&prime;(z<sub>h</sub>) &Sigma; w<sub>ho</sub>&delta;<sub>o</sub>.</p><p>Here &delta;<sub>o</sub> is an output delta, w<sub>ho</sub> connects hidden unit h to output o, and f&prime;(z<sub>h</sub>) is the hidden activation derivative. The sum needs the output deltas first, so calculate backwards from the output.</p>
+<h4>What to save</h4><p>Keep each unit's net input z or enough information from its output a to evaluate the activation derivative. Keep the forward-pass activations needed for weight gradients and the original weights needed for hidden deltas.</p>
+<h4>Why update order matters</h4><p>If output weights change before the hidden delta is formed, the sum uses weights that did not produce the measured prediction. That mixes networks and can give the wrong gradient. Calculate all deltas before updating, or retain the old weights for remaining sums. In batch training, accumulate row gradients and update once at the end.</p>`,
           marks: 7,
           diff: "hard"
         },
         {
-          q: "Training error falls every epoch while validation error falls for a while and then rises. Name the problem, explain what an epoch is, and give two changes that would address it.",
-          a: `<p>The network is overfitting. It keeps fitting the training rows, including their noise, while its performance on rows it has not seen gets worse. The gap between the two curves is the signal, and the best checkpoint is near the point where validation error turns upward.</p>
-<p>An epoch is one complete pass over the training set, during which every row is used once and the weights are updated according to the chosen batch size. Ten epochs mean ten passes. An epoch is not a fixed amount of learning, because the step size also depends on the learning rate and the batch size.</p>
-<p>Two changes help. Use early stopping: keep the weights from the epoch with the lowest validation error and stop when it has not improved for several epochs. Add regularisation, such as weight decay or dropout, so the network cannot rely on narrow coincidences in the training rows. More data or a smaller network would help for the same reason, since both reduce the capacity to memorise.</p>`,
+          q: "Training error falls each epoch, but validation error first falls and then rises. Name the problem, define an epoch, and describe two ways to address the problem.",
+          a: `<h4>Identify the problem</h4><p>The network is overfitting: it continues to fit training rows, including noise, while its validation performance gets worse. The gap between the curves signals the problem. The best checkpoint is near the minimum validation error.</p>
+<h4>Define an epoch</h4><p>An epoch is one complete pass over the training set. Ten epochs mean ten passes, with weight updates scheduled by the batch size. The learning rate and batch size also affect how much the weights change.</p>
+<h4>Two ways to respond</h4><p>Use early stopping: save the weights with the lowest validation error and stop after several epochs without improvement. Add regularisation such as weight decay or dropout to discourage reliance on training coincidences. More data or a smaller network can also reduce overfitting.</p>`,
           marks: 5,
           diff: "medium"
         }
